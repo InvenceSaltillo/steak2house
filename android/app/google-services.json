@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "987821976471",
+    "project_id": "steak2house-b61b2",
+    "storage_bucket": "steak2house-b61b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987821976471:android:392a508ab5d93cdfd872d2",
+        "android_client_info": {
+          "package_name": "com.invence.steak2house"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987821976471-p8fps687gfg7tuvtetn0c162f74g3san.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.invence.steak2house",
+            "certificate_hash": "832809ec93846fccd417961a1625d7d97fd60170"
+          }
+        },
+        {
+          "client_id": "987821976471-lqkemsd1ugil4nppoe48tpqm2bhqlj6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuQPpZVIc9png5K84pCMdTvXTvHnpoR3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987821976471-lqkemsd1ugil4nppoe48tpqm2bhqlj6s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
