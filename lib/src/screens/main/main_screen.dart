@@ -7,14 +7,6 @@ class MainScreen extends StatelessWidget {
   static String routeName = "/main_screen";
   final _drawerController = ZoomDrawerController();
 
-  final List<MenuItem> options = [
-    MenuItem(Icons.payment, 'Payments'),
-    MenuItem(Icons.favorite, 'Discounts'),
-    MenuItem(Icons.notifications, 'Notification'),
-    MenuItem(Icons.format_list_bulleted, 'Orders'),
-    MenuItem(Icons.help, 'Help'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

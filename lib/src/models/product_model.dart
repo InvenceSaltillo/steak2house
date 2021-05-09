@@ -20,6 +20,7 @@ class Product {
     this.includes,
     this.status,
     this.picture,
+    this.isLiked = false,
     this.categoryId,
     this.updatedAt,
     this.createdAt,
@@ -33,6 +34,7 @@ class Product {
   dynamic? includes;
   String? status;
   String? picture;
+  bool isLiked;
   String? categoryId;
   DateTime? updatedAt;
   DateTime? createdAt;

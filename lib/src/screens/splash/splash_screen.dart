@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
+import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
@@ -36,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Get.put(BottomNavigationBarController());
     Get.put(MiscController());
     Get.put(LocationController());
+    Get.put(CartController());
 
     await Future.delayed(Duration(seconds: 1));
     final isFacebookLogged = await AuthService.auth.checkIfIsLogged();
@@ -44,28 +46,43 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 2));
 
     if (isFacebookLogged) {
-      final userInfo = await SharedPrefs.instance.getUserInfo();
+      try {
+        final userInfo = await SharedPrefs.instance.getKey('user');
+        final userCtrl = Get.find<UserController>();
 
-      final userCtrl = Get.find<UserController>();
+        final User user = userCtrl.user.value = User.fromJson(userInfo);
 
-      final User user = userCtrl.user.value = User.fromJson(userInfo);
+        Dialogs.instance.showSnackBar(
+          DialogType.success,
+          '¡Qué gusto verte de nuevo ${user.name}!',
+          false,
+        );
 
-      Dialogs.instance.showSnackBar(
-        DialogType.success,
-        '¡Qué gusto verte de nuevo ${user.name}!',
-      );
-      await Future.delayed(Duration(milliseconds: 1500));
+        await Future.delayed(Duration(milliseconds: 1500));
 
-      Get.offUntil(
-        PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return MainScreen();
-          },
-          transitionDuration: Duration(milliseconds: 800),
-        ),
-        (route) => false,
-      );
+        Get.offUntil(
+          PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return MainScreen();
+            },
+            transitionDuration: Duration(milliseconds: 800),
+          ),
+          (route) => false,
+        );
+      } catch (e) {
+        print('ERRORRRR========= No hay info del usuario en SharedPrefs');
+        Get.offUntil(
+          PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return SignInScreen();
+            },
+            transitionDuration: Duration(milliseconds: 800),
+          ),
+          (route) => false,
+        );
+      }
     } else {
       Get.offUntil(
         PageRouteBuilder(

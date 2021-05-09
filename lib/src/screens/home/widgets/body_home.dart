@@ -3,7 +3,6 @@ import 'package:steak2house/src/screens/home/widgets/products_grid.dart';
 import 'package:steak2house/src/widgets/categories_list.dart';
 import 'package:steak2house/src/widgets/search_text_field.dart';
 
-import '../../../constants.dart';
 import '../../../utils/utils.dart';
 
 class BodyHomeScreen extends StatelessWidget {
@@ -30,7 +29,9 @@ class BodyHomeScreen extends StatelessWidget {
             ),
             SizedBox(height: _utils.getWidthPercent(.03)),
             SearchTextField(
-              onChanged: (value) {},
+              onChanged: (value) {
+                Utils.instance.debounce(value);
+              },
               onSubmitted: (value) {},
               controller: _controller,
               icon: Icons.search,

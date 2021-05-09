@@ -1,19 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:steak2house/src/controllers/cart_controller.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
+import 'package:steak2house/src/models/cart_model.dart';
+import 'package:steak2house/src/screens/main/main_screen.dart';
+import 'package:steak2house/src/utils/shared_prefs.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../../constants.dart';
 import '../../../utils/utils.dart';
 
 class ProductDetailBottomNav extends StatelessWidget {
-  const ProductDetailBottomNav({
+  ProductDetailBottomNav({
     Key? key,
-    required Utils utils,
-  })   : _utils = utils,
-        super(key: key);
+  }) : super(key: key);
 
-  final Utils _utils;
-  // final ProductController productCtrl;
+  final Utils _utils = Utils.instance;
+  final _cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +60,46 @@ class ProductDetailBottomNav extends StatelessWidget {
                 ],
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final newCartItem = new Cart(
+                    product: productCtrl.currentProduct.value,
+                    qty: productCtrl.productQty.value,
+                  );
+
+                  final exist = _cartController.cartList.where((cartItem) =>
+                      cartItem.product!.id == newCartItem.product!.id);
+
+                  if (exist.isBlank == true) {
+                    _cartController.cartList.add(newCartItem);
+                  } else {
+                    final itemIdx = _cartController.cartList.indexWhere(
+                        (item) => item.product!.id == newCartItem.product!.id);
+                    _cartController.cartList[itemIdx].qty =
+                        _cartController.cartList[itemIdx].qty! +
+                            productCtrl.productQty.value;
+                  }
+
+                  final result = await Dialogs.instance.showLottieDialog(
+                    title:
+                        '!Se agregó ${productCtrl.currentProduct.value.name} al carrito¡',
+                    lottieSrc: 'assets/animations/addCart.json',
+                    firstButtonText: 'Ok',
+                    secondButtonText: '',
+                    firstButtonBgColor: kPrimaryColor,
+                    firstButtonTextColor: kSecondaryColor,
+                    secondButtonBgColor: kPrimaryColor,
+                    secondButtonTextColor: kSecondaryColor,
+                  );
+
+                  print(result);
+                  if (result) {
+                    SharedPrefs.instance.setKey(
+                      'cartList',
+                      json.encode(_cartController.cartList),
+                    );
+                    Get.off(() => MainScreen());
+                  }
+                },
                 style: TextButton.styleFrom(
                     backgroundColor: Colors.orange,
                     padding: EdgeInsets.all(_utils.getHeightPercent(.01))),

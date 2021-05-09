@@ -1,24 +1,32 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:steak2house/src/constants.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
+import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/models/product_model.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
+import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/rounded_small_button.dart';
 
 class ProductDetailImage extends StatelessWidget {
   const ProductDetailImage({
     Key? key,
-    required this.product,
   }) : super(key: key);
 
-  final Product product;
+  // final Product product;
   @override
   Widget build(BuildContext context) {
     late AnimationController _animationController;
     final _utils = Utils.instance;
+
+    final _producCtrl = Get.find<ProductController>();
+
+    // _producCtrl.isLiked.value = _producCtrl.currentProduct.value.isLiked;
 
     return Container(
       width: _utils.getWidthPercent(1),
@@ -28,6 +36,7 @@ class ProductDetailImage extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
+        // color: kPrimaryColor,
       ),
       child: Stack(
         children: [
@@ -35,22 +44,31 @@ class ProductDetailImage extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Center(
               // heightFactor: .77,
-              child: Image.network(
-                // 'https://cdn.pixabay.com/photo/2018/02/08/15/02/meat-3139641_960_720.jpg',
-                product.picture!,
-                // height: _utils.getHeightPercent(.125),
-                // width: 200,
-                fit: BoxFit.fitWidth,
-                loadingBuilder: (ctx, child, _) {
-                  if (_ == null) return child;
-                  return Center(
-                    child: Lottie.asset(
-                      'assets/animations/loading.json',
-                      width: _utils.getWidthPercent(.3),
-                      height: _utils.getWidthPercent(.3),
-                    ),
-                  );
-                },
+              child: Hero(
+                tag: '${_producCtrl.currentProduct.value.id}',
+                child: Image.network(
+                  _producCtrl.currentProduct.value.picture!,
+                  fit: BoxFit.fitWidth,
+                  loadingBuilder: (ctx, child, _) {
+                    if (_ == null) return child;
+                    return Center(
+                      child: Lottie.asset(
+                        'assets/animations/loading.json',
+                        width: _utils.getWidthPercent(.3),
+                        height: _utils.getWidthPercent(.3),
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Image.asset(
+                      'assets/img/noImage.png',
+                      height: _utils.getHeightPercent(.25),
+                      width: _utils.getHeightPercent(.25),
+                      fit: BoxFit.fitWidth,
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -70,26 +88,68 @@ class ProductDetailImage extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: RoundedSmallButton(
-              onTap: () {
-                _animationController.forward(from: 0);
-              },
-              utils: _utils,
-              width: .08,
-              height: .08,
-              icon: Swing(
-                animate: false,
-                controller: (controller) => _animationController = controller,
-                child: Icon(
-                  Icons.favorite_outline,
-                  size: _utils.getWidthPercent(.055),
-                  color: kPrimaryColor,
+          Obx(
+            () {
+              final exist = _producCtrl.favoriteList.where(
+                (favorite) =>
+                    favorite.id == _producCtrl.currentProduct.value.id,
+              );
+
+              _producCtrl.isLiked.value = !exist.isBlank!;
+              return Positioned(
+                bottom: 20,
+                right: 20,
+                child: RoundedSmallButton(
+                  onTap: () {
+                    if (!_producCtrl.isLiked.value) {
+                      _animationController.forward(from: 0);
+                    }
+
+                    final exist = _producCtrl.favoriteList.where(
+                      (favorite) =>
+                          favorite.id == _producCtrl.currentProduct.value.id,
+                    );
+
+                    _producCtrl.isLiked.value = exist.isBlank!;
+
+                    if (exist.isBlank == true) {
+                      _producCtrl.currentProduct.value.isLiked =
+                          !_producCtrl.currentProduct.value.isLiked;
+
+                      _producCtrl.favoriteList
+                          .add(_producCtrl.currentProduct.value);
+                    } else {
+                      final itemIdx = _producCtrl.favoriteList.indexWhere(
+                          (item) =>
+                              item.id == _producCtrl.currentProduct.value.id);
+                      _producCtrl.favoriteList.removeAt(itemIdx);
+                    }
+                    SharedPrefs.instance.setKey(
+                      'favoriteList',
+                      json.encode(_producCtrl.favoriteList),
+                    );
+                  },
+                  utils: _utils,
+                  width: .08,
+                  height: .08,
+                  icon: Pulse(
+                    duration: Duration(milliseconds: 300),
+                    animate: false,
+                    controller: (controller) =>
+                        _animationController = controller,
+                    child: Icon(
+                      _producCtrl.isLiked.value
+                          ? Icons.favorite
+                          : Icons.favorite_outline,
+                      size: _utils.getWidthPercent(.055),
+                      color: _producCtrl.isLiked.value
+                          ? Colors.red
+                          : kPrimaryColor,
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),

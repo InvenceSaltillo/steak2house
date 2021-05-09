@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:steak2house/src/constants.dart';
 
 import '../utils/utils.dart';
 
@@ -36,6 +37,14 @@ class RoundedSmallButton extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: color,
+            boxShadow: [
+              BoxShadow(
+                color: kPrimaryColor.withOpacity(.5),
+                offset: Offset(0, 2),
+                // blurRadius: 1,
+                // spreadRadius: .5,
+              ),
+            ],
           ),
           child: icon,
         ),

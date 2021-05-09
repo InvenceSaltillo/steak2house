@@ -36,6 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
           '1',
         );
       }
+
+      if (productsCtrl.fromFavorites.value) {
+        bottomNavCtrl.pageCtrl.value.jumpToPage(2);
+        bottomNavCtrl.currentPage.value = 2;
+        productsCtrl.fromFavorites.value = false;
+      }
     });
     super.initState();
   }

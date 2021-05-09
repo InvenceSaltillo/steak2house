@@ -2,7 +2,9 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 
 import 'package:steak2house/src/controllers/product_controller.dart';
+import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/product_model.dart';
+import 'package:steak2house/src/utils/secure_storage.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
 class ProductService {
@@ -19,6 +21,37 @@ class ProductService {
 
   final String urlEndpoint = '${Utils.instance.urlBackend}products/';
   final productCtrl = Get.find<ProductController>();
+  final userCtrl = Get.find<UserController>();
+
+  Future searchProducts(String query) async {
+    final token = await SecureStorage.instance.readItem('token');
+
+    try {
+      final response = await _dio.get(urlEndpoint, queryParameters: {
+        'token': token,
+        'query': query,
+      });
+
+      print('SEARCH==== ${response.data}');
+      if (response.data['data'].length == 0) {
+        // Dialogs.instance.dismiss();
+        productCtrl.loading.value = false;
+        return false;
+      } else {
+        List productsList = response.data['data'] as List;
+        final products = productsList
+            .map((product) => new Product.fromJson(product))
+            .toList();
+
+        productCtrl.products.value = products;
+
+        productCtrl.loading.value = false;
+
+        // Dialogs.instance.dismiss();
+        return true;
+      }
+    } on dio.DioError catch (e) {}
+  }
 
   Future<bool> getByCategory(String categoryId) async {
     // Dialogs.instance.showLoadingProgress(

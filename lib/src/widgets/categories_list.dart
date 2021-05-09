@@ -9,9 +9,11 @@ import '../constants.dart';
 import '../utils/utils.dart';
 
 class CategoriesList extends StatelessWidget {
-  const CategoriesList({
+  CategoriesList({
     Key? key,
   }) : super(key: key);
+
+  final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class CategoriesList extends StatelessWidget {
     final categoriesCtrl = Get.find<CategoriesController>();
     return Obx(
       () => SingleChildScrollView(
+        controller: _scrollController,
         scrollDirection: Axis.horizontal,
         physics: categoriesCtrl.categories.length == 0
             ? NeverScrollableScrollPhysics()
@@ -28,11 +31,19 @@ class CategoriesList extends StatelessWidget {
           children: categoriesCtrl.categories.length == 0
               ? List.generate(
                   4,
-                  (index) => CategoryCard(utils: _utils, index: index),
+                  (index) => CategoryCard(
+                    utils: _utils,
+                    index: index,
+                    scrollController: _scrollController,
+                  ),
                 )
               : List.generate(
                   categoriesCtrl.categories.length,
-                  (index) => CategoryCard(utils: _utils, index: index),
+                  (index) => CategoryCard(
+                    utils: _utils,
+                    index: index,
+                    scrollController: _scrollController,
+                  ),
                 ),
         ),
       ),
@@ -45,11 +56,13 @@ class CategoryCard extends StatelessWidget {
     Key? key,
     required Utils utils,
     required this.index,
+    required this.scrollController,
   })   : _utils = utils,
         super(key: key);
 
   final Utils _utils;
   final int index;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +82,21 @@ class CategoryCard extends StatelessWidget {
                   final String categoryId =
                       categoriesCtrl.categories[index].id.toString();
                   ProductService.instance.getByCategory(categoryId);
+
+                  if (categoriesCtrl.currentIndex.value >
+                      (categoriesCtrl.categories.length / 3)) {
+                    scrollController.animateTo(
+                      scrollController.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.linear,
+                    );
+                  } else {
+                    scrollController.animateTo(
+                      scrollController.position.minScrollExtent,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.linear,
+                    );
+                  }
                 },
           child: AnimatedContainer(
             duration: Duration(milliseconds: 100),
@@ -79,9 +107,11 @@ class CategoryCard extends StatelessWidget {
                 ? _utils.getHeightPercent(.15)
                 : _utils.getHeightPercent(.13),
             decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
+                color: categoriesCtrl.currentIndex.value == index
+                    ? kPrimaryColor
+                    : Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all()),
             child: categoriesCtrl.categories.length == 0
                 ? Center(
                     child: Lottie.asset(
@@ -93,8 +123,8 @@ class CategoryCard extends StatelessWidget {
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        'assets/img/${categoriesCtrl.categories[index].icon}.svg',
+                      Image.asset(
+                        'assets/img/${categoriesCtrl.categories[index].icon}.png',
                         width: _utils.getWidthPercent(.15),
                       ),
                       SizedBox(height: _utils.getWidthPercent(.03)),
@@ -102,7 +132,9 @@ class CategoryCard extends StatelessWidget {
                         '${categoriesCtrl.categories[index].name!.capitalize}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: categoriesCtrl.currentIndex.value == index
+                              ? Colors.white
+                              : kPrimaryColor,
                         ),
                       )
                     ],

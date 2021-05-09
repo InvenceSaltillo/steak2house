@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:steak2house/src/models/geolocation_model.dart';
 import 'package:steak2house/src/services/geolocation_service.dart';
+import 'package:steak2house/src/utils/shared_prefs.dart';
 
 class LocationController extends GetxController {
   var permissionStatus = PermissionStatus.denied.obs;
@@ -23,18 +24,13 @@ class LocationController extends GetxController {
       .obs;
   var searchResult = GeocodingResponse().obs;
 
+  var currentAddress = GeocodingResponse().obs;
+  var tempAddress = GeocodingResponse().obs;
+
+  RxList<GeocodingResponse> addressesList = RxList<GeocodingResponse>();
+
   Future<PermissionStatus> requestPermission() async {
     permissionStatus.value = await Permission.location.request();
-
-    // switch (permissionStatus.value) {
-    //   case PermissionStatus.granted:
-    //     break;
-    //   case PermissionStatus.denied:
-    //   case PermissionStatus.restricted:
-    //   case PermissionStatus.limited:
-    //   case PermissionStatus.permanentlyDenied:
-
-    // }
     return permissionStatus.value;
   }
 
@@ -51,5 +47,25 @@ class LocationController extends GetxController {
     GeolocationService.instance.reverseGeocoding(newCurrentPosition);
     // GeolocationService.instance.getResultsByQuery('Saltillo', currentPosition.value);
     return currentPosition.value;
+  }
+
+  Future<void> getAddressesList() async {
+    try {
+      final addresses = await SharedPrefs.instance.getKey('addresses') as List;
+      print(addresses);
+
+      final List<GeocodingResponse> myAddressesList = addresses
+          .map((address) => new GeocodingResponse.fromJson(address))
+          .toList();
+      addressesList.value = myAddressesList;
+    } catch (e) {
+      print('ERRORRRR========= ');
+    }
+  }
+
+  @override
+  void onReady() async {
+    await getAddressesList();
+    super.onReady();
   }
 }

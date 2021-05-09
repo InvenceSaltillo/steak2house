@@ -7,6 +7,7 @@ import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/user_model.dart';
+import 'package:steak2house/src/services/products_service.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../../utils/utils.dart';
@@ -36,6 +37,7 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
   }
 
   Future<void> checkLocationAndGPS() async {
+    print('Position Antes ${locationCtrl.currentPosition}');
     await locationCtrl.requestPermission();
     await locationCtrl.checkLocationEnabled();
 
@@ -53,7 +55,8 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
     }
 
     if (locationCtrl.permissionStatus.value == PermissionStatus.granted &&
-        locationCtrl.isLocationEnabled.value) {
+        locationCtrl.isLocationEnabled.value &&
+        locationCtrl.currentPosition.value.latitude == 0.0) {
       final currentPosition = await locationCtrl.getCurrentPosition();
       print('AQUI $currentPosition');
     }
@@ -93,6 +96,7 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
           onTap: () async {
             // locationCtrl.getCurrentPosition();
             Dialogs.instance.showLocationBottomSheet();
+            // print(locationCtrl.currentAddress.value.results);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -105,9 +109,10 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
               Container(
                 width: _utils.getWidthPercent(.25),
                 child: Text(
-                  locationCtrl.currentStreet.value == ''
+                  locationCtrl.tempAddress.value.results == null
                       ? 'Obteniendo ubicación'
-                      : locationCtrl.currentStreet.value,
+                      : locationCtrl
+                          .tempAddress.value.results![0].formattedAddress!,
                   overflow: TextOverflow.ellipsis,
                   // softWrap: true,
                   style: TextStyle(
@@ -133,6 +138,7 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
           TextButton(
             onPressed: () {
               print('Click Avatar');
+              ProductService.instance.searchProducts('coca');
             },
             style: TextButton.styleFrom(
               primary: Colors.white,

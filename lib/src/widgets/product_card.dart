@@ -25,17 +25,6 @@ class ProductCard extends StatelessWidget {
         productCtrl.currentProduct.value = product;
         productCtrl.productQty.value = 1;
         Get.offNamedUntil(ProductDetailScreen.routeName, (_) => false);
-        // productCtrl.productPrice.value = double.parse(product.price!);
-        // Get.offUntil(
-        //   PageRouteBuilder(
-        //     pageBuilder: (BuildContext context, Animation<double> animation,
-        //         Animation<double> secondaryAnimation) {
-        //       return ProductDetailScreen();
-        //     },
-        //     transitionDuration: Duration(milliseconds: 800),
-        //   ),
-        //   (route) => false,
-        // );
       },
       child: Container(
         margin: EdgeInsets.all(_utils.getWidthPercent(.01)),
@@ -49,21 +38,33 @@ class ProductCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(7),
-              child: Image.network(
-                product.picture!,
-                height: _utils.getHeightPercent(.125),
-                width: 200,
-                fit: BoxFit.fitWidth,
-                loadingBuilder: (ctx, child, _) {
-                  if (_ == null) return child;
-                  return Center(
-                    child: Lottie.asset(
-                      'assets/animations/loading.json',
-                      width: _utils.getWidthPercent(.3),
-                      height: _utils.getWidthPercent(.25),
-                    ),
-                  );
-                },
+              child: Hero(
+                tag: '${product.id}',
+                child: Image.network(
+                  product.picture!,
+                  height: _utils.getHeightPercent(.125),
+                  width: 200,
+                  fit: BoxFit.fitWidth,
+                  loadingBuilder: (ctx, child, _) {
+                    if (_ == null) return child;
+                    return Center(
+                      child: Lottie.asset(
+                        'assets/animations/loading.json',
+                        width: _utils.getWidthPercent(.3),
+                        height: _utils.getWidthPercent(.25),
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Image.asset(
+                      'assets/img/noImage.png',
+                      height: _utils.getHeightPercent(.125),
+                      width: _utils.getHeightPercent(.125),
+                      fit: BoxFit.fitWidth,
+                    );
+                  },
+                ),
               ),
             ),
             Padding(
@@ -82,13 +83,13 @@ class ProductCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    '800g',
-                    style: TextStyle(
-                      color: Colors.white38,
-                      fontWeight: FontWeight.w100,
-                    ),
-                  ),
+                  // Text(
+                  //   '800g',
+                  //   style: TextStyle(
+                  //     color: Colors.white38,
+                  //     fontWeight: FontWeight.w100,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -100,13 +101,17 @@ class ProductCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Envío gratis',
-                    style: TextStyle(
-                        color: Colors.white38,
-                        fontSize: _utils.getWidthPercent(.03)
-                        // fontWeight: FontWeight.w100,
-                        ),
+                  Container(
+                    width: _utils.getWidthPercent(.31),
+                    child: Text(
+                      '${product.description}',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Colors.white38,
+                          fontSize: _utils.getWidthPercent(.03)
+                          // fontWeight: FontWeight.w100,
+                          ),
+                    ),
                   ),
                   Text(
                     '\$${product.price}',

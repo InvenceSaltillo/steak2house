@@ -26,9 +26,7 @@ class ProductDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductDetailImage(
-              product: productCtrl.currentProduct.value,
-            ),
+            ProductDetailImage(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -39,17 +37,17 @@ class ProductDetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  '500g',
-                  style: TextStyle(
-                    fontSize: _utils.getWidthPercent(.05),
-                    color: kSecondaryColor,
-                  ),
-                ),
+                // Text(
+                //   '500g',
+                //   style: TextStyle(
+                //     fontSize: _utils.getWidthPercent(.05),
+                //     color: kSecondaryColor,
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height: _utils.getHeightPercent(.005)),
-            PorductReviewsPercent(utils: _utils),
+            // PorductReviewsPercent(utils: _utils),
             SizedBox(height: _utils.getHeightPercent(.02)),
             ProductQtyButtons(),
             Divider(
@@ -74,9 +72,7 @@ class ProductDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: ProductDetailBottomNav(
-        utils: _utils,
-      ),
+      bottomNavigationBar: ProductDetailBottomNav(),
     );
   }
 }

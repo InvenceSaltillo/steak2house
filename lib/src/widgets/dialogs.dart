@@ -8,11 +8,11 @@ import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
-import 'package:steak2house/src/controllers/misc_controller.dart';
+import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
-import 'package:steak2house/src/widgets/search_text_field.dart';
 
 import 'bottom_sheet_addresses.dart';
+import 'map_bottomsheet.dart';
 
 enum DialogType { success, error, info }
 
@@ -63,7 +63,8 @@ class Dialogs {
     );
   }
 
-  Future<void> showSnackBar(DialogType type, String text) async {
+  Future<void> showSnackBar(
+      DialogType type, String text, bool? dissmiss) async {
     final iconRotationAngle = 32;
     final backgroundColor = type == DialogType.success
         ? Color(0xff00E676)
@@ -87,10 +88,15 @@ class Dialogs {
       messageText: Container(),
       backgroundColor: backgroundColor,
       forwardAnimationCurve: Curves.bounceInOut,
-      animationDuration: Duration(milliseconds: 1500),
+      animationDuration: Duration(milliseconds: 1200),
+      duration: Duration(milliseconds: dissmiss! ? 1500 : 2000),
       padding: EdgeInsets.zero,
-      // duration: Duration(milliseconds: 10000),
-
+      snackbarStatus: (status) {
+        print('Status $status');
+        if (status == SnackbarStatus.CLOSED && dissmiss) {
+          Get.off(() => MainScreen());
+        }
+      },
       titleText: Container(
         width: double.infinity,
         height: _utils.getHeightPercent(.07),
@@ -139,6 +145,15 @@ class Dialogs {
     );
   }
 
+  void showMapBottomSheet() {
+    Get.bottomSheet(
+      MapBottomSheet(),
+      isScrollControlled: true,
+      enableDrag: false,
+      isDismissible: false,
+    );
+  }
+
   Future<void> showLocationDialog(
       {required String text, required bool gps}) async {
     final _locationCtrl = Get.find<LocationController>();
@@ -175,6 +190,66 @@ class Dialogs {
       barrierDismissible: false,
       onConfirm: () => Get.back(),
     );
+  }
+
+  Future<bool> showLottieDialog({
+    required String title,
+    required String lottieSrc,
+    required String firstButtonText,
+    required String secondButtonText,
+    required Color firstButtonBgColor,
+    required Color firstButtonTextColor,
+    required Color secondButtonBgColor,
+    required Color secondButtonTextColor,
+  }) async {
+    bool result = false;
+    await Get.defaultDialog(
+      title: '',
+      content: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          children: [
+            Lottie.asset(
+              lottieSrc,
+              height: _utils.getHeightPercent(.15),
+              repeat: false,
+            ),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () async {
+            Get.back();
+            result = true;
+          },
+          style: TextButton.styleFrom(
+            backgroundColor: firstButtonBgColor,
+            primary: firstButtonTextColor,
+          ),
+          child: Text(firstButtonText),
+        ),
+        if (secondButtonText != '')
+          TextButton(
+            onPressed: () {
+              Get.back();
+              result = false;
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: secondButtonBgColor,
+              primary: secondButtonTextColor,
+            ),
+            child: Text(secondButtonText),
+          ),
+      ],
+      confirmTextColor: kPrimaryColor,
+      barrierDismissible: false,
+    );
+    return result;
   }
 
   void dismiss() {

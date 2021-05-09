@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
-import 'package:steak2house/src/widgets/search_text_field.dart';
 
 class TestScreen extends StatelessWidget {
   @override

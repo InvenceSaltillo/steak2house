@@ -26,14 +26,14 @@ class SearchTextField extends StatelessWidget {
         hintText: hintText,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            // width: 3,
-            color: Colors.black,
+            width: 1,
+            color: Colors.black38,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            // width: 3,
+            width: 1,
             color: Colors.black38,
           ),
           borderRadius: BorderRadius.circular(8),

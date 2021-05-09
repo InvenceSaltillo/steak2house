@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
@@ -97,6 +99,7 @@ class AuthService {
           Dialogs.instance.showSnackBar(
             DialogType.success,
             'Bienvenido ${user.name}',
+            false,
           );
         } else {
           print('LOGIN======== ${response.data['token']}');
@@ -106,10 +109,11 @@ class AuthService {
           Dialogs.instance.showSnackBar(
             DialogType.success,
             '¡Qué gusto verte de nuevo ${user.name}!',
+            false,
           );
 
           _userCtrl.user.value = user;
-          await SharedPrefs.instance.setUserInfo(user);
+          await SharedPrefs.instance.setKey('user', json.encode(user));
           await SecureStorage.instance.addNewItem(token, 'token');
           await Future.delayed(Duration(seconds: 3));
           Get.offUntil(
@@ -134,6 +138,7 @@ class AuthService {
           Dialogs.instance.showSnackBar(
             DialogType.error,
             'No se pudo conectar al servidor, intentalo de nuevo más tarde!',
+            false,
           );
         }
       }
@@ -142,6 +147,7 @@ class AuthService {
       Dialogs.instance.showSnackBar(
         DialogType.error,
         'Se canceló el inicio de sesión',
+        false,
       );
       print(result.status);
       print(result.message);
@@ -166,9 +172,9 @@ class AuthService {
 
         return false;
       } else {
-        print('REFRESH TOKEN======== ${response.data['data']['token']}');
         final token = response.data['data']['token'];
 
+        print('TOKEN==== $token');
         await SecureStorage.instance.addNewItem(token, 'token');
         return true;
       }
