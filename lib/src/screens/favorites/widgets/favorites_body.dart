@@ -22,7 +22,7 @@ class FavoritesBody extends StatelessWidget {
                     width: _utils.getWidthPercent(.7),
                   ),
                   Text(
-                    '¡Valla! Aún no tienes ningun favorito',
+                    '¡Vaya! Aún no tienes ningun favorito',
                     style: TextStyle(
                       fontSize: _utils.getHeightPercent(.025),
                       fontWeight: FontWeight.bold,

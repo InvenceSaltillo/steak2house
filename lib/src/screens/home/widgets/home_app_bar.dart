@@ -7,7 +7,8 @@ import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/user_model.dart';
-import 'package:steak2house/src/services/products_service.dart';
+import 'package:steak2house/src/services/auth_service.dart';
+import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../../utils/utils.dart';
@@ -37,7 +38,6 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
   }
 
   Future<void> checkLocationAndGPS() async {
-    print('Position Antes ${locationCtrl.currentPosition}');
     await locationCtrl.requestPermission();
     await locationCtrl.checkLocationEnabled();
 
@@ -58,19 +58,15 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
         locationCtrl.isLocationEnabled.value &&
         locationCtrl.currentPosition.value.latitude == 0.0) {
       final currentPosition = await locationCtrl.getCurrentPosition();
-      print('AQUI $currentPosition');
     }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    print('STATE====== $state');
     if (state == AppLifecycleState.resumed) {
       await locationCtrl.checkLocationEnabled();
       if (locationCtrl.permissionStatus.value == PermissionStatus.granted &&
-          locationCtrl.isLocationEnabled.value) {
-        print('AQUI RESUMED');
-      }
+          locationCtrl.isLocationEnabled.value) {}
     }
   }
 
@@ -136,9 +132,8 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              print('Click Avatar');
-              ProductService.instance.searchProducts('coca');
+            onPressed: () async {
+              AuthService.auth.getAccessToken();
             },
             style: TextButton.styleFrom(
               primary: Colors.white,

@@ -4,17 +4,21 @@ import 'package:steak2house/src/utils/shared_prefs.dart';
 
 class ProductController extends GetxController {
   RxList<Product> products = RxList<Product>();
+  RxList<Product> searchResult = RxList<Product>();
   RxList<Product> favoriteList = RxList<Product>();
+  RxList<Product> searchList = RxList<Product>();
 
   var productQty = 1.obs;
   var productTotal = 0.0.obs;
   late var currentProduct = Product().obs;
 
   var loading = false.obs;
+  var querySearch = ''.obs;
 
   var isLiked = false.obs;
+  var fromSearch = false.obs;
 
-  var fromFavorites = false.obs;
+  RxMap<String, dynamic> fromOtherPage = {'otherPage': false, 'index': 0}.obs;
 
   Future<void> getFavoriteList() async {
     try {
@@ -25,7 +29,20 @@ class ProductController extends GetxController {
           favoriteListTemp.map((item) => new Product.fromJson(item)).toList();
       favoriteList.value = myFavoriteList;
     } catch (e) {
-      print('ERRORRRR========= myFavoriteList');
+      print('No hay Favoritos========= myFavoriteList');
+    }
+  }
+
+  Future<void> getSearchList() async {
+    try {
+      final searchListTemp =
+          await SharedPrefs.instance.getKey('searchList') as List;
+
+      final List<Product> mySearchList =
+          searchListTemp.map((item) => new Product.fromJson(item)).toList();
+      searchList.value = mySearchList;
+    } catch (e) {
+      print('No hay Lista de Busqueda========= mySearchList');
     }
   }
 
@@ -53,6 +70,7 @@ class ProductController extends GetxController {
   @override
   void onReady() {
     getFavoriteList();
+    getSearchList();
     super.onReady();
   }
 }

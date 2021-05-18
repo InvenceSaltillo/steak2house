@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:steak2house/src/constants.dart';
-import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
-import 'package:steak2house/src/models/product_model.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/rounded_small_button.dart';
+import 'package:steak2house/src/widgets/search_products.dart';
 
 class ProductDetailImage extends StatelessWidget {
   const ProductDetailImage({
@@ -77,7 +76,15 @@ class ProductDetailImage extends StatelessWidget {
             left: 20,
             child: RoundedSmallButton(
               onTap: () {
-                Get.off(() => MainScreen());
+                if (_producCtrl.fromSearch.value) {
+                  Get.off(() => MainScreen());
+                  showSearch(context: context, delegate: SearchProducts());
+                  _producCtrl.fromSearch.value = false;
+                  _producCtrl.querySearch.value = '';
+                } else {
+                  _producCtrl.querySearch.value = '';
+                  Get.off(() => MainScreen());
+                }
               },
               utils: _utils,
               width: .08,

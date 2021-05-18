@@ -54,9 +54,7 @@ class TestScreen extends StatelessWidget {
                 itemBuilder: (context, index) => ListTile(
                   // leading: Icon(Icons.location_on),
                   title: Text('Ubicación actual'),
-                  onTap: () {
-                    print(index);
-                  },
+                  onTap: () {},
                   // selected: true,
                   // selectedTileColor: kSecondaryColor,
                   // tileColor: kSecondaryColor,

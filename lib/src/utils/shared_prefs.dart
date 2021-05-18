@@ -12,24 +12,12 @@ class SharedPrefs {
     this._prefs = await SharedPreferences.getInstance();
   }
 
-  // setUserInfo(value) {
-  //   _prefs!.setString('user', json.encode(value));
-  // }
-
-  // Future getUserInfo() async {
-  //   return await json.decode(_prefs!.getString('user')!);
-  // }
-
-  // Future setAddressesList(value) async {
-  //   _prefs!.setString('addresses', value);
-  // }
-
-  // Future getAddressesList() async {
-  //   return await json.decode(_prefs!.getString('addresses')!);
-  // }
-
   Future getKey(String key) async {
     return await json.decode(_prefs.getString(key) ?? '') ?? '';
+  }
+
+  Future getCreatedAt() async {
+    return _prefs.getString('createdAt');
   }
 
   Future setKey(String key, value) async {

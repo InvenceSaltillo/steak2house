@@ -24,13 +24,6 @@ class ProductsGrid extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Container(
-                    //   width: 100,
-                    //   height: 100,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.red,
-                    //   ),
-                    // ),
                     Lottie.asset(
                       'assets/animations/loading.json',
                       width: _utils.getWidthPercent(.3),

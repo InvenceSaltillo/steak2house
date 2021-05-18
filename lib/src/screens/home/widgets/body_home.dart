@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/screens/home/widgets/products_grid.dart';
 import 'package:steak2house/src/widgets/categories_list.dart';
-import 'package:steak2house/src/widgets/search_text_field.dart';
+import 'package:steak2house/src/widgets/search_products.dart';
 
 import '../../../utils/utils.dart';
 
 class BodyHomeScreen extends StatelessWidget {
   final _utils = Utils.instance;
-
-  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +27,40 @@ class BodyHomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: _utils.getWidthPercent(.03)),
-            SearchTextField(
-              onChanged: (value) {
-                Utils.instance.debounce(value);
+            GestureDetector(
+              onTap: () async {
+                showSearch(context: context, delegate: SearchProducts());
               },
-              onSubmitted: (value) {},
-              controller: _controller,
-              icon: Icons.search,
-              hintText: 'Buscar...',
+              child: Container(
+                width: double.infinity,
+                height: _utils.getHeightPercent(.05),
+                decoration: BoxDecoration(
+                  border: Border.all(color: kPrimaryColor),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(width: _utils.getWidthPercent(.01)),
+                    Icon(Icons.search),
+                    SizedBox(width: _utils.getWidthPercent(.01)),
+                    Text(
+                      'Buscar...',
+                      style: TextStyle(
+                        fontSize: _utils.getWidthPercent(.05),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // SearchTextField(
+              //   onChanged: (value) {
+              //     Utils.instance.debounce(value);
+              //   },
+              //   onSubmitted: (value) {},
+              //   controller: _controller,
+              //   icon: Icons.search,
+              //   hintText: 'Buscar...',
+              // ),
             ),
             SizedBox(height: _utils.getWidthPercent(.03)),
             Container(

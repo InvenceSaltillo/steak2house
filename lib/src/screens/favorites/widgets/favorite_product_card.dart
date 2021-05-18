@@ -3,15 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
-import 'package:steak2house/src/models/cart_model.dart';
 import 'package:steak2house/src/models/product_model.dart';
 import 'package:steak2house/src/screens/product_detail/product_detail_screen.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
-import 'package:steak2house/src/widgets/rounded_small_button.dart';
 
 import '../../../constants.dart';
 
@@ -41,7 +38,8 @@ class FavoriteProductCard extends StatelessWidget {
           onTap: () {
             _producCtrl.currentProduct.value = favorite;
             _producCtrl.productQty.value = 1;
-            _producCtrl.fromFavorites.value = true;
+            _producCtrl.fromOtherPage['otherPage'] = true;
+            _producCtrl.fromOtherPage['index'] = 2;
             Get.offNamedUntil(ProductDetailScreen.routeName, (_) => false);
           },
           child: Row(
@@ -118,7 +116,6 @@ class FavoriteProductCard extends StatelessWidget {
                                     _producCtrl.favoriteList.indexWhere(
                                   (item) => item.id == favorite.id,
                                 );
-                                print('INDEX $productIdx');
 
                                 _producCtrl.favoriteList.remove(
                                     _producCtrl.favoriteList[productIdx]);

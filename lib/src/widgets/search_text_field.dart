@@ -19,6 +19,7 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      readOnly: true,
       onChanged: onChanged,
       controller: controller,
       onSubmitted: onSubmitted,

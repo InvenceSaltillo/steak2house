@@ -26,7 +26,7 @@ class MapView extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: _utils.getHeightPercent(.35),
+          height: _utils.getHeightPercent(.45),
           child: Stack(
             children: [
               GoogleMap(

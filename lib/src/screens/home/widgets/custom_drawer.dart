@@ -20,7 +20,7 @@ class CustomDrawer extends StatelessWidget {
       MenuItem("Favoritos", Icons.favorite_border, 2),
       MenuItem("Carrito", Icons.shopping_cart_outlined, 3),
       MenuItem("Notificaciones", Icons.notifications, 4),
-      MenuItem("Tarjetas", Icons.credit_card, -1),
+      // MenuItem("Tarjetas", Icons.credit_card, -1),
       // MenuItem("Acerca de nosotros", Icons.info_outline, 4),
     ];
 

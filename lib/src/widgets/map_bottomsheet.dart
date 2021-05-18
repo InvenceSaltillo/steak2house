@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
-import 'package:steak2house/src/models/geolocation_model.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
@@ -18,7 +18,7 @@ class MapBottomSheet extends StatelessWidget {
   final Utils _utils = Utils.instance;
   final _locationCtrl = Get.find<LocationController>();
 
-  final List<GeocodingResponse> list = [];
+  final _miscCtrl = Get.find<MiscController>();
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class MapBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${_locationCtrl.currentAddress.value.results![0].addressComponents![3].longName}, ${_locationCtrl.currentAddress.value.results![0].addressComponents![4].shortName}',
+                    '${_locationCtrl.currentAddress.value.results![0].addressComponents![3].longName}, ',
                     style: TextStyle(
                       fontSize: _utils.getHeightPercent(.02),
                       color: Colors.black38,
@@ -92,7 +92,7 @@ class MapBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: _utils.getHeightPercent(.2)),
+            SizedBox(height: _utils.getHeightPercent(.07)),
             TextButton(
               onPressed: () async {
                 final exist = _locationCtrl.addressesList.where((address) =>
@@ -108,6 +108,7 @@ class MapBottomSheet extends StatelessWidget {
                 }
                 _locationCtrl.tempAddress.value =
                     _locationCtrl.currentAddress.value;
+                _miscCtrl.updateDeliveryPrice();
                 Get.back();
               },
               style: TextButton.styleFrom(

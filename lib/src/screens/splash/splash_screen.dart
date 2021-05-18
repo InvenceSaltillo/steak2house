@@ -8,6 +8,8 @@ import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dar
 import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
+import 'package:steak2house/src/controllers/payment_controller.dart';
+import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/user_model.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
@@ -33,11 +35,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkIfIsLogged() async {
+    Get.put(CartController());
     Get.put(UserController());
     Get.put(BottomNavigationBarController());
     Get.put(MiscController());
     Get.put(LocationController());
-    Get.put(CartController());
+    Get.put(UserController());
+    Get.put(PaymentController());
+    Get.put(ProductController());
 
     await Future.delayed(Duration(seconds: 1));
     final isFacebookLogged = await AuthService.auth.checkIfIsLogged();
@@ -47,16 +52,23 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (isFacebookLogged) {
       try {
-        final userInfo = await SharedPrefs.instance.getKey('user');
-        final userCtrl = Get.find<UserController>();
+        // final userInfo = await SharedPrefs.instance.getKey('user');
+        // final userCtrl = Get.find<UserController>();
 
-        final User user = userCtrl.user.value = User.fromJson(userInfo);
+        // final User user = userCtrl.user.value = User.fromJson(userInfo);
 
-        Dialogs.instance.showSnackBar(
-          DialogType.success,
-          '¡Qué gusto verte de nuevo ${user.name}!',
-          false,
-        );
+        final _userCtrl = Get.find<UserController>();
+
+        final tokenTemp = await AuthService.auth.getAccessToken();
+
+        if (tokenTemp != '') {
+          await AuthService.auth.getUserInfo(tokenTemp);
+          Dialogs.instance.showSnackBar(
+            DialogType.success,
+            '¡Qué gusto verte de nuevo ${_userCtrl.user.value.name}!',
+            false,
+          );
+        }
 
         await Future.delayed(Duration(milliseconds: 1500));
 

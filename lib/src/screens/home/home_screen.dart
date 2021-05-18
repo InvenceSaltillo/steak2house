@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/categories_controller.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/screens/cart/cart_screen.dart';
+import 'package:steak2house/src/screens/checkout/checkout_screen.dart';
 import 'package:steak2house/src/screens/favorites/favorites_screen.dart';
 import 'package:steak2house/src/screens/home/widgets/body_home.dart';
 import 'package:steak2house/src/screens/notifications/notifications_screen.dart';
@@ -23,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final bottomNavCtrl = Get.find<BottomNavigationBarController>();
+  final _miscCtrl = Get.find<MiscController>();
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
@@ -37,33 +40,48 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
 
-      if (productsCtrl.fromFavorites.value) {
-        bottomNavCtrl.pageCtrl.value.jumpToPage(2);
-        bottomNavCtrl.currentPage.value = 2;
-        productsCtrl.fromFavorites.value = false;
+      if (productsCtrl.fromOtherPage['otherPage'] == true) {
+        bottomNavCtrl.pageCtrl.value
+            .jumpToPage(productsCtrl.fromOtherPage['index'] ?? 0);
+        bottomNavCtrl.currentPage.value =
+            productsCtrl.fromOtherPage['index'] ?? 0;
+        productsCtrl.fromOtherPage['otherPage'] = false;
       }
     });
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Get.put(CategoriesController());
-    Get.put(ProductController());
-    return Scaffold(
-      appBar: HomeAppBar(),
-      body: PageView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: bottomNavCtrl.pageCtrl.value,
-        children: [
-          BodyHomeScreen(),
-          OrdersScreen(),
-          FavoriteScreen(),
-          CartScreen(),
-          NotificationsScreen(),
-        ],
+    return Obx(
+      () => Scaffold(
+        appBar: _miscCtrl.showAppBar.value
+            ? HomeAppBar()
+            : PreferredSize(
+                child: Container(),
+                preferredSize: Size(0, 0),
+              ),
+        body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: bottomNavCtrl.pageCtrl.value,
+          children: [
+            BodyHomeScreen(),
+            OrdersScreen(),
+            FavoriteScreen(),
+            CartScreen(),
+            NotificationsScreen(),
+            CheckOutScreen(),
+          ],
+        ),
+        bottomNavigationBar:
+            _miscCtrl.showAppBar.value ? CustomBottomBar() : null,
       ),
-      bottomNavigationBar: CustomBottomBar(),
     );
   }
 }

@@ -6,7 +6,6 @@ import 'package:steak2house/src/controllers/product_controller.dart';
 
 import 'widgets/product_detail_bottomnav.dart';
 import 'widgets/product_list_info.dart';
-import 'widgets/product_reviews_percent.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
 import 'widgets/product_detail_image.dart';

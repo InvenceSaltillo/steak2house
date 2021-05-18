@@ -92,7 +92,6 @@ class Dialogs {
       duration: Duration(milliseconds: dissmiss! ? 1500 : 2000),
       padding: EdgeInsets.zero,
       snackbarStatus: (status) {
-        print('Status $status');
         if (status == SnackbarStatus.CLOSED && dissmiss) {
           Get.off(() => MainScreen());
         }

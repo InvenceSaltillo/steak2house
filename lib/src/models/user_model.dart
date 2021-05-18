@@ -20,6 +20,7 @@ class User {
     this.lat,
     this.lng,
     this.provider,
+    this.conektaCustomerId,
     this.updatedAt,
     this.createdAt,
   });
@@ -34,6 +35,7 @@ class User {
   dynamic? lat;
   dynamic? lng;
   String? provider;
+  String? conektaCustomerId;
   DateTime? updatedAt;
   DateTime? createdAt;
 
@@ -49,6 +51,7 @@ class User {
         lat: json["lat"],
         lng: json["lng"],
         provider: json["provider"],
+        conektaCustomerId: json["conekta_customer_id"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),
       );
@@ -64,6 +67,7 @@ class User {
         "lat": lat,
         "lng": lng,
         "provider": provider,
+        "conekta_customer_id": conektaCustomerId,
         "updated_at": updatedAt!.toIso8601String(),
         "created_at": createdAt!.toIso8601String(),
       };

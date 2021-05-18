@@ -36,7 +36,6 @@ class LocationController extends GetxController {
 
   Future<bool> checkLocationEnabled() async {
     isLocationEnabled.value = await Geolocator.isLocationServiceEnabled();
-    print('GPSEnabled $isLocationEnabled');
     return isLocationEnabled.value;
   }
 
@@ -52,7 +51,6 @@ class LocationController extends GetxController {
   Future<void> getAddressesList() async {
     try {
       final addresses = await SharedPrefs.instance.getKey('addresses') as List;
-      print(addresses);
 
       final List<GeocodingResponse> myAddressesList = addresses
           .map((address) => new GeocodingResponse.fromJson(address))

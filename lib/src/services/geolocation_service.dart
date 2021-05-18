@@ -62,11 +62,6 @@ class GeolocationService {
         locationCtrl.tempAddress.value = locationCtrl.currentAddress.value;
         flagTempAddress = false;
       }
-
-      print(
-          'TEMPADDRESS ${locationCtrl.tempAddress.value.results![0].formattedAddress}');
-      print(
-          'CURRENT ${locationCtrl.currentAddress.value.results![0].formattedAddress}');
     } catch (e) {
       // Dialogs.instance.dismiss();
       // productCtrl.loading.value = false;
@@ -91,8 +86,6 @@ class GeolocationService {
       //   return GeocodingResponse(results: []);
       // }
       final res = json.decode(response.data);
-      print('GEORESPONSE====== ${res['results'][1]}');
-      print('GEORESPONSE LENGTH====== ${res['results'].length}');
       final searchResponse = geocodingResponseFromJson(response.data);
 
       locationCtrl.searchResult.value = searchResponse;

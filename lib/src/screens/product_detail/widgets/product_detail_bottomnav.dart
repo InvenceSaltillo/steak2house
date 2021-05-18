@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
-import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/models/cart_model.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
@@ -91,13 +90,19 @@ class ProductDetailBottomNav extends StatelessWidget {
                     secondButtonTextColor: kSecondaryColor,
                   );
 
-                  print(result);
                   if (result) {
                     SharedPrefs.instance.setKey(
                       'cartList',
                       json.encode(_cartController.cartList),
                     );
-                    Get.off(() => MainScreen());
+                    if (productCtrl.fromSearch.value) {
+                      Get.off(() => MainScreen());
+                      productCtrl.fromSearch.value = false;
+                      productCtrl.querySearch.value = '';
+                    } else {
+                      productCtrl.querySearch.value = '';
+                      Get.off(() => MainScreen());
+                    }
                   }
                 },
                 style: TextButton.styleFrom(

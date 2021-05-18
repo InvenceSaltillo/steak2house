@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as dio;
@@ -26,6 +27,8 @@ class AuthService {
 
   final dio.Dio _dio = dio.Dio();
 
+  Completer _completer = Completer();
+
   Map<String, String> headers = {
     'Content-Type': 'application/json;charset=UTF-8',
     'Charset': 'utf-8'
@@ -39,12 +42,16 @@ class AuthService {
     ],
   );
 
+  void _complete() {
+    if (_completer != null && !_completer.isCompleted) {
+      _completer.complete();
+    }
+  }
+
   Future<void> googleLogin() async {
     try {
       final account = await _googleSignIn.signIn();
-      print('Account $account');
     } catch (error) {
-      print('Error en google signIn');
       print(error);
     }
   }
@@ -53,14 +60,20 @@ class AuthService {
     final accessToken = await FacebookAuth.instance.accessToken;
 
     if (accessToken != null) {
-      final userInfo = await getUserInfo();
-      print('USERINFO!!! $userInfo');
+      // final user = await SecureStorage.instance.readItem('user');
 
-      if (userInfo) {
-        return true;
-      } else {
-        return false;
-      }
+      await SharedPrefs.instance.setKey('createdAt', DateTime.now().toString());
+
+      // final userInfo = User.fromJson(json.decode(user!));
+
+      // final userInfo = await getUserInfo();
+      getAccessToken();
+
+      // if (userInfo) {
+      return true;
+      // } else {
+      //   return false;
+      // }
     } else {
       print('NOT LOGGED!!!');
       return false;
@@ -92,6 +105,8 @@ class AuthService {
           print('REGISTER======');
           // print('RESPONSE DATA ${response.data['data']['user']}');
           final user = User.fromJson(response.data['data']['user']);
+          await SharedPrefs.instance.setKey('user', json.encode(user));
+          await SharedPrefs.instance.setKey('createdAt', DateTime.now());
 
           _userCtrl.user.value = user;
           Dialogs.instance.dismiss();
@@ -115,6 +130,8 @@ class AuthService {
           _userCtrl.user.value = user;
           await SharedPrefs.instance.setKey('user', json.encode(user));
           await SecureStorage.instance.addNewItem(token, 'token');
+          await SharedPrefs.instance
+              .setKey('createdAt', DateTime.now().toString());
           await Future.delayed(Duration(seconds: 3));
           Get.offUntil(
             PageRouteBuilder(
@@ -154,10 +171,46 @@ class AuthService {
     }
   }
 
-  Future getUserInfo() async {
+  Future<String> getAccessToken() async {
+    // ignore: unnecessary_null_comparison
+    if (_completer != null) {
+      _completer.future;
+    }
+    _completer = Completer();
+
     final token = await SecureStorage.instance.readItem('token');
+
+    if (token != null) {
+      final DateTime currentDate = DateTime.now();
+
+      final int expiresIn = 3600;
+      final createdAtStr = await SharedPrefs.instance.getCreatedAt();
+      final createdAt = DateTime.parse(createdAtStr);
+
+      final int diff = currentDate.difference(createdAt).inSeconds;
+
+      print('SESSION LIFE TIME ${expiresIn - diff}');
+
+      if (expiresIn - diff >= 60) {
+        _complete();
+        return token;
+      }
+
+      print('Refresh TOKEN ');
+      await refreshToken(token);
+      _complete();
+
+      // if(tokenRefreshResponse){}
+      return token;
+    }
+
+    _complete();
+    return '';
+  }
+
+  Future refreshToken(String expiredToken) async {
     dio.FormData _data = dio.FormData.fromMap({
-      "token": token,
+      "token": expiredToken,
     });
 
     try {
@@ -174,8 +227,62 @@ class AuthService {
       } else {
         final token = response.data['data']['token'];
 
+        if (response.data['data']['userInfo'] != null) {
+          final user = User.fromJson(response.data['data']['userInfo']);
+
+          _userCtrl.user.value = user;
+
+          // print('USER==== ${user.conektaCustomerId}');
+          await SharedPrefs.instance.setKey('user', json.encode(user));
+        }
+
         print('TOKEN==== $token');
         await SecureStorage.instance.addNewItem(token, 'token');
+        return true;
+      }
+    } on dio.DioError catch (e) {
+      if (e.response != null) {
+        print('DIOERROR DATA===== ${e.response!.data}');
+        print('DIOERROR HEADERS===== ${e.response!.headers}');
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print('DIOERROR MESSAGE===== ${e.message}');
+        _miscCtrl.errorMessage.value =
+            'No se pudo conectar al servidor, intentalo de nuevo más tarde!';
+
+        return false;
+      }
+    }
+  }
+
+  Future getUserInfo(String token) async {
+    dio.FormData _data = dio.FormData.fromMap({
+      "token": token,
+    });
+
+    try {
+      final response = await _dio.post(
+        '${urlEndpoint}getUserInfo',
+        data: _data,
+        options: dio.Options(headers: headers),
+      );
+
+      if (response.data['data'] == null) {
+        print('NO HAY DATA GETUSERINFO');
+
+        return false;
+      } else {
+        if (response.data['data'] != null) {
+          final user = User.fromJson(response.data['data']);
+
+          _userCtrl.user.value = user;
+
+          print('ConektaID GETUSERINFO==== ${user.conektaCustomerId}');
+          await SharedPrefs.instance.setKey('user', json.encode(user));
+        }
+
+        // print('TOKEN==== $token');
+        // await SecureStorage.instance.addNewItem(token, 'token');
         return true;
       }
     } on dio.DioError catch (e) {

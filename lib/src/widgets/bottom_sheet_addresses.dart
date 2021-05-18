@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:steak2house/src/controllers/location_controller.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 
 import 'package:steak2house/src/utils/utils.dart';
@@ -19,6 +20,7 @@ class BottomSheetAddresses extends StatelessWidget {
 
   final Utils _utils = Utils.instance;
   final _locationCtrl = Get.find<LocationController>();
+  final _miscCtrl = Get.find<MiscController>();
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +134,8 @@ class BottomSheetAddresses extends StatelessWidget {
                                 print(place.formattedAddress);
                                 _locationCtrl.tempAddress.value =
                                     _locationCtrl.addressesList[index];
+                                _miscCtrl.updateDeliveryPrice();
+
                                 Get.back();
                               },
                             ),

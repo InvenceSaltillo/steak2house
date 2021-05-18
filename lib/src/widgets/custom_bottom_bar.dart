@@ -4,22 +4,25 @@ import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final _utils = Utils.instance;
   final bottomNavCtrl = Get.find<BottomNavigationBarController>();
   final _cartCtrl = Get.find<CartController>();
+  final _miscCtrl = Get.find<MiscController>();
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => BottomNavigationBar(
         onTap: (index) {
+          _miscCtrl.showAppBar.value = true;
           bottomNavCtrl.currentPage.value = index;
-          bottomNavCtrl.pageCtrl.value.animateToPage(
+          bottomNavCtrl.pageCtrl.value.jumpToPage(
             index,
-            duration: Duration(milliseconds: 400),
-            curve: Curves.decelerate,
+            // duration: Duration(milliseconds: 400),
+            // curve: Curves.decelerate,
           );
         },
         backgroundColor: kPrimaryColor,

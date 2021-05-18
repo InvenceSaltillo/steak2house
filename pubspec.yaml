@@ -43,6 +43,8 @@ dependencies:
   google_maps_flutter: ^2.0.3
   permission_handler: ^7.0.0
   open_settings: ^2.0.1
+  conekta_flutter: 0.0.4-nullsafety
+  flutter_credit_card: ^2.0.0
 
 
 dev_dependencies:

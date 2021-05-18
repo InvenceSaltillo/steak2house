@@ -8,7 +8,6 @@ import 'package:steak2house/src/models/cart_model.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
-import 'package:steak2house/src/widgets/rounded_small_button.dart';
 
 import '../../../constants.dart';
 
@@ -108,7 +107,6 @@ class CartProductCard extends StatelessWidget {
                                 (item) =>
                                     item.product!.id == cartItem.product!.id,
                               );
-                              print('INDEX ${productIdx}');
 
                               _cartCtrl.cartList
                                   .remove(_cartCtrl.cartList[productIdx]);
@@ -135,7 +133,7 @@ class CartProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: _utils.getWidthPercent(.35),
+                          width: _utils.getWidthPercent(.45),
                           child: Text(
                             cartItem.product!.description!,
                             overflow: TextOverflow.ellipsis,
@@ -149,48 +147,56 @@ class CartProductCard extends StatelessWidget {
                       //     MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '\$${cartItem.product!.price}',
+                          // '\$${cartItem.product!.price}',
+                          '${cartItem.qty} x \$${cartItem.product!.price} = \$${cartItem.qty! * int.parse(cartItem.product!.price!)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         ),
                         Spacer(),
-                        RoundedSmallButton(
-                          utils: _utils,
-                          width: .055,
-                          height: .055,
-                          icon: Icon(
-                            Icons.remove,
-                            color: kSecondaryColor,
-                            size: _utils.getHeightPercent(.02),
-                          ),
-                          onTap: () {},
-                          color: kPrimaryColor,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: _utils.getWidthPercent(.01)),
-                          child: Text(
-                            '${cartItem.qty! < 10 ? '0' : ''}${cartItem.qty!}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: _utils.getHeightPercent(.025),
-                            ),
-                          ),
-                        ),
-                        RoundedSmallButton(
-                          utils: _utils,
-                          width: .055,
-                          height: .055,
-                          icon: Icon(
-                            Icons.add,
-                            color: kSecondaryColor,
-                            size: _utils.getHeightPercent(.02),
-                          ),
-                          onTap: () {},
-                          color: kPrimaryColor,
-                        ),
+                        // RoundedSmallButton(
+                        //   utils: _utils,
+                        //   width: .055,
+                        //   height: .055,
+                        //   icon: Icon(
+                        //     Icons.remove,
+                        //     color: kSecondaryColor,
+                        //     size: _utils.getHeightPercent(.02),
+                        //   ),
+                        //   onTap: () {
+                        //     print('INDEX ${_cartCtrl.cartList[0].qty}');
+                        //     _cartCtrl.cartList[0].qty =
+                        //         _cartCtrl.cartList[0].qty! + 1;
+
+                        //     if (cartItem.qty == 1) return;
+                        //     cartItem.qty = cartItem.qty! + 1;
+                        //   },
+                        //   color: kPrimaryColor,
+                        // ),
+                        // Padding(
+                        //   padding: EdgeInsets.symmetric(
+                        //       horizontal: _utils.getWidthPercent(.01)),
+                        //   child: Text(
+                        //     '${_cartCtrl.cartList[0].qty! < 10 ? '0' : ''}${_cartCtrl.cartList[0].qty!}',
+                        //     style: TextStyle(
+                        //       fontWeight: FontWeight.bold,
+                        //       fontSize: _utils.getHeightPercent(.025),
+                        //     ),
+                        //   ),
+                        // ),
+                        // RoundedSmallButton(
+                        //   utils: _utils,
+                        //   width: .055,
+                        //   height: .055,
+                        //   icon: Icon(
+                        //     Icons.add,
+                        //     color: kSecondaryColor,
+                        //     size: _utils.getHeightPercent(.02),
+                        //   ),
+                        //   onTap: () {},
+                        //   color: kPrimaryColor,
+                        // ),
                       ],
                     ),
                   ],
