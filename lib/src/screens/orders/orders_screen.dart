@@ -7,7 +7,12 @@ class OrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BodyOrders(),
+      body: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: BodyOrders(),
+      ),
     );
   }
 }

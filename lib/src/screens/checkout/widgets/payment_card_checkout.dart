@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/screens/credit_card/credit_card_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../../constants.dart';
 
@@ -49,7 +50,9 @@ class CheckOutPaymentCard extends StatelessWidget {
               Spacer(),
               InkWell(
                 onTap: () {
-                  Get.to(() => CreditCardScreen());
+                  _paymentCtrl.lastUsedCard.value.id == null
+                      ? Get.to(() => CreditCardScreen())
+                      : Dialogs.instance.showCardsBottomSheet();
                 },
                 child: Text(
                   _paymentCtrl.lastUsedCard.value.id == null

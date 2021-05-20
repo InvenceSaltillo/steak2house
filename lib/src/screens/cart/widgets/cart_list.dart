@@ -63,9 +63,12 @@ class CartList extends StatelessWidget {
               _bottomNavCtrl.pageCtrl.value.jumpToPage(5);
             },
             style: TextButton.styleFrom(
+              shape: StadiumBorder(),
               minimumSize: Size(_utils.getWidthPercent(.7), 20),
               backgroundColor: kPrimaryColor,
-              padding: EdgeInsets.all(_utils.getHeightPercent(.01)),
+              padding: EdgeInsets.all(
+                _utils.getHeightPercent(.01),
+              ),
             ),
             child: Text(
               'Ir a Pagar \$${_cartCtrl.totalCart.value}',

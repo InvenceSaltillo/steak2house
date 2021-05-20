@@ -10,6 +10,7 @@ import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/services/payment_service.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 
 class BodyCreditCard extends StatefulWidget {
   @override
@@ -25,7 +26,6 @@ class BodyCreditCardState extends State<BodyCreditCard> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final _userCtrl = Get.find<UserController>();
-  final _paymentCtrl = Get.find<PaymentController>();
 
   @override
   Widget build(BuildContext context) {
@@ -125,10 +125,6 @@ class BodyCreditCardState extends State<BodyCreditCard> {
                               user.conektaCustomerId == null) {
                             print('NO TIENE CONEKTAID');
                             await PaymentService.instance.createCustomer(token);
-
-                            // if (create) {
-                            //   _paymentCtrl.cardsList.add(item);
-                            // }
                           } else {
                             print('SIII TIENE CONEKTAID');
                             final create = await PaymentService.instance
@@ -136,11 +132,13 @@ class BodyCreditCardState extends State<BodyCreditCard> {
 
                             if (create) {
                               Get.back();
+                              Dialogs.instance.showSnackBar(
+                                DialogType.success,
+                                'Se agregó el nuevo método de pago',
+                                false,
+                              );
                             }
                           }
-
-                          // Crear tarjeta
-
                         } else {
                           print('NO HAY TOKENCARD');
                         }

@@ -56,24 +56,19 @@ class AuthService {
     }
   }
 
-  Future checkIfIsLogged() async {
+  Future<bool> isLogged() async {
     final accessToken = await FacebookAuth.instance.accessToken;
 
     if (accessToken != null) {
-      // final user = await SecureStorage.instance.readItem('user');
+      // Esta loggeado con facebook
 
-      await SharedPrefs.instance.setKey('createdAt', DateTime.now().toString());
+      final user = await SharedPrefs.instance.getKey('user');
 
-      // final userInfo = User.fromJson(json.decode(user!));
+      final userInfo = User.fromJson(user!);
 
-      // final userInfo = await getUserInfo();
-      getAccessToken();
+      print('FACEBOOK LOGGED!!! ${userInfo.id}');
 
-      // if (userInfo) {
-      return true;
-      // } else {
-      //   return false;
-      // }
+      return await getUserInfo(userInfo.id!);
     } else {
       print('NOT LOGGED!!!');
       return false;
@@ -106,7 +101,8 @@ class AuthService {
           // print('RESPONSE DATA ${response.data['data']['user']}');
           final user = User.fromJson(response.data['data']['user']);
           await SharedPrefs.instance.setKey('user', json.encode(user));
-          await SharedPrefs.instance.setKey('createdAt', DateTime.now());
+          await SharedPrefs.instance
+              .setKey('createdAt', DateTime.now().toString());
 
           _userCtrl.user.value = user;
           Dialogs.instance.dismiss();
@@ -180,6 +176,8 @@ class AuthService {
 
     final token = await SecureStorage.instance.readItem('token');
 
+    print('TOKENSTORAGE $token');
+
     if (token != null) {
       final DateTime currentDate = DateTime.now();
 
@@ -208,7 +206,7 @@ class AuthService {
     return '';
   }
 
-  Future refreshToken(String expiredToken) async {
+  Future<bool> refreshToken(String expiredToken) async {
     dio.FormData _data = dio.FormData.fromMap({
       "token": expiredToken,
     });
@@ -225,6 +223,7 @@ class AuthService {
 
         return false;
       } else {
+        print('DATA==== ${response.data['data']}');
         final token = response.data['data']['token'];
 
         if (response.data['data']['userInfo'] != null) {
@@ -234,10 +233,8 @@ class AuthService {
 
           // print('USER==== ${user.conektaCustomerId}');
           await SharedPrefs.instance.setKey('user', json.encode(user));
+          await SecureStorage.instance.addNewItem(token, 'token');
         }
-
-        print('TOKEN==== $token');
-        await SecureStorage.instance.addNewItem(token, 'token');
         return true;
       }
     } on dio.DioError catch (e) {
@@ -249,15 +246,14 @@ class AuthService {
         print('DIOERROR MESSAGE===== ${e.message}');
         _miscCtrl.errorMessage.value =
             'No se pudo conectar al servidor, intentalo de nuevo más tarde!';
-
-        return false;
       }
+      return false;
     }
   }
 
-  Future getUserInfo(String token) async {
+  Future getUserInfo(String userId) async {
     dio.FormData _data = dio.FormData.fromMap({
-      "token": token,
+      "userId": userId,
     });
 
     try {
@@ -267,27 +263,29 @@ class AuthService {
         options: dio.Options(headers: headers),
       );
 
+      print('getUserInfo ${response.data['data']['token']}');
+
       if (response.data['data'] == null) {
         print('NO HAY DATA GETUSERINFO');
 
         return false;
       } else {
         if (response.data['data'] != null) {
-          final user = User.fromJson(response.data['data']);
+          final user = User.fromJson(response.data['data']['userInfo']);
+          final token = response.data['data']['token'];
 
           _userCtrl.user.value = user;
 
           print('ConektaID GETUSERINFO==== ${user.conektaCustomerId}');
           await SharedPrefs.instance.setKey('user', json.encode(user));
-        }
 
-        // print('TOKEN==== $token');
-        // await SecureStorage.instance.addNewItem(token, 'token');
-        return true;
+          await SecureStorage.instance.addNewItem(token, 'token');
+          return true;
+        }
       }
     } on dio.DioError catch (e) {
       if (e.response != null) {
-        print('DIOERROR DATA===== ${e.response!.data}');
+        print('DIOERROR DATA ${e.response!.data}');
         print('DIOERROR HEADERS===== ${e.response!.headers}');
       } else {
         // Something happened in setting up or sending the request that triggered an Error

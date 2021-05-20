@@ -155,48 +155,6 @@ class CartProductCard extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        // RoundedSmallButton(
-                        //   utils: _utils,
-                        //   width: .055,
-                        //   height: .055,
-                        //   icon: Icon(
-                        //     Icons.remove,
-                        //     color: kSecondaryColor,
-                        //     size: _utils.getHeightPercent(.02),
-                        //   ),
-                        //   onTap: () {
-                        //     print('INDEX ${_cartCtrl.cartList[0].qty}');
-                        //     _cartCtrl.cartList[0].qty =
-                        //         _cartCtrl.cartList[0].qty! + 1;
-
-                        //     if (cartItem.qty == 1) return;
-                        //     cartItem.qty = cartItem.qty! + 1;
-                        //   },
-                        //   color: kPrimaryColor,
-                        // ),
-                        // Padding(
-                        //   padding: EdgeInsets.symmetric(
-                        //       horizontal: _utils.getWidthPercent(.01)),
-                        //   child: Text(
-                        //     '${_cartCtrl.cartList[0].qty! < 10 ? '0' : ''}${_cartCtrl.cartList[0].qty!}',
-                        //     style: TextStyle(
-                        //       fontWeight: FontWeight.bold,
-                        //       fontSize: _utils.getHeightPercent(.025),
-                        //     ),
-                        //   ),
-                        // ),
-                        // RoundedSmallButton(
-                        //   utils: _utils,
-                        //   width: .055,
-                        //   height: .055,
-                        //   icon: Icon(
-                        //     Icons.add,
-                        //     color: kSecondaryColor,
-                        //     size: _utils.getHeightPercent(.02),
-                        //   ),
-                        //   onTap: () {},
-                        //   color: kPrimaryColor,
-                        // ),
                       ],
                     ),
                   ],

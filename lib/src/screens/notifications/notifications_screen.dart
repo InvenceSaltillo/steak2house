@@ -5,7 +5,12 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BodyNotifications(),
+      body: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: BodyNotifications(),
+      ),
     );
   }
 }

@@ -72,7 +72,7 @@ class CheckOutSummaryCard extends StatelessWidget {
                   Text(
                     _miscCtrl.deliveryDistance < 5
                         ? '\$50'
-                        : '${_miscCtrl.calculateDistance.value ? 'Calculando...' : '\$${(_miscCtrl.deliveryDistance.value * _miscCtrl.priceKM.value).toStringAsFixed(2)}'} ',
+                        : '${_miscCtrl.calculateDistance.value ? 'Calculando...' : '\$${(_miscCtrl.deliveryDistance.value * _miscCtrl.priceKM.value).ceil()}'} ',
                     style: TextStyle(
                       fontSize: _utils.getHeightPercent(.018),
                       fontWeight: FontWeight.bold,

@@ -84,9 +84,7 @@ class BodySignIn extends StatelessWidget {
             ),
             SizedBox(height: size.height * .03),
             ButtonSocial(
-              onPressed: () {
-                AuthService.auth.checkIfIsLogged();
-              },
+              onPressed: () {},
               text: 'Apple',
               color: Color(0xff000000),
               icon: FaIcon(FontAwesomeIcons.apple),

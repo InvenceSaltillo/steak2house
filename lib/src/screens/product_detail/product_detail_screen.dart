@@ -18,57 +18,62 @@ class ProductDetailScreen extends StatelessWidget {
     final _utils = Utils.instance;
 
     final productCtrl = Get.find<ProductController>();
-    // productCtrl.resetNumbers();
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: _utils.getWidthPercent(.03)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ProductDetailImage(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  productCtrl.currentProduct.value.name!,
-                  style: TextStyle(
-                    fontSize: _utils.getWidthPercent(.055),
-                    fontWeight: FontWeight.bold,
+      body: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: _utils.getWidthPercent(.03)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProductDetailImage(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    productCtrl.currentProduct.value.name!,
+                    style: TextStyle(
+                      fontSize: _utils.getWidthPercent(.055),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                // Text(
-                //   '500g',
-                //   style: TextStyle(
-                //     fontSize: _utils.getWidthPercent(.05),
-                //     color: kSecondaryColor,
-                //   ),
-                // ),
-              ],
-            ),
-            SizedBox(height: _utils.getHeightPercent(.005)),
-            // PorductReviewsPercent(utils: _utils),
-            SizedBox(height: _utils.getHeightPercent(.02)),
-            ProductQtyButtons(),
-            Divider(
-              height: _utils.getHeightPercent(.03),
-              color: kPrimaryColor,
-            ),
-            // SizedBox(height: _utils.getHeightPercent(.005)),
-            Padding(
-              padding: const EdgeInsets.only(left: 2.0),
-              child: Text(
-                'Información',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                  // Text(
+                  //   '500g',
+                  //   style: TextStyle(
+                  //     fontSize: _utils.getWidthPercent(.05),
+                  //     color: kSecondaryColor,
+                  //   ),
+                  // ),
+                ],
               ),
-            ),
-            Divider(
-              height: _utils.getHeightPercent(.03),
-              color: kPrimaryColor,
-            ),
-            ProductListInfo(
-              includes: productCtrl.currentProduct.value.includes,
-            ),
-          ],
+              SizedBox(height: _utils.getHeightPercent(.005)),
+              // PorductReviewsPercent(utils: _utils),
+              SizedBox(height: _utils.getHeightPercent(.02)),
+              ProductQtyButtons(),
+              Divider(
+                height: _utils.getHeightPercent(.03),
+                color: kPrimaryColor,
+              ),
+              // SizedBox(height: _utils.getHeightPercent(.005)),
+              Padding(
+                padding: const EdgeInsets.only(left: 2.0),
+                child: Text(
+                  'Información',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Divider(
+                height: _utils.getHeightPercent(.03),
+                color: kPrimaryColor,
+              ),
+              ProductListInfo(
+                includes: productCtrl.currentProduct.value.includes,
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: ProductDetailBottomNav(),

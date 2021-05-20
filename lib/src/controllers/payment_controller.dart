@@ -10,6 +10,8 @@ class PaymentController extends GetxController {
   RxList<ConecktaPaymentSource> cardsList = RxList<ConecktaPaymentSource>();
 
   var lastUsedCard = ConecktaPaymentSource().obs;
+  var cardSelectedIdx = 0.obs;
+  var pageControllerPage = 0.0.obs;
 
   Future<void> getCardsList() async {
     try {

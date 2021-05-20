@@ -8,6 +8,7 @@ import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
+import 'package:steak2house/src/screens/credit_card_list/body_credit_card_list.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
@@ -148,6 +149,14 @@ class Dialogs {
     Get.bottomSheet(
       MapBottomSheet(),
       isScrollControlled: true,
+      enableDrag: false,
+      isDismissible: false,
+    );
+  }
+
+  void showCardsBottomSheet() {
+    Get.bottomSheet(
+      BodyCreditCardList(),
       enableDrag: false,
       isDismissible: false,
     );

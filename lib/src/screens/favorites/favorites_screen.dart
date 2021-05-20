@@ -4,6 +4,11 @@ import 'package:steak2house/src/screens/favorites/widgets/favorites_body.dart';
 class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FavoritesBody();
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: FavoritesBody(),
+    );
   }
 }

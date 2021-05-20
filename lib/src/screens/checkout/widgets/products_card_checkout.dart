@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
@@ -47,12 +48,37 @@ class CheckOutProductsCard extends StatelessWidget {
                     child: Container(
                       // padding: EdgeInsets.all(8),
                       child: ClipOval(
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/animations/loading.gif',
-                          fit: BoxFit.cover,
-                          image: cartItem.product!.picture!,
-                        ),
-                      ),
+                          child: Image.network(
+                        cartItem.product!.picture!,
+                        width: _utils.getHeightPercent(.14),
+                        height: _utils.getHeightPercent(.15),
+                        fit: BoxFit.cover,
+                        loadingBuilder: (ctx, child, _) {
+                          if (_ == null) return child;
+                          return Center(
+                            child: Lottie.asset(
+                              'assets/animations/loading.json',
+                              width: _utils.getWidthPercent(.3),
+                              height: _utils.getWidthPercent(.25),
+                            ),
+                          );
+                        },
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Image.asset(
+                            'assets/img/noImage.png',
+                            width: _utils.getHeightPercent(.14),
+                            height: _utils.getHeightPercent(.15),
+                            fit: BoxFit.contain,
+                          );
+                        },
+                      )
+                          // FadeInImage.assetNetwork(
+                          //   placeholder: 'assets/animations/loading.gif',
+                          //   fit: BoxFit.cover,
+                          //   image: cartItem.product!.picture!,
+                          // ),
+                          ),
                     ),
                   ),
                   title: Text('${cartItem.product!.name}'),

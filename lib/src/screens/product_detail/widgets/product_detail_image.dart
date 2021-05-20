@@ -25,8 +25,6 @@ class ProductDetailImage extends StatelessWidget {
 
     final _producCtrl = Get.find<ProductController>();
 
-    // _producCtrl.isLiked.value = _producCtrl.currentProduct.value.isLiked;
-
     return Container(
       width: _utils.getWidthPercent(1),
       padding: EdgeInsets.only(

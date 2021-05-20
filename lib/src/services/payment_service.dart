@@ -5,9 +5,13 @@ import 'package:conekta_flutter/conekta_flutter.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:steak2house/src/controllers/cart_controller.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
+import 'package:steak2house/src/models/cart_model.dart';
 import 'package:steak2house/src/models/conekta/payment_sources_model.dart';
+import 'package:steak2house/src/models/product_model.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 
 import 'package:steak2house/src/utils/utils.dart';
@@ -29,10 +33,14 @@ class PaymentService {
 
   final _userCtrl = Get.find<UserController>();
   final _paymentCtrl = Get.find<PaymentController>();
+  final _cartCtrl = Get.find<CartController>();
+  final _miscCtrl = Get.find<MiscController>();
 
   final conekta = ConektaFlutter();
 
   Future<bool> createCustomer(String token) async {
+    Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
+
     final _user = _userCtrl.user.value;
 
     dio.FormData _data = dio.FormData.fromMap({
@@ -72,18 +80,83 @@ class PaymentService {
       _paymentCtrl.cardsList.add(newCard);
       _paymentCtrl.lastUsedCard.value = newCard;
 
-      SharedPrefs.instance.setKey(
+      await SharedPrefs.instance.setKey(
         'cardList',
         json.encode(_paymentCtrl.cardsList),
       );
 
-      SharedPrefs.instance.setKey(
+      await SharedPrefs.instance.setKey(
         'lastUsedCard',
         json.encode(_paymentCtrl.lastUsedCard.value),
       );
 
+      Get.back();
+
       return true;
     } on dio.DioError catch (e) {
+      Get.back();
+      if (e.response != null) {
+        print('DIOERROR DATA===== ${e.response!.data}');
+        print('DIOERROR HEADERS===== ${e.response!.headers}');
+
+        final String message = e.response!.data['data'];
+
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          message,
+          false,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print('DIOERROR MESSAGE===== ${e.message}');
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          e.message,
+          false,
+        );
+      }
+      return false;
+    }
+  }
+
+  Future<bool> createCharge() async {
+    Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
+
+    final deliveryPrice = _miscCtrl.deliveryDistance.value < 5
+        ? 50
+        : (_miscCtrl.deliveryDistance.value * _miscCtrl.priceKM.value).ceil();
+
+    final _user = _userCtrl.user.value;
+
+    final deliveryItem = {
+      'name': 'Envío',
+      'unit_price': '${deliveryPrice.toString()}00',
+      'quantity': 1
+    };
+
+    dio.FormData _data = dio.FormData.fromMap({
+      'userId': _user.id,
+      'customerId': _user.conektaCustomerId,
+      'items': json.encode(_cartCtrl.cartList),
+      'paymentSourceId': _paymentCtrl.lastUsedCard.value.id,
+      'deliveryItem': json.encode(deliveryItem),
+    });
+
+    try {
+      final response = await _dio.post(
+        '${urlEndpoint}payment/createCharge',
+        data: _data,
+        options: dio.Options(headers: headers),
+      );
+
+      print('createCharge ${response.data}');
+
+      // final items =
+      Get.back();
+
+      return true;
+    } on dio.DioError catch (e) {
+      Get.back();
       if (e.response != null) {
         print('DIOERROR DATA===== ${e.response!.data}');
         print('DIOERROR HEADERS===== ${e.response!.headers}');
@@ -109,6 +182,8 @@ class PaymentService {
   }
 
   Future<bool> createPaymentSource(String token) async {
+    Dialogs.instance.showLoadingProgress(message: 'Validando información');
+
     final _user = _userCtrl.user.value;
 
     dio.FormData _data = dio.FormData.fromMap({
@@ -134,18 +209,21 @@ class PaymentService {
       _paymentCtrl.cardsList.add(newCard);
       _paymentCtrl.lastUsedCard.value = newCard;
 
-      SharedPrefs.instance.setKey(
+      await SharedPrefs.instance.setKey(
         'cardList',
         json.encode(_paymentCtrl.cardsList),
       );
 
-      SharedPrefs.instance.setKey(
+      await SharedPrefs.instance.setKey(
         'lastUsedCard',
         json.encode(_paymentCtrl.lastUsedCard.value),
       );
 
+      Get.back();
+
       return true;
     } on dio.DioError catch (e) {
+      Get.back();
       if (e.response != null) {
         print('DIOERROR DATA===== ${e.response!.data}');
         print('DIOERROR HEADERS===== ${e.response!.headers}');
@@ -171,8 +249,11 @@ class PaymentService {
   }
 
   Future<String> createCardToken(ConektaCard card) async {
+    Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
     try {
-      return await conekta.createCardToken(card);
+      final cardToken = await conekta.createCardToken(card);
+      Get.back();
+      return cardToken;
     } on PlatformException catch (exception) {
       print('Exception $exception');
       return '';

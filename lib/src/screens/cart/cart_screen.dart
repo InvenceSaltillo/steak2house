@@ -5,7 +5,12 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BodyCart(),
+      body: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: BodyCart(),
+      ),
     );
   }
 }
