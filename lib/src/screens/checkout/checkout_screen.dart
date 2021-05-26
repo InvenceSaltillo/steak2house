@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
+import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/screens/checkout/widgets/body_checkout.dart';
-import 'package:steak2house/src/screens/credit_card/credit_card_screen.dart';
 import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 import 'package:steak2house/src/widgets/payment_success.dart';
+import 'package:steak2house/src/widgets/rounded_button.dart';
 
 class CheckOutScreen extends StatelessWidget {
   static String routeName = "/chekOut";
@@ -18,6 +19,7 @@ class CheckOutScreen extends StatelessWidget {
     final _utils = Utils.instance;
     final _miscCtrl = Get.find<MiscController>();
     final _cartCtrl = Get.find<CartController>();
+    final _paymentCtrl = Get.find<PaymentController>();
 
     final _bottomNavCtrl = Get.find<BottomNavigationBarController>();
     return Scaffold(
@@ -25,6 +27,7 @@ class CheckOutScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             _miscCtrl.showAppBar.value = true;
+            _bottomNavCtrl.currentPage.value = 3;
             _bottomNavCtrl.pageCtrl.value.jumpToPage(3);
           },
           icon: Icon(
@@ -45,51 +48,29 @@ class CheckOutScreen extends StatelessWidget {
         centerTitle: false,
       ),
       body: BodyCheckOut(),
-      bottomNavigationBar: Container(
-        height: _utils.getHeightPercent(.07),
-        decoration: BoxDecoration(
-            // color: Colors.black.withOpacity(.06),
-            ),
-        child: Obx(
-          () => Center(
-            child: Material(
-              child: InkWell(
-                onTap: () async {
-                  final createCharge =
-                      await PaymentService.instance.createCharge();
+      bottomNavigationBar: Obx(
+        () => RoundedButton(
+          text: 'Terminar Pedido \$${_miscCtrl.totalPriceDelivery.ceil()}',
+          fontSize: .02,
+          onTap: () async {
+            if (_paymentCtrl.cardsList.length == 0) {
+              return Dialogs.instance.showSnackBar(
+                DialogType.info,
+                '¡Primero debes agregar una tarjeta!',
+                false,
+              );
+            }
+            final createCharge = await PaymentService.instance.createCharge();
 
-                  if (createCharge) {
-                    await SharedPrefs.instance.deleteKey('cartList');
-                    _cartCtrl.cartList.value = [];
-                    Get.to(
-                      () => PaymentSuccess(),
-                      fullscreenDialog: true,
-                    );
-                  }
-                },
-                child: Container(
-                  width: _utils.getHeightPercent(.35),
-                  height: _utils.getHeightPercent(.05),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Terminar Pedido \$${_miscCtrl.totalPriceDelivery.toStringAsFixed(2)}',
-                      // 'Terminar Pedido \$${(_cartCtrl.totalCart.value + (_miscCtrl.deliveryDistance.value * _miscCtrl.priceKM.value)).toStringAsFixed(2)}',
-                      // 'Ir a Pagar \$${_cartCtrl.totalCart.value}',
-                      style: TextStyle(
-                        color: kSecondaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: _utils.getHeightPercent(.02),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+            if (createCharge) {
+              await SharedPrefs.instance.deleteKey('cartList');
+              _cartCtrl.cartList.value = [];
+              Get.to(
+                () => PaymentSuccess(),
+                fullscreenDialog: true,
+              );
+            }
+          },
         ),
       ),
     );

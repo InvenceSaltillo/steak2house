@@ -26,7 +26,13 @@ class ProductListInfo extends StatelessWidget {
             child: Row(
               children: [
                 Icon(Icons.check),
-                Text('${includesList[index]}'),
+                Container(
+                  width: _utils.getWidthPercent(.8),
+                  child: Text(
+                    '${includesList[index]}',
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
               ],
             ),
           ),

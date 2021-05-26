@@ -44,7 +44,7 @@ class ProductCard extends StatelessWidget {
                   product.picture!,
                   height: _utils.getHeightPercent(.125),
                   width: 200,
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.contain,
                   loadingBuilder: (ctx, child, _) {
                     if (_ == null) return child;
                     return Center(

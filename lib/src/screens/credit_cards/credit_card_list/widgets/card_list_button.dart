@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
-import 'package:steak2house/src/screens/credit_card/credit_card_screen.dart';
+import 'package:steak2house/src/screens/credit_cards/credit_card/credit_card_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 
-import '../../../constants.dart';
+import '../../../../constants.dart';
 
 class CardListButton extends StatelessWidget {
   CardListButton({
@@ -20,12 +21,19 @@ class CardListButton extends StatelessWidget {
       () => Align(
         alignment: Alignment.center,
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             if (_paymentCtrl.cardSelectedIdx < _paymentCtrl.cardsList.length) {
               _paymentCtrl.lastUsedCard.value =
                   _paymentCtrl.cardsList[_paymentCtrl.cardSelectedIdx.value];
               Get.back();
             } else {
+              if (_paymentCtrl.cardsList.length >= 5) {
+                return Dialogs.instance.showSnackBar(
+                  DialogType.error,
+                  '¡Solo puedes agregar 5 tarjetas, por favor elimina una!',
+                  false,
+                );
+              }
               Get.back();
               Get.to(() => CreditCardScreen());
             }

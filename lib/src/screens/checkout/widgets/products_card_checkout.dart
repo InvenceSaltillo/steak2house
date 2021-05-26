@@ -48,37 +48,32 @@ class CheckOutProductsCard extends StatelessWidget {
                     child: Container(
                       // padding: EdgeInsets.all(8),
                       child: ClipOval(
-                          child: Image.network(
-                        cartItem.product!.picture!,
-                        width: _utils.getHeightPercent(.14),
-                        height: _utils.getHeightPercent(.15),
-                        fit: BoxFit.cover,
-                        loadingBuilder: (ctx, child, _) {
-                          if (_ == null) return child;
-                          return Center(
-                            child: Lottie.asset(
-                              'assets/animations/loading.json',
-                              width: _utils.getWidthPercent(.3),
-                              height: _utils.getWidthPercent(.25),
-                            ),
-                          );
-                        },
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return Image.asset(
-                            'assets/img/noImage.png',
-                            width: _utils.getHeightPercent(.14),
-                            height: _utils.getHeightPercent(.15),
-                            fit: BoxFit.contain,
-                          );
-                        },
-                      )
-                          // FadeInImage.assetNetwork(
-                          //   placeholder: 'assets/animations/loading.gif',
-                          //   fit: BoxFit.cover,
-                          //   image: cartItem.product!.picture!,
-                          // ),
-                          ),
+                        child: Image.network(
+                          cartItem.product!.picture!,
+                          width: _utils.getHeightPercent(.14),
+                          height: _utils.getHeightPercent(.15),
+                          fit: BoxFit.cover,
+                          loadingBuilder: (ctx, child, _) {
+                            if (_ == null) return child;
+                            return Center(
+                              child: Lottie.asset(
+                                'assets/animations/loading.json',
+                                width: _utils.getWidthPercent(.3),
+                                height: _utils.getWidthPercent(.25),
+                              ),
+                            );
+                          },
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return Image.asset(
+                              'assets/img/noImage.png',
+                              width: _utils.getHeightPercent(.14),
+                              height: _utils.getHeightPercent(.15),
+                              fit: BoxFit.contain,
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
                   title: Text('${cartItem.product!.name}'),

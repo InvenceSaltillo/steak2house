@@ -6,9 +6,11 @@ import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
-import 'package:steak2house/src/models/user_model.dart';
+import 'package:steak2house/src/models/user/user_model.dart';
 import 'package:steak2house/src/services/auth_service.dart';
+import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/services/traffic_service.dart';
+import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../../utils/utils.dart';
@@ -133,7 +135,9 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
         actions: [
           TextButton(
             onPressed: () async {
-              AuthService.auth.getAccessToken();
+              PaymentService.instance.getConektaCustomer();
+              // SharedPrefs.instance.deleteKey('lastUsedCard');
+              // SharedPrefs.instance.deleteKey('cardList');
             },
             style: TextButton.styleFrom(
               primary: Colors.white,
@@ -147,6 +151,13 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
                     placeholder: 'assets/animations/loading.gif',
                     fit: BoxFit.cover,
                     image: _user.avatar!,
+                    imageErrorBuilder: (context, error, stackTrace) =>
+                        Image.asset(
+                      'assets/img/noAvatar.png',
+                      height: _utils.getHeightPercent(.1),
+                      width: _utils.getHeightPercent(.1),
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),

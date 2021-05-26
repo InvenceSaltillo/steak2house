@@ -5,9 +5,10 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
-import 'package:steak2house/src/models/user_model.dart';
+import 'package:steak2house/src/models/user/user_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
@@ -48,12 +49,26 @@ class AuthService {
     }
   }
 
-  Future<void> googleLogin() async {
-    try {
-      final account = await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
+  // Future<void> googleLogin() async {
+  //   try {
+  //     final account = await _googleSignIn.signIn();
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
+
+  Future<bool> appleLogin() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+
+    print('AuthCode ${credential.authorizationCode}');
+    print('userIdentifier ${credential.userIdentifier}');
+    print('identityToken ${credential.identityToken}');
+    return true;
   }
 
   Future<bool> isLogged() async {
@@ -146,7 +161,7 @@ class AuthService {
           print('DIOERROR HEADERS===== ${e.response!.headers}');
         } else {
           // Something happened in setting up or sending the request that triggered an Error
-          print('DIOERROR MESSAGE===== ${e.message}');
+          print('DIOERROR MESSAGE facebookLogin===== ${e}, ${Utils.instance.urlBackend}');
           Get.back();
           Dialogs.instance.showSnackBar(
             DialogType.error,

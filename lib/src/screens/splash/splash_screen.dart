@@ -11,7 +11,7 @@ import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
-import 'package:steak2house/src/models/user_model.dart';
+import 'package:steak2house/src/models/user/user_model.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/screens/sign_in/sign_in_screen.dart';
 import 'package:steak2house/src/services/auth_service.dart';

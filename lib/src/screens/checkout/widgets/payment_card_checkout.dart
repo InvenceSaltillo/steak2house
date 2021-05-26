@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
-import 'package:steak2house/src/screens/credit_card/credit_card_screen.dart';
+import 'package:steak2house/src/screens/credit_cards/credit_card/credit_card_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
@@ -31,14 +31,15 @@ class CheckOutPaymentCard extends StatelessWidget {
             children: [
               _paymentCtrl.lastUsedCard.value.id == null
                   ? FaIcon(FontAwesomeIcons.creditCard, color: kPrimaryColor)
-                  : getBrandIcon(_paymentCtrl.lastUsedCard.value.brand!),
+                  : _utils.getCardBrandIcon(
+                      _paymentCtrl.lastUsedCard.value.brand!, kPrimaryColor),
               SizedBox(width: _utils.getWidthPercent(.05)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _paymentCtrl.lastUsedCard.value.id == null
-                        ? 'No hay método de pago'
+                        ? 'No hay tarjetas guardadas'
                         : 'Terminación  ****${_paymentCtrl.lastUsedCard.value.last4}',
                     style: TextStyle(
                       fontSize: _utils.getHeightPercent(.02),
@@ -70,18 +71,5 @@ class CheckOutPaymentCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget getBrandIcon(String brand) {
-    switch (brand) {
-      case 'visa':
-        return FaIcon(FontAwesomeIcons.ccVisa, color: kPrimaryColor);
-      case 'mastercard':
-        return FaIcon(FontAwesomeIcons.ccMastercard, color: kPrimaryColor);
-      case 'american_express':
-        return FaIcon(FontAwesomeIcons.ccAmex, color: kPrimaryColor);
-      default:
-        return FaIcon(FontAwesomeIcons.creditCard, color: kPrimaryColor);
-    }
   }
 }

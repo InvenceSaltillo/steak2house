@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/screens/sign_in/widgets/button_social.dart';
 import 'package:steak2house/src/services/auth_service.dart';
@@ -84,7 +85,9 @@ class BodySignIn extends StatelessWidget {
             ),
             SizedBox(height: size.height * .03),
             ButtonSocial(
-              onPressed: () {},
+              onPressed: () {
+                AuthService.auth.appleLogin();
+              },
               text: 'Apple',
               color: Color(0xff000000),
               icon: FaIcon(FontAwesomeIcons.apple),

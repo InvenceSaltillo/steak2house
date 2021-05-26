@@ -6,12 +6,15 @@ import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/screens/cart/cart_screen.dart';
 import 'package:steak2house/src/screens/checkout/checkout_screen.dart';
+import 'package:steak2house/src/screens/credit_cards/my_credit_cards/my_credit_cards.dart';
 import 'package:steak2house/src/screens/favorites/favorites_screen.dart';
 import 'package:steak2house/src/screens/home/widgets/body_home.dart';
 import 'package:steak2house/src/screens/notifications/notifications_screen.dart';
 import 'package:steak2house/src/screens/orders/orders_screen.dart';
+import 'package:steak2house/src/screens/orders/widgets/order_detail.dart';
 import 'package:steak2house/src/services/category_service.dart';
 import 'package:steak2house/src/services/products_service.dart';
+import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/widgets/custom_bottom_bar.dart';
 
 import 'widgets/home_app_bar.dart';
@@ -47,6 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
             productsCtrl.fromOtherPage['index'] ?? 0;
         productsCtrl.fromOtherPage['otherPage'] = false;
       }
+
+      UserService.instance.getOrders();
     });
     super.initState();
   }
@@ -77,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
             CartScreen(),
             NotificationsScreen(),
             CheckOutScreen(),
+            OrderDetail(),
+            MyCreditCards(),
           ],
         ),
         bottomNavigationBar:

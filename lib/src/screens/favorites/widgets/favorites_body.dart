@@ -29,31 +29,6 @@ class FavoritesBody extends StatelessWidget {
                       color: kPrimaryColor,
                     ),
                   ),
-                  // Container(
-                  //   width: _utils.getWidthPercent(.5),
-                  //   child: Text(
-                  //     'Agrega tus',
-                  //     textAlign: TextAlign.center,
-                  //     softWrap: true,
-                  //   ),
-                  // ),
-                  // SizedBox(height: _utils.getHeightPercent(.02)),
-                  // TextButton(
-                  //   onPressed: () async {},
-                  //   style: TextButton.styleFrom(
-                  //     minimumSize: Size(_utils.getWidthPercent(.4), 20),
-                  //     backgroundColor: kPrimaryColor,
-                  //     padding: EdgeInsets.all(_utils.getHeightPercent(.01)),
-                  //   ),
-                  //   child: Text(
-                  //     'Empieza a comprar',
-                  //     style: TextStyle(
-                  //       color: kSecondaryColor,
-                  //       fontWeight: FontWeight.bold,
-                  //       fontSize: _utils.getHeightPercent(.02),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             )

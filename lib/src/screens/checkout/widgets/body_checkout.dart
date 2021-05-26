@@ -25,7 +25,9 @@ class BodyCheckOut extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${_cartCtrl.cartList.length} Producto(s)',
+                _cartCtrl.cartList.length == 1
+                    ? '${_cartCtrl.cartList.length} producto'
+                    : '${_cartCtrl.cartList.length} productos',
                 style: TextStyle(
                   fontSize: _utils.getHeightPercent(.02),
                 ),

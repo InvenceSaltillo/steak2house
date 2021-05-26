@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
-import '../../../constants.dart';
+import '../../../../constants.dart';
 
 class CardListBullets extends StatelessWidget {
   CardListBullets({

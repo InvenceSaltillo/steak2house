@@ -13,19 +13,25 @@ class PaymentController extends GetxController {
   var cardSelectedIdx = 0.obs;
   var pageControllerPage = 0.0.obs;
 
-  Future<void> getCardsList() async {
+  Future<void> getCardsList({dynamic cardListsString}) async {
     try {
+      // dynamic cardListTemp;
+
+      // if (cardListsString != '') {
+      //   cardListTemp = cardListsString as List;
+      // } else {
       final cardListTemp =
           await SharedPrefs.instance.getKey('cardList') as List;
+      // }
 
       final List<ConecktaPaymentSource> myCardList = cardListTemp
           .map((item) => new ConecktaPaymentSource.fromJson(item))
           .toList();
       cardsList.value = myCardList;
 
-      print('CARDLIST ${cardsList[1].id}');
+      print('CARDLIST ${cardsList.length}');
     } catch (e) {
-      print('No hay Lista de Tarjetas========= myCardList');
+      print('No hay Lista de Tarjetas========= myCardList $e');
     }
   }
 

@@ -5,13 +5,16 @@ import 'package:conekta_flutter/conekta_flutter.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/cart_model.dart';
+import 'package:steak2house/src/models/conekta/client_model.dart';
 import 'package:steak2house/src/models/conekta/payment_sources_model.dart';
 import 'package:steak2house/src/models/product_model.dart';
+import 'package:steak2house/src/utils/secure_storage.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 
 import 'package:steak2house/src/utils/utils.dart';
@@ -37,6 +40,112 @@ class PaymentService {
   final _miscCtrl = Get.find<MiscController>();
 
   final conekta = ConektaFlutter();
+
+  Future<ConecktaClient> getConektaCustomer() async {
+    final token = await SecureStorage.instance.readItem('token');
+
+    try {
+      final response =
+          await _dio.get('${urlEndpoint}payment', queryParameters: {
+        'customerId': _userCtrl.user.value.conektaCustomerId,
+        'token': token,
+      });
+
+      print('getConektaCustomer ${response.data['data']}');
+
+      final conektaCustomer = ConecktaClient.fromJson(response.data['data']);
+
+      print('getConektaCustomer $conektaCustomer');
+
+      if (response.data['data']['payment_sources'] != null) {
+        final paymentSource =
+            response.data['data']['payment_sources'] as dynamic;
+
+        print('paymentSource ${paymentSource.length}');
+      }
+
+      return ConecktaClient();
+    } on dio.DioError catch (e) {
+      Get.back();
+      if (e.response != null) {
+        print('DIOERROR getConektaCustomer DATA===== ${e.response!.data}');
+        print(
+            'DIOERROR getConektaCustomer HEADERS===== ${e.response!.headers}');
+
+        final String message = e.response!.data['data'];
+
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          message,
+          false,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print('DIOERROR getConektaCustomer MESSAGE===== ${e.message}');
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          e.message,
+          false,
+        );
+      }
+      return ConecktaClient();
+    }
+  }
+
+  Future<bool> deletePaymentSource(String paymentSourceId) async {
+    final token = await SecureStorage.instance.readItem('token');
+
+    Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
+
+    final _user = _userCtrl.user.value;
+
+    dio.FormData _data = dio.FormData.fromMap({
+      'conektaCustomerId': _user.conektaCustomerId,
+      'paymentSourceId': paymentSourceId,
+      'token': token,
+    });
+    try {
+      final response = await _dio.post(
+        '${urlEndpoint}payment/deletePaymentSource',
+        data: _data,
+        options: dio.Options(headers: headers),
+      );
+
+      print('deletePaymentSource ${response.data['data']}');
+
+      SharedPrefs.instance.setKey(
+        'cardList',
+        json.encode(_paymentCtrl.cardsList),
+      );
+
+      Get.back();
+      return true;
+    } on dio.DioError catch (e) {
+      Get.back();
+      if (e.response != null) {
+        print('DIOERROR deletePaymentSource DATA===== ${e.response}');
+        print(
+            'DIOERROR deletePaymentSource HEADERS===== ${e.response!.headers}');
+
+        final String message = e.response!.data;
+
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          message,
+          false,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print('DIOERROR deletePaymentSource MESSAGE===== ${e.message}');
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          e.message,
+          false,
+        );
+      }
+      return false;
+    }
+  }
 
   Future<bool> createCustomer(String token) async {
     Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
@@ -157,17 +266,33 @@ class PaymentService {
       return true;
     } on dio.DioError catch (e) {
       Get.back();
+
       if (e.response != null) {
         print('DIOERROR DATA===== ${e.response!.data}');
         print('DIOERROR HEADERS===== ${e.response!.headers}');
 
         final String message = e.response!.data['data'];
 
-        Dialogs.instance.showSnackBar(
-          DialogType.error,
-          message,
-          false,
+        Dialogs.instance.showLottieDialog(
+          title: message,
+          lottieSrc: 'assets/animations/error.json',
+          lottieSize: .25,
+          firstButtonText: '',
+          secondButtonText: '',
+          firstButtonBgColor: kPrimaryColor,
+          firstButtonTextColor: kSecondaryColor,
+          secondButtonBgColor: kPrimaryColor,
+          secondButtonTextColor: kSecondaryColor,
         );
+
+        await Future.delayed(Duration(seconds: 5));
+        Get.back();
+
+        // Dialogs.instance.showSnackBar(
+        //   DialogType.error,
+        //   message,
+        //   false,
+        // );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print('DIOERROR MESSAGE===== ${e.message}');

@@ -1,5 +1,5 @@
 name: steak2house
-description: A new Flutter project.
+description: Aqui empieza la carne asada.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -45,11 +45,21 @@ dependencies:
   open_settings: ^2.0.1
   conekta_flutter: 0.0.4-nullsafety
   flutter_credit_card: ^2.0.0
+  intl: ^0.17.0
+  sign_in_with_apple: ^3.0.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/img/steak.png"
+  adaptive_icon_background: "assets/img/steak.png"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

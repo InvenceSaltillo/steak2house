@@ -8,7 +8,7 @@ import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
-import 'package:steak2house/src/screens/credit_card_list/body_credit_card_list.dart';
+import 'package:steak2house/src/screens/credit_cards/credit_card_list/body_credit_card_list.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
@@ -209,6 +209,7 @@ class Dialogs {
     required Color firstButtonTextColor,
     required Color secondButtonBgColor,
     required Color secondButtonTextColor,
+    double lottieSize = .15,
   }) async {
     bool result = false;
     await Get.defaultDialog(
@@ -219,7 +220,7 @@ class Dialogs {
           children: [
             Lottie.asset(
               lottieSrc,
-              height: _utils.getHeightPercent(.15),
+              height: _utils.getHeightPercent(lottieSize),
               repeat: false,
             ),
             Text(
@@ -230,17 +231,18 @@ class Dialogs {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () async {
-            Get.back();
-            result = true;
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: firstButtonBgColor,
-            primary: firstButtonTextColor,
+        if (firstButtonText != '')
+          TextButton(
+            onPressed: () async {
+              Get.back();
+              result = true;
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: firstButtonBgColor,
+              primary: firstButtonTextColor,
+            ),
+            child: Text(firstButtonText),
           ),
-          child: Text(firstButtonText),
-        ),
         if (secondButtonText != '')
           TextButton(
             onPressed: () {

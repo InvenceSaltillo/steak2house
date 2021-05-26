@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
-import 'package:steak2house/src/models/user_model.dart';
+import 'package:steak2house/src/models/user/user_model.dart';
+import 'package:steak2house/src/screens/credit_cards/my_credit_cards/my_credit_cards.dart';
 import 'package:steak2house/src/services/auth_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
@@ -20,7 +21,7 @@ class CustomDrawer extends StatelessWidget {
       MenuItem("Favoritos", Icons.favorite_border, 2),
       MenuItem("Carrito", Icons.shopping_cart_outlined, 3),
       MenuItem("Notificaciones", Icons.notifications, 4),
-      // MenuItem("Tarjetas", Icons.credit_card, -1),
+      MenuItem("Tarjetas", Icons.credit_card, -1),
       // MenuItem("Acerca de nosotros", Icons.info_outline, 4),
     ];
 
@@ -74,6 +75,13 @@ class CustomDrawer extends StatelessWidget {
                         placeholder: 'assets/animations/loading.gif',
                         fit: BoxFit.cover,
                         image: _user.avatar!,
+                        imageErrorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                          'assets/img/noAvatar.png',
+                          height: _utils.getHeightPercent(.1),
+                          width: _utils.getHeightPercent(.1),
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
@@ -121,10 +129,16 @@ class CustomDrawer extends StatelessWidget {
                                 item: item,
                                 callback: () {
                                   ZoomDrawer.of(context)!.toggle();
-                                  if (item.index < 0) {}
+
+                                  switch (item.index!) {
+                                    case -1:
+                                      return Get.to(() => MyCreditCards());
+
+                                    default:
+                                  }
                                   bottomNavCtrl.pageCtrl.value
-                                      .jumpToPage(item.index);
-                                  bottomNavCtrl.currentPage.value = item.index;
+                                      .jumpToPage(item.index!);
+                                  bottomNavCtrl.currentPage.value = item.index!;
                                 },
                                 widthBox: widthBox,
                                 style: style,
@@ -163,13 +177,6 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Container(
-                //   width: double.infinity,
-                //   height: 100,
-                //   decoration: BoxDecoration(
-                //     color: Colors.orange,
-                //   ),
-                // ),
               ],
             ),
           ],
@@ -230,7 +237,7 @@ class MenuItemWidget extends StatelessWidget {
 class MenuItem {
   final String title;
   final IconData icon;
-  final int index;
+  final int? index;
 
   const MenuItem(this.title, this.icon, this.index);
 }

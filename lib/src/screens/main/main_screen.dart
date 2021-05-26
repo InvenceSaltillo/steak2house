@@ -14,15 +14,6 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       body: WillPopScope(
         onWillPop: () async {
-          // Get.defaultDialog(
-          //   title: '',
-          //   middleText: '¿Deseas salir de la aplicación?',
-          //   textConfirm: 'Salir',
-          //   buttonColor: kPrimaryColor,
-          //   confirmTextColor: kSecondaryColor,
-          //   textCancel: 'No',
-          //   cancelTextColor: kSecondaryColor,
-          // );
           return false;
         },
         child: ZoomDrawer(

@@ -131,12 +131,12 @@ class BodyCreditCardState extends State<BodyCreditCard> {
                                 .createPaymentSource(token);
 
                             if (create) {
-                              Get.back();
-                              Dialogs.instance.showSnackBar(
-                                DialogType.success,
-                                'Se agregó el nuevo método de pago',
-                                false,
-                              );
+                              // Get.back();
+                              // Dialogs.instance.showSnackBar(
+                              //   DialogType.success,
+                              //   'Se agregó el nuevo método de pago',
+                              //   false,
+                              // );
                             }
                           }
                         } else {
