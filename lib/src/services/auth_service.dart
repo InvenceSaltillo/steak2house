@@ -73,7 +73,6 @@ class AuthService {
 
   Future<bool> isLogged() async {
     final accessToken = await FacebookAuth.instance.accessToken;
-
     if (accessToken != null) {
       // Esta loggeado con facebook
 
@@ -127,6 +126,19 @@ class AuthService {
             'Bienvenido ${user.name}',
             false,
           );
+
+          Get.offUntil(
+            PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return MainScreen();
+              },
+              transitionDuration: Duration(milliseconds: 800),
+            ),
+            (route) => false,
+          );
+
+          Dialogs.instance.showPhoneDialog();
         } else {
           print('LOGIN======== ${response.data['token']}');
           final user = User.fromJson(response.data['user']);
@@ -161,7 +173,8 @@ class AuthService {
           print('DIOERROR HEADERS===== ${e.response!.headers}');
         } else {
           // Something happened in setting up or sending the request that triggered an Error
-          print('DIOERROR MESSAGE facebookLogin===== ${e}, ${Utils.instance.urlBackend}');
+          print(
+              'DIOERROR MESSAGE facebookLogin===== ${e}, ${Utils.instance.urlBackend}');
           Get.back();
           Dialogs.instance.showSnackBar(
             DialogType.error,
@@ -315,6 +328,8 @@ class AuthService {
 
   Future<void> logOut() async {
     await FacebookAuth.instance.logOut();
+
+    await SharedPrefs.instance.clearPrefs();
 
     Get.offUntil(
       PageRouteBuilder(

@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/screens/credit_cards/credit_card_list/body_credit_card_list.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
+import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/rounded_button.dart';
 
 import 'bottom_sheet_addresses.dart';
 import 'map_bottomsheet.dart';
@@ -61,6 +64,97 @@ class Dialogs {
       ),
       useSafeArea: false,
       barrierDismissible: false,
+    );
+  }
+
+  Future<void> showPhoneDialog() async {
+    final TextEditingController _textController = TextEditingController();
+    var maskFormatter = new MaskTextInputFormatter(
+      mask: '(###) ###-##-##',
+      filter: {"#": RegExp(r'[0-9]')},
+    );
+    return Get.defaultDialog(
+      title:
+          'Solo un paso más...\nProporciona tu celular para completar tu perfil.',
+      // middleText:
+      //     'Proporciona tu numero celular para completar tu perfil',
+      titleStyle: TextStyle(
+        fontSize: _utils.getHeightPercent(.02),
+        fontWeight: FontWeight.bold,
+      ),
+      barrierDismissible: false,
+      content: Column(
+        children: [
+          TextField(
+            inputFormatters: [maskFormatter],
+            onChanged: (value) {},
+            controller: _textController,
+            onSubmitted: (_) {
+              print('PHONE ${maskFormatter.getMaskedText()}');
+            },
+            autofocus: true,
+            cursorColor: kPrimaryColor,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Colors.black38,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Colors.black38,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              prefixIcon: Icon(
+                Icons.phone_android,
+                color: Colors.black,
+              ),
+              contentPadding: EdgeInsets.only(
+                left: 15,
+                bottom: 11,
+                top: 11,
+                right: 15,
+              ),
+            ),
+          ),
+          RoundedButton(
+            text: 'Continuar',
+            fontSize: .02,
+            width: .3,
+            height: .04,
+            onTap: () async {
+              if (maskFormatter.getUnmaskedText() == '' ||
+                  maskFormatter.getUnmaskedText().length < 10) {
+                print('PHONE INVALID ');
+                return showSnackBar(
+                  DialogType.error,
+                  'Debes ingresar un número válido',
+                  false,
+                );
+              }
+
+              print('PHONE ${maskFormatter.getUnmaskedText()}');
+
+              final updateNumber = await UserService.instance
+                  .updatePhoneNumber(maskFormatter.getUnmaskedText());
+
+              if (updateNumber) {
+                Get.back();
+
+                Dialogs.instance.showSnackBar(
+                  DialogType.success,
+                  '¡Todo listo! Disfruta de Steak2House 😀',
+                  false,
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 

@@ -124,19 +124,29 @@ class BodyCreditCardState extends State<BodyCreditCard> {
                           if (user.conektaCustomerId == '' ||
                               user.conektaCustomerId == null) {
                             print('NO TIENE CONEKTAID');
-                            await PaymentService.instance.createCustomer(token);
+                            final createCustomer = await PaymentService.instance
+                                .createCustomer(token);
+
+                            if (createCustomer) {
+                              Get.back();
+                              Dialogs.instance.showSnackBar(
+                                DialogType.success,
+                                'Se agregó el nuevo método de pago',
+                                false,
+                              );
+                            }
                           } else {
                             print('SIII TIENE CONEKTAID');
                             final create = await PaymentService.instance
                                 .createPaymentSource(token);
 
                             if (create) {
-                              // Get.back();
-                              // Dialogs.instance.showSnackBar(
-                              //   DialogType.success,
-                              //   'Se agregó el nuevo método de pago',
-                              //   false,
-                              // );
+                              Get.back();
+                              Dialogs.instance.showSnackBar(
+                                DialogType.success,
+                                'Se agregó el nuevo método de pago',
+                                false,
+                              );
                             }
                           }
                         } else {

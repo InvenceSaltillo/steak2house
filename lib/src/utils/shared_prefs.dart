@@ -13,7 +13,7 @@ class SharedPrefs {
   }
 
   Future getKey(String key) async {
-    return await json.decode(_prefs.getString(key) ?? '') ?? '';
+    return await json.decode(_prefs.getString(key)!);
   }
 
   Future getCreatedAt() async {
@@ -26,5 +26,9 @@ class SharedPrefs {
 
   Future<bool> deleteKey(String key) {
     return _prefs.remove(key);
+  }
+
+  Future<bool> clearPrefs() {
+    return _prefs.clear();
   }
 }

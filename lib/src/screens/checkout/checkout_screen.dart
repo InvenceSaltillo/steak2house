@@ -6,6 +6,7 @@ import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/screens/checkout/widgets/body_checkout.dart';
 import 'package:steak2house/src/services/payment_service.dart';
+import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
@@ -52,6 +53,8 @@ class CheckOutScreen extends StatelessWidget {
         () => RoundedButton(
           text: 'Terminar Pedido \$${_miscCtrl.totalPriceDelivery.ceil()}',
           fontSize: .02,
+          height: .05,
+          width: .5,
           onTap: () async {
             if (_paymentCtrl.cardsList.length == 0) {
               return Dialogs.instance.showSnackBar(
@@ -63,6 +66,7 @@ class CheckOutScreen extends StatelessWidget {
             final createCharge = await PaymentService.instance.createCharge();
 
             if (createCharge) {
+              UserService.instance.sendTelegramMessage();
               await SharedPrefs.instance.deleteKey('cartList');
               _cartCtrl.cartList.value = [];
               Get.to(

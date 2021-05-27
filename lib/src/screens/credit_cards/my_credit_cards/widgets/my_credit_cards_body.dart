@@ -15,6 +15,7 @@ class MyCreditCardsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final _utils = Utils.instance;
     final _paymentCtrl = Get.find<PaymentController>();
+
     return Scaffold(
       body: Obx(
         () => Padding(
@@ -109,7 +110,9 @@ class MyCreditCardsBody extends StatelessWidget {
       ),
       bottomNavigationBar: RoundedButton(
         text: 'Agregar nueva tarjeta',
-        fontSize: .02,
+        fontSize: .018,
+        height: .05,
+        width: .5,
         onTap: () {
           if (_paymentCtrl.cardsList.length >= 5) {
             return Dialogs.instance.showSnackBar(

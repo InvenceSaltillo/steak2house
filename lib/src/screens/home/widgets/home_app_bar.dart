@@ -7,13 +7,11 @@ import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/user/user_model.dart';
-import 'package:steak2house/src/services/auth_service.dart';
-import 'package:steak2house/src/services/payment_service.dart';
-import 'package:steak2house/src/services/traffic_service.dart';
-import 'package:steak2house/src/utils/shared_prefs.dart';
+import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/utils.dart';
+import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -59,7 +57,7 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
     if (locationCtrl.permissionStatus.value == PermissionStatus.granted &&
         locationCtrl.isLocationEnabled.value &&
         locationCtrl.currentPosition.value.latitude == 0.0) {
-      final currentPosition = await locationCtrl.getCurrentPosition();
+      await locationCtrl.getCurrentPosition();
     }
   }
 
@@ -135,9 +133,7 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
         actions: [
           TextButton(
             onPressed: () async {
-              PaymentService.instance.getConektaCustomer();
-              // SharedPrefs.instance.deleteKey('lastUsedCard');
-              // SharedPrefs.instance.deleteKey('cardList');
+              UserService.instance.sendTelegramMessage();
             },
             style: TextButton.styleFrom(
               primary: Colors.white,

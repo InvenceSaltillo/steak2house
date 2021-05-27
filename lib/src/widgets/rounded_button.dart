@@ -14,14 +14,17 @@ class RoundedButton extends StatelessWidget {
     required this.text,
     required this.fontSize,
     required this.onTap,
+    this.width = .35,
+    this.height = .05,
   }) : super(key: key);
 
   final String text;
   final double fontSize;
+  double width;
+  double height;
   final Function() onTap;
 
   final _utils = Utils.instance;
-  final _cartCtrl = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +38,8 @@ class RoundedButton extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             child: Container(
-              width: _utils.getHeightPercent(.35),
-              height: _utils.getHeightPercent(.05),
+              width: _utils.getWidthPercent(width),
+              height: _utils.getHeightPercent(height),
               decoration: BoxDecoration(
                 color: kPrimaryColor,
                 borderRadius: BorderRadius.circular(50),

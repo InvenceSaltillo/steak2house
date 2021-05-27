@@ -6,6 +6,7 @@ import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dar
 import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/badge.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final _utils = Utils.instance;
@@ -51,23 +52,7 @@ class CustomBottomBar extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 Icon(Icons.shopping_cart_outlined),
-                if (_cartCtrl.cartList.length > 0)
-                  Positioned(
-                    right: 0,
-                    top: -2,
-                    child: Bounce(
-                      duration: Duration(milliseconds: 800),
-                      from: 10,
-                      child: Container(
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                    ),
-                  ),
+                if (_cartCtrl.cartList.length > 0) BadgeWidget(),
               ],
             ),
             label: 'Carrito',

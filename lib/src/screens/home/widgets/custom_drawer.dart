@@ -110,6 +110,13 @@ class CustomDrawer extends StatelessWidget {
                           color: Colors.white.withOpacity(.5),
                         ),
                       ),
+                      Text(
+                        _user.tel!,
+                        style: TextStyle(
+                          fontSize: _utils.getHeightPercent(.017),
+                          color: Colors.white.withOpacity(.5),
+                        ),
+                      ),
                     ],
                   ),
                 ),

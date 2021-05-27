@@ -42,6 +42,8 @@ class PaymentService {
   final conekta = ConektaFlutter();
 
   Future<ConecktaClient> getConektaCustomer() async {
+    // Dialogs.instance.showLoadingProgress(message: 'Espere un momento...');
+
     final token = await SecureStorage.instance.readItem('token');
 
     try {
@@ -57,16 +59,28 @@ class PaymentService {
 
       print('getConektaCustomer $conektaCustomer');
 
-      if (response.data['data']['payment_sources'] != null) {
-        final paymentSource =
-            response.data['data']['payment_sources'] as dynamic;
+      if (response.data['data']['paymentSources'] != null) {
+        final paymentSource = response.data['data']['paymentSources'] as List;
 
-        print('paymentSource ${paymentSource.length}');
+        final List<ConecktaPaymentSource> myCardList = paymentSource
+            .map((item) => new ConecktaPaymentSource.fromJson(item))
+            .toList();
+
+        _paymentCtrl.cardsList.value = [];
+
+        _paymentCtrl.cardsList.value = myCardList;
+
+        if (_paymentCtrl.lastUsedCard.value.last4 == null) {
+          _paymentCtrl.lastUsedCard.value = _paymentCtrl.cardsList[0];
+        }
+
+        print('lastUsedCard ${_paymentCtrl.lastUsedCard.value.last4}');
       }
 
+      // Get.back();
       return ConecktaClient();
     } on dio.DioError catch (e) {
-      Get.back();
+      // Get.back();
       if (e.response != null) {
         print('DIOERROR getConektaCustomer DATA===== ${e.response!.data}');
         print(
@@ -95,7 +109,7 @@ class PaymentService {
   Future<bool> deletePaymentSource(String paymentSourceId) async {
     final token = await SecureStorage.instance.readItem('token');
 
-    Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
+    Dialogs.instance.showLoadingProgress(message: 'Espere un momento...');
 
     final _user = _userCtrl.user.value;
 
@@ -169,7 +183,7 @@ class PaymentService {
         options: dio.Options(headers: headers),
       );
 
-      print('createCustomer ${response.data['data']['id']}');
+      print('createCustomer ${response.data['data']}');
 
       final String conektaId = response.data['data']['id'];
 

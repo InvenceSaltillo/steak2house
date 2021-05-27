@@ -1,7 +1,7 @@
-import 'package:conekta_flutter/conekta_card.dart';
 import 'package:conekta_flutter/conekta_flutter.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/models/conekta/payment_sources_model.dart';
+import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 
 class PaymentController extends GetxController {
@@ -13,16 +13,10 @@ class PaymentController extends GetxController {
   var cardSelectedIdx = 0.obs;
   var pageControllerPage = 0.0.obs;
 
-  Future<void> getCardsList({dynamic cardListsString}) async {
+  Future<void> getCardsList() async {
     try {
-      // dynamic cardListTemp;
-
-      // if (cardListsString != '') {
-      //   cardListTemp = cardListsString as List;
-      // } else {
       final cardListTemp =
           await SharedPrefs.instance.getKey('cardList') as List;
-      // }
 
       final List<ConecktaPaymentSource> myCardList = cardListTemp
           .map((item) => new ConecktaPaymentSource.fromJson(item))
@@ -51,7 +45,7 @@ class PaymentController extends GetxController {
   @override
   void onReady() {
     conekta.setApiKey('key_syg4GCFA3rp7CuXnrvzn7A');
-    getCardsList();
+    // getCardsList();
     getLastUsedCard();
     super.onReady();
   }

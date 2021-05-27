@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:steak2house/src/controllers/cart_controller.dart';
+import 'package:steak2house/src/screens/checkout/widgets/delivery_time_card_checkout.dart';
 
 import 'package:steak2house/src/utils/utils.dart';
 
@@ -36,42 +37,8 @@ class BodyCheckOut extends StatelessWidget {
               SizedBox(height: _utils.getHeightPercent(.02)),
               ChekOutLocationCard(),
               CheckOutPaymentCard(),
+              DeliveryTimeCard(),
               CheckOutSummaryCard(),
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     // final setApi =
-              //     //     await conekta.setApiKey('key_syg4GCFA3rp7CuXnrvzn7A');
-              //     // print('USER ${_userCtrl.user.value.conektaCustomerId}');
-              //   },
-              //   child: Icon(
-              //     Icons.payment,
-              //   ),
-              // ),
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     final card = ConektaCard(
-              //       cardName: 'Alfonso Osorio',
-              //       cardNumber: '4242424242424242',
-              //       cvv: '847',
-              //       expirationMonth: '12',
-              //       expirationYear: '2040',
-              //     );
-
-              //     final String token =
-              //         await PaymentService.instance.createCardToken(card);
-
-              //     print('TOKEN $token');
-
-              //     if (_userCtrl.user.value.conektaCustomerId == '' ||
-              //         _userCtrl.user.value.conektaCustomerId == null) {
-              //       print('NO TIENE CONEKTAID');
-              //       PaymentService.instance.createCustomer(token);
-              //     } else {}
-              //   },
-              //   child: Icon(
-              //     Icons.payments_sharp,
-              //   ),
-              // ),
             ],
           ),
         ),
