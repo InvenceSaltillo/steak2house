@@ -23,6 +23,14 @@ class CheckOutScreen extends StatelessWidget {
     final _paymentCtrl = Get.find<PaymentController>();
 
     final _bottomNavCtrl = Get.find<BottomNavigationBarController>();
+
+    if (_miscCtrl.isOpenFlag.value) {
+      _miscCtrl.timeIsOut();
+      _miscCtrl.isOpenFlag.value = false;
+    }
+
+    print('CHECKOUT=======');
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -50,32 +58,36 @@ class CheckOutScreen extends StatelessWidget {
       ),
       body: BodyCheckOut(),
       bottomNavigationBar: Obx(
-        () => RoundedButton(
-          text: 'Terminar Pedido \$${_miscCtrl.totalPriceDelivery.ceil()}',
-          fontSize: .02,
-          height: .05,
-          width: .5,
-          onTap: () async {
-            if (_paymentCtrl.cardsList.length == 0) {
-              return Dialogs.instance.showSnackBar(
-                DialogType.info,
-                '¡Primero debes agregar una tarjeta!',
-                false,
-              );
-            }
-            final createCharge = await PaymentService.instance.createCharge();
+        () => !_miscCtrl.isOpen.value
+            ? Container(height: 50)
+            : RoundedButton(
+                text:
+                    'Terminar Pedido \$${_miscCtrl.totalPriceDelivery.ceil()}',
+                fontSize: .02,
+                height: .05,
+                width: .5,
+                onTap: () async {
+                  if (_paymentCtrl.cardsList.length == 0) {
+                    return Dialogs.instance.showSnackBar(
+                      DialogType.info,
+                      '¡Primero debes agregar una tarjeta!',
+                      false,
+                    );
+                  }
+                  final createCharge =
+                      await PaymentService.instance.createCharge();
 
-            if (createCharge) {
-              UserService.instance.sendTelegramMessage();
-              await SharedPrefs.instance.deleteKey('cartList');
-              _cartCtrl.cartList.value = [];
-              Get.to(
-                () => PaymentSuccess(),
-                fullscreenDialog: true,
-              );
-            }
-          },
-        ),
+                  if (createCharge) {
+                    UserService.instance.sendTelegramMessage();
+                    await SharedPrefs.instance.deleteKey('cartList');
+                    _cartCtrl.cartList.value = [];
+                    Get.to(
+                      () => PaymentSuccess(),
+                      fullscreenDialog: true,
+                    );
+                  }
+                },
+              ),
       ),
     );
   }

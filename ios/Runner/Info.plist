@@ -52,13 +52,17 @@
 		<string>fb-messenger-share-api</string>
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
-
 		<string>https</string>
 		<string>http</string>
 		<string>whatsapp</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Ejemplo</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
@@ -71,6 +75,8 @@
 	<string>Necesitamos obtener tu ubicación para darte un mejor servicio.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Necesitamos obtener tu ubicación para darte un mejor servicio.</string>
+	<key>UIBackgroundModes</key>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

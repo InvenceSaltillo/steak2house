@@ -7,11 +7,9 @@ import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/user/user_model.dart';
-import 'package:steak2house/src/services/user_service.dart';
+import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/utils.dart';
-import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -133,7 +131,7 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
         actions: [
           TextButton(
             onPressed: () async {
-              UserService.instance.sendTelegramMessage();
+              final time = await TrafficService.instance.getCurrentTime();
             },
             style: TextButton.styleFrom(
               primary: Colors.white,

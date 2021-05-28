@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>987821976471-2m4hhl7e4alto2brv62qe93pvqbh3d5a.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.987821976471-2m4hhl7e4alto2brv62qe93pvqbh3d5a</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>987821976471-p8fps687gfg7tuvtetn0c162f74g3san.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDpK_cZt_EZgp_Pkrp0B76UyWwX-f9EfEM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>987821976471</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.invence.steak2housei</string>
+	<key>PROJECT_ID</key>
+	<string>steak2house-b61b2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>steak2house-b61b2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:987821976471:ios:8d11fb372fbe4748d872d2</string>
+</dict>
+</plist>

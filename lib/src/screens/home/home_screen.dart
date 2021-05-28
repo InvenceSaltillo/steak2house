@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/categories_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
@@ -16,8 +18,10 @@ import 'package:steak2house/src/screens/orders/widgets/order_detail.dart';
 import 'package:steak2house/src/services/category_service.dart';
 import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/services/products_service.dart';
+import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/widgets/custom_bottom_bar.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 
 import 'widgets/home_app_bar.dart';
 
@@ -32,13 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
   late final bottomNavCtrl = Get.find<BottomNavigationBarController>();
   final _miscCtrl = Get.find<MiscController>();
   final _userCtrl = Get.find<UserController>();
+
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      // final categoriesCtrl = Get.find<CategoriesController>();
       final productsCtrl = Get.find<ProductController>();
 
-      print('CONEKTAAAAA ${_userCtrl.user.value.conektaCustomerId}');
       if (_userCtrl.user.value.conektaCustomerId != null) {
         PaymentService.instance.getConektaCustomer();
       }
@@ -56,6 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavCtrl.currentPage.value =
             productsCtrl.fromOtherPage['index'] ?? 0;
         productsCtrl.fromOtherPage['otherPage'] = false;
+      }
+
+      if (_miscCtrl.isOpenFlag.value) {
+        _miscCtrl.timeIsOut();
+        _miscCtrl.isOpenFlag.value = false;
       }
 
       UserService.instance.getOrders();

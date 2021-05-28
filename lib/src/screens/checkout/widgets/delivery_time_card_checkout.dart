@@ -1,95 +1,123 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:steak2house/src/controllers/location_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:steak2house/src/controllers/misc_controller.dart';
+import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
-import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../../constants.dart';
 
-class DeliveryTimeCard extends StatelessWidget {
+class DeliveryTimeCard extends StatefulWidget {
   DeliveryTimeCard({
     Key? key,
   }) : super(key: key);
 
-  final _locationCtrl = Get.find<LocationController>();
+  @override
+  _DeliveryTimeCardState createState() => _DeliveryTimeCardState();
+}
+
+class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
+  final _miscCtrl = Get.find<MiscController>();
 
   final _utils = Utils.instance;
+  List deliveryHours = [];
+  List deliveryHoursTemp = [];
+
+  void getCurrentTime() async {
+    deliveryHours = await TrafficService.instance.getDeliveryTimes();
+
+    deliveryHoursTemp = deliveryHours;
+    final time = await TrafficService.instance.getCurrentTime();
+
+    setState(() {
+      deliveryHoursTemp
+          .removeWhere((element) => time.isAfter(DateTime.parse(element)));
+    });
+  }
+
+  @override
+  void initState() {
+    getCurrentTime();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Card(
-        elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(Icons.delivery_dining, color: kPrimaryColor),
-              SizedBox(width: _utils.getWidthPercent(.05)),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hora de entrega',
-                    style: TextStyle(
-                      fontSize: _utils.getHeightPercent(.015),
-                      color: Colors.black54,
-                    ),
-                  ),
-                  Text(
-                    '${_locationCtrl.tempAddress.value.results![0].formattedAddress!.split(',')[0]}',
-                    style: TextStyle(
-                      fontSize: _utils.getHeightPercent(.02),
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              Spacer(),
-              InkWell(
-                onTap: () {
-                  Get.defaultDialog(
-                    title: 'Selecciona un horario de entrega',
-                    content: Column(
-                      children: [
-                        LabeledRadio(
-                          label: 'This is the first label text',
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          value: true,
-                          groupValue: true,
-                          onChanged: (bool newValue) {
-                            // setState(() {
-                            // _isRadioSelected = newValue;
-                            // });
-                          },
-                        ),
-                        LabeledRadio(
-                          label: 'This is the first label text',
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          value: false,
-                          groupValue: true,
-                          onChanged: (bool newValue) {
-                            // setState(() {
-                            // _isRadioSelected = newValue;
-                            // });
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                child: Text(
-                  'Cambiar',
+    return Card(
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FaIcon(FontAwesomeIcons.clock, color: kPrimaryColor),
+            SizedBox(width: _utils.getWidthPercent(.05)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hora de entrega',
                   style: TextStyle(
-                    fontSize: _utils.getHeightPercent(.02),
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold,
+                    fontSize: _utils.getHeightPercent(.015),
+                    color: Colors.black54,
                   ),
                 ),
+                Text(
+                  deliveryHoursTemp.length == 0
+                      ? 'No disponible'
+                      : '${DateFormat('hh:mm a').format(DateTime.parse(deliveryHoursTemp[_miscCtrl.isRadioSelected.value]))}',
+                  style: TextStyle(
+                    fontSize: _utils.getHeightPercent(.02),
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            InkWell(
+              onTap: () {
+                Get.defaultDialog(
+                  title: 'Selecciona un horario de entrega',
+                  content: Container(
+                    height: deliveryHours.length * 50,
+                    width: _utils.getWidthPercent(.9),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: deliveryHoursTemp.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final item = deliveryHoursTemp[index];
+                        return Obx(
+                          () => LabeledRadio(
+                            label:
+                                '${DateFormat('hh:mm a').format(DateTime.parse(item))}',
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                            ),
+                            value: index,
+                            groupValue: _miscCtrl.isRadioSelected.value,
+                            onChanged: (dynamic newValue) {
+                              setState(() {
+                                _miscCtrl.isRadioSelected.value = newValue!;
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
+              child: Text(
+                'Cambiar',
+                style: TextStyle(
+                  fontSize: _utils.getHeightPercent(.02),
+                  color: kSecondaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -108,14 +136,16 @@ class LabeledRadio extends StatelessWidget {
 
   final String label;
   final EdgeInsets padding;
-  final bool groupValue;
-  final bool value;
+  final dynamic groupValue;
+  final dynamic value;
   final Function onChanged;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        Get.back();
+        print(value);
         if (value != groupValue) {
           onChanged(value);
         }
@@ -124,10 +154,12 @@ class LabeledRadio extends StatelessWidget {
         padding: padding,
         child: Row(
           children: <Widget>[
-            Radio<bool>(
+            Radio(
+              fillColor:
+                  MaterialStateColor.resolveWith((states) => kPrimaryColor),
               groupValue: groupValue,
               value: value,
-              onChanged: (bool? newValue) {
+              onChanged: (dynamic? newValue) {
                 onChanged(newValue);
               },
             ),

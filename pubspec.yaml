@@ -23,34 +23,29 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  get: ^4.1.4
-  lottie: ^1.0.1
-  dio: ^4.0.0
-  flutter_svg: ^0.21.0+1
-  font_awesome_flutter: ^9.0.0
   animate_do: ^2.0.0
-  flutter_zoom_drawer: ^2.0.1
-  flutter_facebook_auth: ^3.3.3+1
-  google_sign_in: ^5.0.2
-  flutter_secure_storage: ^4.1.0
-  shared_preferences: ^2.0.5
-  geolocator: ^7.0.3
-  google_maps_flutter: ^2.0.3
-  permission_handler: ^7.0.0
-  open_settings: ^2.0.1
   conekta_flutter: 0.0.4-nullsafety
+  cupertino_icons: ^1.0.2
+  dio: ^4.0.0
+  firebase_core_vm:
+  firebase_messaging:
   flutter_credit_card: ^2.0.0
+  flutter_facebook_auth: ^3.3.3+1
+  flutter_secure_storage: ^4.1.0
+  flutter_svg: ^0.21.0+1
+  flutter_zoom_drawer: ^2.0.1
+  font_awesome_flutter: ^9.0.0
+  geolocator: ^7.0.3
+  get: ^4.1.4
+  google_maps_flutter: ^2.0.3
+  google_sign_in: ^5.0.2
   intl: ^0.17.0
-  sign_in_with_apple: ^3.0.0
+  lottie: ^1.0.1
   mask_text_input_formatter: ^2.0.0
-  url_launcher: ^6.0.4
-  whatsapp_unilink: ^2.0.0
-
+  open_settings: ^2.0.1
+  permission_handler: ^7.0.0
+  shared_preferences: ^2.0.5
+  sign_in_with_apple: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -63,10 +58,8 @@ flutter_icons:
   image_path: "assets/img/steak.png"
   adaptive_icon_background: "assets/img/steak.png"
 
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
 
@@ -83,10 +76,8 @@ flutter:
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -98,6 +89,5 @@ flutter:
         - asset: assets/fonts/PTSansNarrow/PTSansNarrow-Regular.ttf
         - asset: assets/fonts/PTSansNarrow/PTSansNarrow-Bold.ttf
           weight: 700
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

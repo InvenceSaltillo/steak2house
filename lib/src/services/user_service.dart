@@ -179,13 +179,6 @@ class UserService {
 
       print('RESPONSE ${response.data}');
 
-      // final userInfo = response.data['data'];
-
-      // final user = User.fromJson(userInfo);
-
-      // await SharedPrefs.instance.setKey('user', json.encode(user));
-      // Get.back();
-
       return true;
     } on dio.DioError catch (e) {
       Get.back();

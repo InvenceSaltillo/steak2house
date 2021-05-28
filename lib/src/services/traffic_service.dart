@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
+import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
 class TrafficService {
@@ -59,6 +60,65 @@ class TrafficService {
         );
       }
       return -1.0;
+    }
+  }
+
+  Future<List> getDeliveryTimes() async {
+    final url = Utils.instance.urlBackend;
+
+    try {
+      final response = await _dio.get(
+        '${url}delivery/deliveryTime',
+      );
+
+      print('getDeliveryTimes ${response.data['data']}');
+
+      final times = response.data['data'] as List;
+      return times;
+    } on dio.DioError catch (e) {
+      if (e.response != null) {
+        print('DIOERROR DATA getDeliveryTimes===== ${e.response!.data}');
+        print('DIOERROR HEADERS getDeliveryTimes===== ${e.response!.headers}');
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print('DIOERROR MESSAGE getDeliveryTimes===== ${e.message}');
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          e.message,
+          false,
+        );
+      }
+      return [];
+    }
+  }
+
+  Future<DateTime> getCurrentTime() async {
+    final url = Utils.instance.urlBackend;
+
+    try {
+      final response = await _dio.get(
+        '${url}delivery/getCurrentTime',
+      );
+
+      print('getCurrentTime ${response.data['data']}');
+
+      final currentTime = response.data['data'];
+      final dateTime = DateTime.parse(currentTime);
+      return dateTime;
+    } on dio.DioError catch (e) {
+      if (e.response != null) {
+        print('DIOERROR DATA getCurrentTime===== ${e.response!.data}');
+        print('DIOERROR HEADERS getCurrentTime===== ${e.response!.headers}');
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print('DIOERROR MESSAGE getCurrentTime===== ${e.message}');
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          e.message,
+          false,
+        );
+      }
+      return DateTime(1);
     }
   }
 }

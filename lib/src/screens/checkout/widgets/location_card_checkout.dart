@@ -25,7 +25,7 @@ class ChekOutLocationCard extends StatelessWidget {
           child: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.location_on, color: kPrimaryColor),
+              Icon(Icons.delivery_dining, color: kPrimaryColor),
               SizedBox(width: _utils.getWidthPercent(.05)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

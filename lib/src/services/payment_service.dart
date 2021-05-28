@@ -53,11 +53,7 @@ class PaymentService {
         'token': token,
       });
 
-      print('getConektaCustomer ${response.data['data']}');
-
-      final conektaCustomer = ConecktaClient.fromJson(response.data['data']);
-
-      print('getConektaCustomer $conektaCustomer');
+      ConecktaClient.fromJson(response.data['data']);
 
       if (response.data['data']['paymentSources'] != null) {
         final paymentSource = response.data['data']['paymentSources'] as List;

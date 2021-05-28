@@ -165,7 +165,7 @@ class ProductService {
   Future<int> getKMPrice() async {
     try {
       final response = await _dio.get(
-        '${Utils.instance.urlBackend}delivery',
+        '${Utils.instance.urlBackend}delivery/deliveryPrice',
         options: dio.Options(headers: headers),
       );
 

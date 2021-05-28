@@ -4,6 +4,7 @@ import 'package:steak2house/src/screens/cart/widgets/body_cart_screen.dart';
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('CART=======');
     return Scaffold(
       body: WillPopScope(
         onWillPop: () async {
