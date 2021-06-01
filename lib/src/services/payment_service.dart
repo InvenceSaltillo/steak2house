@@ -390,7 +390,13 @@ class PaymentService {
       Get.back();
       return cardToken;
     } on PlatformException catch (exception) {
-      print('Exception $exception');
+      Get.back();
+      Dialogs.instance.showSnackBar(
+        DialogType.error,
+        '${exception.message}',
+        false,
+      );
+      print('Exception ${exception.message}');
       return '';
     }
   }

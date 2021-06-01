@@ -23,7 +23,7 @@ class CheckOutProductsCard extends StatelessWidget {
         Container(
           width: double.infinity,
           height: _cartCtrl.cartList.length == 1
-              ? _utils.getHeightPercent(.10)
+              ? _utils.getHeightPercent(.12)
               : _cartCtrl.cartList.length == 2
                   ? _utils.getHeightPercent(.18)
                   : _cartCtrl.cartList.length == 3
@@ -32,9 +32,11 @@ class CheckOutProductsCard extends StatelessWidget {
           child: Card(
             elevation: 5,
             child: ListView.separated(
-              physics: _cartCtrl.cartList.length < 5
-                  ? NeverScrollableScrollPhysics()
-                  : BouncingScrollPhysics(),
+              physics:
+                  // _cartCtrl.cartList.length < 5
+                  //     ? NeverScrollableScrollPhysics()
+                  //     :
+                  BouncingScrollPhysics(),
               itemCount: _cartCtrl.cartList.length,
               separatorBuilder: (_, __) => Divider(
                 height: .05,

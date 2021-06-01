@@ -69,10 +69,12 @@ class SearchProducts extends SearchDelegate {
                 _productCtrl.productQty.value = 1;
                 _productCtrl.fromSearch.value = true;
                 _productCtrl.querySearch.value = this.query;
-                Get.offNamedUntil(
-                  ProductDetailScreen.routeName,
-                  (_) => false,
-                );
+                Get.to(()=>ProductDetailScreen());
+
+                // Get.offNamedUntil(
+                //   ProductDetailScreen.routeName,
+                //   (_) => false,
+                // );
               },
             );
           },

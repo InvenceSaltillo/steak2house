@@ -15,49 +15,51 @@ class ProductsGrid extends StatelessWidget {
     final _utils = Utils.instance;
     final productCtrl = Get.find<ProductController>();
     return Obx(
-      () => Container(
-        width: _utils.getWidthPercent(1),
-        height: 900,
-        padding: EdgeInsets.only(bottom: _utils.getHeightPercent(.7)),
-        child: productCtrl.loading.value
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Lottie.asset(
-                      'assets/animations/loading.json',
-                      width: _utils.getWidthPercent(.3),
-                      height: _utils.getWidthPercent(.3),
-                    ),
-                    Text(
-                      'Cargando...',
-                      style: TextStyle(fontSize: 17),
-                    )
-                  ],
-                ),
-              )
-            : productCtrl.products.length == 0
-                ? Center(
-                    child: Text(
-                      'No hay productos en esta categoría😪',
-                      style: TextStyle(
-                        fontSize: _utils.getHeightPercent(.027),
-                      ),
-                    ),
+      () => productCtrl.loading.value
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/loading.json',
+                    width: _utils.getWidthPercent(.3),
+                    height: _utils.getWidthPercent(.3),
+                  ),
+                  Text(
+                    'Cargando...',
+                    style: TextStyle(fontSize: 17),
                   )
-                : GridView.count(
-                    physics: BouncingScrollPhysics(),
-                    crossAxisCount: 2,
-                    children: List.generate(
-                      productCtrl.products.length,
-                      (index) {
-                        return ProductCard(
-                          product: productCtrl.products[index],
-                        );
-                      },
+                ],
+              ),
+            )
+          : productCtrl.products.length == 0
+              ? Center(
+                  child: Text(
+                    'No hay productos en esta categoría😪',
+                    style: TextStyle(
+                      fontSize: _utils.getHeightPercent(.027),
                     ),
                   ),
-      ),
+                )
+              : SizedBox(
+                  height: _utils.getHeightPercent(.4),
+                  // height: 260,
+                  child: GridView.count(
+                    physics: BouncingScrollPhysics(),
+                    crossAxisCount: 2,
+                    children: [
+                      ...List.generate(
+                        productCtrl.products.length,
+                        (index) {
+                          return ProductCard(
+                            product: productCtrl.products[index],
+                          );
+                        },
+                      ),
+                      // SizedBox(height: 5),
+                    ],
+                  ),
+                ),
     );
   }
 }

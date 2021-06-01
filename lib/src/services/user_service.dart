@@ -84,19 +84,20 @@ class UserService {
     }
   }
 
-  Future<bool> updatePhoneNumber(String phoneNumber) async {
+  Future<bool> updateField(String dataToUpdate, String field) async {
     Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
 
     final _user = _userCtrl.user.value;
 
     dio.FormData _data = dio.FormData.fromMap({
       'userId': _user.id,
-      'phoneNumber': phoneNumber,
+      'dataToUpdate': dataToUpdate,
+      'field': field,
     });
 
     try {
       final response = await _dio.post(
-        '${urlEndpoint}updatePhoneNumber',
+        '${urlEndpoint}updateField',
         data: _data,
         options: dio.Options(headers: headers),
       );
@@ -105,6 +106,8 @@ class UserService {
 
       final user = User.fromJson(userInfo);
 
+      _userCtrl.user.value = user;
+
       await SharedPrefs.instance.setKey('user', json.encode(user));
       Get.back();
 
@@ -112,8 +115,8 @@ class UserService {
     } on dio.DioError catch (e) {
       Get.back();
       if (e.response != null) {
-        print('DIOERROR DATA updatePhoneNumber===== ${e.response!.data}');
-        print('DIOERROR HEADERS updatePhoneNumber===== ${e.response!.headers}');
+        print('DIOERROR DATA updateField===== ${e.response!.data}');
+        print('DIOERROR HEADERS updateField===== ${e.response!.headers}');
 
         final String message = e.response!.data['data'];
 
@@ -124,7 +127,7 @@ class UserService {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print('DIOERROR MESSAGE updatePhoneNumber===== ${e.message}');
+        print('DIOERROR MESSAGE updateField===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
           e.message,
@@ -151,6 +154,7 @@ class UserService {
     message += '${_userCtrl.user.value.name}\n\n';
     message += 'Dirección:\n$address\n';
     message += '\nTeléfono:\n${_userCtrl.user.value.tel}\n\n';
+    message += 'Hora de entrega:\n${_miscCtrl.deliveryHour}\n\n';
     message += 'Productos:\n';
     message += '$itemsString\n';
     message += 'Subtotal:\n';
@@ -183,8 +187,9 @@ class UserService {
     } on dio.DioError catch (e) {
       Get.back();
       if (e.response != null) {
-        print('DIOERROR DATA updatePhoneNumber===== ${e.response!.data}');
-        print('DIOERROR HEADERS updatePhoneNumber===== ${e.response!.headers}');
+        print('DIOERROR DATA sendTelegramMessage===== ${e.response!.data}');
+        print(
+            'DIOERROR HEADERS sendTelegramMessage===== ${e.response!.headers}');
 
         final String message = e.response!.data['data'];
 
@@ -195,7 +200,7 @@ class UserService {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print('DIOERROR MESSAGE updatePhoneNumber===== ${e.message}');
+        print('DIOERROR MESSAGE sendTelegramMessage===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
           e.message,

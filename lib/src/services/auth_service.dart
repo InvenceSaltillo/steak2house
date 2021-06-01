@@ -17,6 +17,7 @@ import 'package:steak2house/src/utils/secure_storage.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
+import 'package:steak2house/src/services/fcm_service.dart';
 
 class AuthService {
   AuthService._internal();
@@ -73,6 +74,8 @@ class AuthService {
 
   Future<bool> isLogged() async {
     final accessToken = await FacebookAuth.instance.accessToken;
+
+    print('FBTOKEN $accessToken');
     if (accessToken != null) {
       // Esta loggeado con facebook
 
@@ -167,6 +170,8 @@ class AuthService {
             (route) => false,
           );
         }
+
+        await FCMService.initializeApp();
       } on dio.DioError catch (e) {
         if (e.response != null) {
           print('DIOERROR DATA===== ${e.response!.data}');
@@ -174,7 +179,8 @@ class AuthService {
         } else {
           // Something happened in setting up or sending the request that triggered an Error
           print(
-              'DIOERROR MESSAGE facebookLogin===== ${e}, ${Utils.instance.urlBackend}');
+              'DIOERROR MESSAGE facebookLogin===== $e, ${Utils.instance.urlBackend}');
+          logOut();
           Get.back();
           Dialogs.instance.showSnackBar(
             DialogType.error,
@@ -226,7 +232,6 @@ class AuthService {
       await refreshToken(token);
       _complete();
 
-      // if(tokenRefreshResponse){}
       return token;
     }
 

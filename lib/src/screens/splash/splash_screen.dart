@@ -11,11 +11,10 @@ import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
-import 'package:steak2house/src/models/user/user_model.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/screens/sign_in/sign_in_screen.dart';
 import 'package:steak2house/src/services/auth_service.dart';
-import 'package:steak2house/src/utils/shared_prefs.dart';
+import 'package:steak2house/src/services/fcm_service.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../utils/utils.dart';
@@ -59,7 +58,9 @@ class _SplashScreenState extends State<SplashScreen> {
         false,
       );
 
+      // Esperar a que cierre snackbar bienvenida
       await Future.delayed(Duration(milliseconds: 1500));
+      await FCMService.initializeApp();
 
       Get.offUntil(
         PageRouteBuilder(
@@ -72,6 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
         (route) => false,
       );
     } else {
+      print('LOGOUT=======');
+      AuthService.auth.logOut();
       Get.offUntil(
         PageRouteBuilder(
           pageBuilder: (BuildContext context, Animation<double> animation,

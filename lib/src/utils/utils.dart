@@ -10,9 +10,10 @@ class Utils {
   static Utils _instance = Utils._internal();
   static Utils get instance => _instance;
   final Size size = Get.size;
+
   // final String urlBackend = 'https://invence.com.mx/steak2house/api/';
   final String urlBackend = 'http://localhost/steak2house-backend/';
-  // final String urlBackend = 'http://192.168.0.14/steak2house-backend/';
+  // final String urlBackend = 'http://192.168.0.16/steak2house-backend/';
 
   Timer _debounce = Timer(Duration(milliseconds: 500), () {});
 

@@ -27,6 +27,7 @@ class ProductDetailImage extends StatelessWidget {
 
     return Container(
       width: _utils.getWidthPercent(1),
+      height: _utils.getHeightPercent(.4),
       padding: EdgeInsets.only(
         top: _utils.getHeightPercent(.05),
         bottom: _utils.getHeightPercent(.03),
@@ -81,7 +82,9 @@ class ProductDetailImage extends StatelessWidget {
                   _producCtrl.querySearch.value = '';
                 } else {
                   _producCtrl.querySearch.value = '';
-                  Get.off(() => MainScreen());
+                  print('AQUIIII=====');
+                  Get.back();
+                  // Get.off(() => MainScreen());
                 }
               },
               utils: _utils,

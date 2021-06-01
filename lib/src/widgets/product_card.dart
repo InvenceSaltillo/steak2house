@@ -24,7 +24,8 @@ class ProductCard extends StatelessWidget {
       onTap: () {
         productCtrl.currentProduct.value = product;
         productCtrl.productQty.value = 1;
-        Get.offNamedUntil(ProductDetailScreen.routeName, (_) => false);
+        // Get.offNamedUntil(ProductDetailScreen.routeName, (_) => false);
+        Get.to(() => ProductDetailScreen());
       },
       child: Container(
         margin: EdgeInsets.all(_utils.getWidthPercent(.01)),
@@ -83,13 +84,6 @@ class ProductCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // Text(
-                  //   '800g',
-                  //   style: TextStyle(
-                  //     color: Colors.white38,
-                  //     fontWeight: FontWeight.w100,
-                  //   ),
-                  // ),
                 ],
               ),
             ),

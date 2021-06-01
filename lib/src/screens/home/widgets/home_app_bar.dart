@@ -21,6 +21,7 @@ class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
   final locationCtrl = Get.find<LocationController>();
+
   @override
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
@@ -61,10 +62,17 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
+    print('AppLifecycleState $state');
+
     if (state == AppLifecycleState.resumed) {
-      await locationCtrl.checkLocationEnabled();
-      if (locationCtrl.permissionStatus.value == PermissionStatus.granted &&
-          locationCtrl.isLocationEnabled.value) {}
+      final checkLocationEnabled = await locationCtrl.checkLocationEnabled();
+      print('checkLocationEnabled $checkLocationEnabled');
+
+      print('permissionStatus===== ${locationCtrl.permissionStatus.value} ');
+      if (locationCtrl.fromSettings.value && checkLocationEnabled) {
+        print('CUMPLEEEEEEEEE===== ');
+        await locationCtrl.getCurrentPosition();
+      }
     }
   }
 
@@ -129,6 +137,14 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
           ),
         ),
         actions: [
+          // Container(
+          //   width: 100,
+          //   height: 100,
+          //   decoration: BoxDecoration(
+          //     color: Colors.red,
+          //     borderRadius: BorderRadius.circular(50),
+          //   ),
+          // ),
           TextButton(
             onPressed: () async {
               final time = await TrafficService.instance.getCurrentTime();
@@ -136,11 +152,24 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
             style: TextButton.styleFrom(
               primary: Colors.white,
             ),
-            child: CircleAvatar(
+            child:
+                // Container(
+                //   width: _utils.getWidthPercent(.09),
+                //   height: _utils.getWidthPercent(.09),
+                //   decoration: BoxDecoration(
+                //     color: Colors.red,
+                //     borderRadius: BorderRadius.circular(50),
+                //   ),
+                // ),
+                CircleAvatar(
               backgroundColor: Colors.transparent,
-              child: Container(
-                // padding: EdgeInsets.all(8),
-                child: ClipOval(
+              child: ClipOval(
+                child: Container(
+                  width: _utils.getWidthPercent(.09),
+                  height: _utils.getWidthPercent(.09),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/animations/loading.gif',
                     fit: BoxFit.cover,
@@ -148,9 +177,6 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
                     imageErrorBuilder: (context, error, stackTrace) =>
                         Image.asset(
                       'assets/img/noAvatar.png',
-                      height: _utils.getHeightPercent(.1),
-                      width: _utils.getHeightPercent(.1),
-                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

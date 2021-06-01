@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/categories_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
@@ -12,16 +10,13 @@ import 'package:steak2house/src/screens/checkout/checkout_screen.dart';
 import 'package:steak2house/src/screens/credit_cards/my_credit_cards/my_credit_cards.dart';
 import 'package:steak2house/src/screens/favorites/favorites_screen.dart';
 import 'package:steak2house/src/screens/home/widgets/body_home.dart';
-import 'package:steak2house/src/screens/notifications/notifications_screen.dart';
 import 'package:steak2house/src/screens/orders/orders_screen.dart';
 import 'package:steak2house/src/screens/orders/widgets/order_detail.dart';
 import 'package:steak2house/src/services/category_service.dart';
 import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/services/products_service.dart';
-import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/widgets/custom_bottom_bar.dart';
-import 'package:steak2house/src/widgets/dialogs.dart';
 
 import 'widgets/home_app_bar.dart';
 
@@ -95,10 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
             OrdersScreen(),
             FavoriteScreen(),
             CartScreen(),
-            NotificationsScreen(),
+            MyCreditCards(),
+            // NotificationsScreen(),
             CheckOutScreen(),
             OrderDetail(),
-            MyCreditCards(),
           ],
         ),
         bottomNavigationBar:

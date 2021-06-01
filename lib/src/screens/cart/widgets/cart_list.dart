@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
+import 'package:steak2house/src/screens/checkout/checkout_screen.dart';
 import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
@@ -15,7 +16,6 @@ class CartList extends StatelessWidget {
   }) : super(key: key);
 
   final _cartCtrl = Get.find<CartController>();
-  final _bottomNavCtrl = Get.find<BottomNavigationBarController>();
   final _miscCtrl = Get.find<MiscController>();
   final _utils = Utils.instance;
 
@@ -59,8 +59,10 @@ class CartList extends StatelessWidget {
               final distance =
                   await TrafficService.instance.getDeliveryDistance();
               _miscCtrl.deliveryDistance.value = distance;
-              _miscCtrl.showAppBar.value = false;
-              _bottomNavCtrl.pageCtrl.value.jumpToPage(5);
+              // _miscCtrl.showAppBar.value = false;
+              // _bottomNavCtrl.pageCtrl.value.jumpToPage(5);
+              // Get.back();
+              Get.to(() => CheckOutScreen());
             },
             style: TextButton.styleFrom(
               shape: StadiumBorder(),

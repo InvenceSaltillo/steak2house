@@ -5,7 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
+import 'package:steak2house/src/screens/credit_cards/credit_card/credit_card_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 
 import 'widgets/card_list_bullets.dart';
 import 'widgets/card_list_button.dart';
@@ -57,76 +59,97 @@ class _BodyCreditCardListState extends State<BodyCreditCardList> {
               },
               icon: Icon(Icons.clear, color: kPrimaryColor),
             ),
-            Container(
-              width: _utils.getWidthPercent(1),
-              height: _utils.getWidthPercent(.6),
-              child: PageView(
-                onPageChanged: (index) =>
-                    _paymentCtrl.cardSelectedIdx.value = index,
-                children: [
-                  ...List.generate(
-                    _paymentCtrl.cardsList.length,
-                    (idx) {
-                      final _card = _paymentCtrl.cardsList[idx];
-                      return ZoomIn(
-                        duration: Duration(milliseconds: 600),
-                        child: CreditCardWidget(
-                          cardBgColor: kPrimaryColor,
-                          width: _utils.getWidthPercent(.9),
-                          cardHolderName: _card.name!,
-                          cardNumber: '**** **** **** ${_card.last4!}',
-                          cvvCode: '',
-                          expiryDate: '${_card.expMonth}/${_card.expYear}',
-                          showBackView: false,
-                          cardType: _getCardType(_card.brand!),
-                          obscureCardNumber: false,
-                        ),
-                      );
-                    },
-                  ),
-                  ZoomIn(
-                    duration: Duration(milliseconds: 600),
-                    child: Container(
-                      padding: EdgeInsets.all(_utils.getHeightPercent(.02)),
+            InkWell(
+              onTap: () async {
+                if (_paymentCtrl.cardSelectedIdx <
+                    _paymentCtrl.cardsList.length) {
+                  _paymentCtrl.lastUsedCard.value = _paymentCtrl
+                      .cardsList[_paymentCtrl.cardSelectedIdx.value];
+                  Get.back();
+                } else {
+                  if (_paymentCtrl.cardsList.length >= 5) {
+                    return Dialogs.instance.showSnackBar(
+                      DialogType.error,
+                      '¡Solo puedes agregar 5 tarjetas, por favor elimina una!',
+                      false,
+                    );
+                  }
+                  Get.back();
+                  Get.to(() => CreditCardScreen());
+                }
+              },
+              child: Container(
+                width: _utils.getWidthPercent(1),
+                height: _utils.getWidthPercent(.6),
+                child: PageView(
+                  onPageChanged: (index) =>
+                      _paymentCtrl.cardSelectedIdx.value = index,
+                  children: [
+                    ...List.generate(
+                      _paymentCtrl.cardsList.length,
+                      (idx) {
+                        final _card = _paymentCtrl.cardsList[idx];
+                        return ZoomIn(
+                          duration: Duration(milliseconds: 600),
+                          child: CreditCardWidget(
+                            cardBgColor: kPrimaryColor,
+                            width: _utils.getWidthPercent(.9),
+                            height: _utils.getHeightPercent(.32),
+                            cardHolderName: _card.name!,
+                            cardNumber: '**** **** **** ${_card.last4!}',
+                            cvvCode: '',
+                            expiryDate: '${_card.expMonth}/${_card.expYear}',
+                            showBackView: false,
+                            cardType: _getCardType(_card.brand!),
+                            obscureCardNumber: false,
+                          ),
+                        );
+                      },
+                    ),
+                    ZoomIn(
+                      duration: Duration(milliseconds: 600),
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: kPrimaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: const <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 15,
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding:
-                                    EdgeInsets.all(_utils.getWidthPercent(.03)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  border: Border.all(color: kSecondaryColor),
-                                ),
-                                child: FaIcon(
-                                  FontAwesomeIcons.creditCard,
-                                  color: kSecondaryColor,
-                                ),
-                              ),
-                              SizedBox(height: _utils.getHeightPercent(.015)),
-                              Text(
-                                'Agregar nueva tarjeta',
-                                style: TextStyle(color: kSecondaryColor),
+                        padding: EdgeInsets.all(_utils.getHeightPercent(.02)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: const <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 15,
                               ),
                             ],
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(
+                                      _utils.getWidthPercent(.03)),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    border: Border.all(color: kSecondaryColor),
+                                  ),
+                                  child: FaIcon(
+                                    FontAwesomeIcons.creditCard,
+                                    color: kSecondaryColor,
+                                  ),
+                                ),
+                                SizedBox(height: _utils.getHeightPercent(.015)),
+                                Text(
+                                  'Agregar nueva tarjeta',
+                                  style: TextStyle(color: kSecondaryColor),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             CardListBullets(),

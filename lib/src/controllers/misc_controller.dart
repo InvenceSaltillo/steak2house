@@ -8,12 +8,13 @@ import '../constants.dart';
 import 'cart_controller.dart';
 
 class MiscController extends GetxController {
-  final _cartCtrl = Get.find<CartController>();
   var errorMessage = ''.obs;
   var snackBarStatus = SnackbarStatus.CLOSED.obs;
   var snackBar = false.obs;
   var showAppBar = true.obs;
   var isRadioSelected = 0.obs;
+
+  var deliveryHour = ''.obs;
 
   var deliveryDistance = 0.0.obs;
 
@@ -85,6 +86,7 @@ class MiscController extends GetxController {
   }
 
   void updateDeliveryPrice() async {
+    final _cartCtrl = Get.find<CartController>();
     calculateDistance.value = true;
     deliveryDistance.value = 0.0;
     deliveryDistance.value =

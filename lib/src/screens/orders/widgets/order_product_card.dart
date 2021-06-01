@@ -32,6 +32,7 @@ class OrderProductCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
+              height: _utils.getHeightPercent(.13),
               decoration: BoxDecoration(
                 color: kPrimaryColor,
                 borderRadius: BorderRadius.circular(10),

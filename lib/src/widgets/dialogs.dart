@@ -140,7 +140,7 @@ class Dialogs {
               print('PHONE ${maskFormatter.getUnmaskedText()}');
 
               final updateNumber = await UserService.instance
-                  .updatePhoneNumber(maskFormatter.getUnmaskedText());
+                  .updateField(maskFormatter.getUnmaskedText(), 'tel');
 
               if (updateNumber) {
                 Get.back();

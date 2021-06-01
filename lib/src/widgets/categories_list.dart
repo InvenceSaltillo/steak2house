@@ -103,8 +103,8 @@ class CategoryCard extends StatelessWidget {
                 ? _utils.getWidthPercent(.25)
                 : _utils.getWidthPercent(.23),
             height: categoriesCtrl.currentIndex.value == index
-                ? _utils.getHeightPercent(.15)
-                : _utils.getHeightPercent(.13),
+                ? _utils.getHeightPercent(.17)
+                : _utils.getHeightPercent(.15),
             decoration: BoxDecoration(
                 color: categoriesCtrl.currentIndex.value == index
                     ? kPrimaryColor

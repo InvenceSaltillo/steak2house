@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
-import 'package:steak2house/src/models/user/user_model.dart';
 import 'package:steak2house/src/screens/credit_cards/my_credit_cards/my_credit_cards.dart';
 import 'package:steak2house/src/services/auth_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
@@ -20,8 +19,8 @@ class CustomDrawer extends StatelessWidget {
       // MenuItem("Mi perfil", Icons.settings, -1),
       MenuItem("Favoritos", Icons.favorite_border, 2),
       MenuItem("Carrito", Icons.shopping_cart_outlined, 3),
-      MenuItem("Notificaciones", Icons.notifications, 4),
-      MenuItem("Tarjetas", Icons.credit_card, -1),
+      // MenuItem("Notificaciones", Icons.notifications, 4),
+      MenuItem("Tarjetas", Icons.credit_card, 4),
       // MenuItem("Acerca de nosotros", Icons.info_outline, 4),
     ];
 
@@ -35,158 +34,159 @@ class CustomDrawer extends StatelessWidget {
 
     final _utils = Utils.instance;
     final _userCtrl = Get.find<UserController>();
-    final User _user = _userCtrl.user.value;
 
     final bottomNavCtrl = Get.find<BottomNavigationBarController>();
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              kPrimaryColor,
-              Colors.indigo,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+    return Obx(
+      () => Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                kPrimaryColor,
+                Colors.indigo,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-        ),
-        child: ListView(
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: _utils.getHeightPercent(.05),
-                    bottom: _utils.getWidthPercent(.02),
-                    left: _utils.getWidthPercent(.04),
-                    right: _utils.getWidthPercent(.03),
-                  ),
-                  child: Container(
-                    width: _utils.getWidthPercent(.25),
-                    height: _utils.getWidthPercent(.25),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey[300],
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: _utils.getHeightPercent(.05),
+                      bottom: _utils.getWidthPercent(.02),
+                      left: _utils.getWidthPercent(.04),
+                      right: _utils.getWidthPercent(.03),
                     ),
-                    child: ClipOval(
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/animations/loading.gif',
-                        fit: BoxFit.cover,
-                        image: _user.avatar!,
-                        imageErrorBuilder: (context, error, stackTrace) =>
-                            Image.asset(
-                          'assets/img/noAvatar.png',
-                          height: _utils.getHeightPercent(.1),
-                          width: _utils.getHeightPercent(.1),
-                          fit: BoxFit.contain,
+                    child: Container(
+                      width: _utils.getWidthPercent(.25),
+                      height: _utils.getWidthPercent(.25),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: ClipOval(
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/animations/loading.gif',
+                          fit: BoxFit.cover,
+                          image: _userCtrl.user.value.avatar!,
+                          imageErrorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                            'assets/img/noAvatar.png',
+                            height: _utils.getHeightPercent(.1),
+                            width: _utils.getHeightPercent(.1),
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 36.0,
-                    left: 24.0,
-                    right: 24.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _user.name!,
-                        style: TextStyle(
-                          fontSize: _utils.getHeightPercent(.03),
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        _user.email!,
-                        style: TextStyle(
-                          fontSize: _utils.getHeightPercent(.017),
-                          color: Colors.white.withOpacity(.5),
-                        ),
-                      ),
-                      Text(
-                        _user.tel!,
-                        style: TextStyle(
-                          fontSize: _utils.getHeightPercent(.017),
-                          color: Colors.white.withOpacity(.5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  // height: _utils.getHeightPercent(.5),
-                  child: Padding(
+                  Padding(
                     padding: const EdgeInsets.only(
+                      bottom: 36.0,
                       left: 24.0,
                       right: 24.0,
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ...mainMenu
-                            .map(
-                              (item) => MenuItemWidget(
-                                key: Key(item.index.toString()),
-                                item: item,
-                                callback: () {
-                                  ZoomDrawer.of(context)!.toggle();
-
-                                  switch (item.index!) {
-                                    case -1:
-                                      return Get.to(() => MyCreditCards());
-
-                                    default:
-                                  }
-                                  bottomNavCtrl.pageCtrl.value
-                                      .jumpToPage(item.index!);
-                                  bottomNavCtrl.currentPage.value = item.index!;
-                                },
-                                widthBox: widthBox,
-                                style: style,
-                                selected: 1 == item.index,
-                              ),
-                            )
-                            .toList(),
-                        TextButton(
-                          onPressed: () async {
-                            await AuthService.auth.logOut();
-                          },
-                          style: TextButton.styleFrom(
-                            primary: Color(0x44000000),
+                        Text(
+                          _userCtrl.user.value.name!,
+                          style: TextStyle(
+                            fontSize: _utils.getHeightPercent(.03),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.logout,
-                                color: kSecondaryColor,
-                                size: 24,
-                              ),
-                              widthBox,
-                              Expanded(
-                                child: Text(
-                                  'Cerrar sesión',
-                                  style: style,
-                                ),
-                              )
-                            ],
+                        ),
+                        Text(
+                          _userCtrl.user.value.email!,
+                          style: TextStyle(
+                            fontSize: _utils.getHeightPercent(.017),
+                            color: Colors.white.withOpacity(.5),
                           ),
-                        )
+                        ),
+                        Text(
+                          _userCtrl.user.value.tel!,
+                          style: TextStyle(
+                            fontSize: _utils.getHeightPercent(.017),
+                            color: Colors.white.withOpacity(.5),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Container(
+                    // height: _utils.getHeightPercent(.5),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 24.0,
+                        right: 24.0,
+                      ),
+                      child: Column(
+                        children: [
+                          ...mainMenu
+                              .map(
+                                (item) => MenuItemWidget(
+                                  key: Key(item.index.toString()),
+                                  item: item,
+                                  callback: () {
+                                    ZoomDrawer.of(context)!.toggle();
+
+                                    switch (item.index!) {
+                                      case -1:
+                                        return Get.to(() => MyCreditCards());
+
+                                      default:
+                                    }
+                                    bottomNavCtrl.pageCtrl.value
+                                        .jumpToPage(item.index!);
+                                    bottomNavCtrl.currentPage.value =
+                                        item.index!;
+                                  },
+                                  widthBox: widthBox,
+                                  style: style,
+                                  selected: 1 == item.index,
+                                ),
+                              )
+                              .toList(),
+                          TextButton(
+                            onPressed: () async {
+                              await AuthService.auth.logOut();
+                            },
+                            style: TextButton.styleFrom(
+                              primary: Color(0x44000000),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.logout,
+                                  color: kSecondaryColor,
+                                  size: 24,
+                                ),
+                                widthBox,
+                                Expanded(
+                                  child: Text(
+                                    'Cerrar sesión',
+                                    style: style,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

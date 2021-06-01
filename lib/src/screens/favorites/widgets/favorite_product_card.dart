@@ -33,7 +33,7 @@ class FavoriteProductCard extends StatelessWidget {
       ),
       child: SizedBox(
         width: double.infinity,
-        height: _utils.getHeightPercent(.12),
+        // height: _utils.getHeightPercent(.13),
         child: InkWell(
           onTap: () {
             _producCtrl.currentProduct.value = favorite;
@@ -54,7 +54,7 @@ class FavoriteProductCard extends StatelessWidget {
                   child: Image.network(
                     favorite.picture!,
                     width: _utils.getHeightPercent(.14),
-                    height: _utils.getHeightPercent(.15),
+                    height: _utils.getHeightPercent(.13),
                     fit: BoxFit.cover,
                     loadingBuilder: (ctx, child, _) {
                       if (_ == null) return child;
@@ -71,7 +71,7 @@ class FavoriteProductCard extends StatelessWidget {
                       return Image.asset(
                         'assets/img/noImage.png',
                         width: _utils.getHeightPercent(.14),
-                        height: _utils.getHeightPercent(.15),
+                        height: _utils.getHeightPercent(.13),
                         fit: BoxFit.contain,
                       );
                     },
@@ -79,14 +79,12 @@ class FavoriteProductCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(2.0),
                 child: Container(
                   width: _utils.getWidthPercent(.55),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -133,6 +131,7 @@ class FavoriteProductCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      SizedBox(height: _utils.getHeightPercent(.01)),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,10 +145,9 @@ class FavoriteProductCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      SizedBox(height: _utils.getHeightPercent(.01)),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment:
-                        //     MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             '\$${favorite.price}',

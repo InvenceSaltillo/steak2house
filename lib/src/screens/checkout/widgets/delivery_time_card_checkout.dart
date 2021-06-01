@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
 
 import '../../../constants.dart';
 
@@ -23,6 +24,8 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
   final _utils = Utils.instance;
   List deliveryHours = [];
   List deliveryHoursTemp = [];
+  List deliveryTimes = [];
+  String deliveryTimeText = '';
 
   void getCurrentTime() async {
     deliveryHours = await TrafficService.instance.getDeliveryTimes();
@@ -30,10 +33,41 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
     deliveryHoursTemp = deliveryHours;
     final time = await TrafficService.instance.getCurrentTime();
 
-    setState(() {
-      deliveryHoursTemp
-          .removeWhere((element) => time.isAfter(DateTime.parse(element)));
-    });
+    print('deliveryHours ${deliveryHours[0][0]}');
+
+    if (time.isAfter(DateTime.parse(deliveryHours[1][0]))) {
+      print('YA NO HAY====');
+      await Dialogs.instance.showLottieDialog(
+        title:
+            'El horario de venta terminó, recibiremos pedidos mañana a partir de las 11:00 A.M.',
+        lottieSrc: 'assets/animations/time.json',
+        firstButtonText: 'Ok',
+        secondButtonText: '',
+        firstButtonBgColor: kPrimaryColor,
+        firstButtonTextColor: kSecondaryColor,
+        secondButtonBgColor: kPrimaryColor,
+        secondButtonTextColor: kSecondaryColor,
+      );
+      Get.back();
+      return;
+    }
+
+    if (time.isAfter(DateTime.parse(deliveryHours[0][0]))) {
+      print('isAfter ');
+      deliveryHoursTemp = deliveryHours[1];
+
+      deliveryTimes.add(deliveryHours[1]);
+    } else {
+      deliveryHoursTemp = deliveryHours[0];
+      deliveryTimes.add(deliveryHours[0]);
+      deliveryTimes.add(deliveryHours[1]);
+    }
+    print('deliveryHoursTemp ${deliveryHours.length}');
+
+    _miscCtrl.deliveryHour.value =
+        'Entre ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][1]))} y ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][2]))}';
+
+    setState(() {});
   }
 
   @override
@@ -64,9 +98,9 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
                   ),
                 ),
                 Text(
-                  deliveryHoursTemp.length == 0
+                  deliveryTimes.length == 0
                       ? 'No disponible'
-                      : '${DateFormat('hh:mm a').format(DateTime.parse(deliveryHoursTemp[_miscCtrl.isRadioSelected.value]))}',
+                      : 'Entre ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][1]))} y ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][2]))}',
                   style: TextStyle(
                     fontSize: _utils.getHeightPercent(.02),
                     color: Colors.black,
@@ -76,38 +110,42 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
             ),
             Spacer(),
             InkWell(
-              onTap: () {
-                Get.defaultDialog(
-                  title: 'Selecciona un horario de entrega',
-                  content: Container(
-                    height: deliveryHours.length * 50,
-                    width: _utils.getWidthPercent(.9),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: deliveryHoursTemp.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final item = deliveryHoursTemp[index];
-                        return Obx(
-                          () => LabeledRadio(
-                            label:
-                                '${DateFormat('hh:mm a').format(DateTime.parse(item))}',
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0,
-                            ),
-                            value: index,
-                            groupValue: _miscCtrl.isRadioSelected.value,
-                            onChanged: (dynamic newValue) {
-                              setState(() {
-                                _miscCtrl.isRadioSelected.value = newValue!;
-                              });
+              onTap: deliveryTimes.length == 0
+                  ? null
+                  : () {
+                      Get.defaultDialog(
+                        title: 'Selecciona un horario de entrega',
+                        content: Container(
+                          height: deliveryTimes.length * 50,
+                          width: _utils.getWidthPercent(.9),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: deliveryTimes.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final item = deliveryTimes[index];
+                              return Obx(
+                                () => LabeledRadio(
+                                  label:
+                                      'Entre ${DateFormat('hh:mm a').format(DateTime.parse(item[1]))} y ${DateFormat('hh:mm a').format(DateTime.parse(item[2]))}',
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 5.0,
+                                  ),
+                                  value: index,
+                                  groupValue: _miscCtrl.isRadioSelected.value,
+                                  onChanged: (dynamic newValue) {
+                                    setState(() {
+                                      _miscCtrl.isRadioSelected.value =
+                                          newValue!;
+                                    });
+                                  },
+                                  deliveryTimes: deliveryTimes,
+                                ),
+                              );
                             },
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
+                        ),
+                      );
+                    },
               child: Text(
                 'Cambiar',
                 style: TextStyle(
@@ -125,13 +163,14 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
 }
 
 class LabeledRadio extends StatelessWidget {
-  const LabeledRadio({
+  LabeledRadio({
     Key? key,
     required this.label,
     required this.padding,
     required this.groupValue,
     required this.value,
     required this.onChanged,
+    required this.deliveryTimes,
   }) : super(key: key);
 
   final String label;
@@ -139,16 +178,22 @@ class LabeledRadio extends StatelessWidget {
   final dynamic groupValue;
   final dynamic value;
   final Function onChanged;
+  final List deliveryTimes;
+
+  final _miscCtrl = Get.find<MiscController>();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Get.back();
-        print(value);
+        print('VALUE $value');
         if (value != groupValue) {
           onChanged(value);
         }
+
+        _miscCtrl.deliveryHour.value =
+            'Entre ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][1]))} y ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][2]))}';
       },
       child: Padding(
         padding: padding,

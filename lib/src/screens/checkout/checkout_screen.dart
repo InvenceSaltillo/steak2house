@@ -29,12 +29,11 @@ class CheckOutScreen extends StatelessWidget {
       _miscCtrl.isOpenFlag.value = false;
     }
 
-    print('CHECKOUT=======');
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
+            Get.back();
             _miscCtrl.showAppBar.value = true;
             _bottomNavCtrl.currentPage.value = 3;
             _bottomNavCtrl.pageCtrl.value.jumpToPage(3);
@@ -78,7 +77,7 @@ class CheckOutScreen extends StatelessWidget {
                       await PaymentService.instance.createCharge();
 
                   if (createCharge) {
-                    UserService.instance.sendTelegramMessage();
+                    await UserService.instance.sendTelegramMessage();
                     await SharedPrefs.instance.deleteKey('cartList');
                     _cartCtrl.cartList.value = [];
                     Get.to(

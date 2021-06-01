@@ -14,7 +14,7 @@ class BodyOrders extends StatelessWidget {
     return Obx(
       () => _userCtrl.ordersList.length == 0
           ? EmptyResults(
-              text: 'Aún no tienes pedidos realizados',
+              text: 'Aún no tienes pedidos completados',
               svgSrc: 'assets/img/emptyOrders.svg')
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,

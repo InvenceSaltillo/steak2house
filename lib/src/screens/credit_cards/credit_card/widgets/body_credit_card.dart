@@ -10,6 +10,7 @@ import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/services/payment_service.dart';
+import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
 class BodyCreditCard extends StatefulWidget {
@@ -26,6 +27,7 @@ class BodyCreditCardState extends State<BodyCreditCard> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final _userCtrl = Get.find<UserController>();
+  final _utils = Utils.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class BodyCreditCardState extends State<BodyCreditCard> {
       child: Column(
         children: <Widget>[
           CreditCardWidget(
+            height: _utils.getHeightPercent(.28),
             cardNumber: cardNumber,
             expiryDate: expiryDate,
             cardHolderName: cardHolderName,

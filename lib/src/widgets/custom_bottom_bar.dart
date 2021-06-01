@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
@@ -20,11 +19,7 @@ class CustomBottomBar extends StatelessWidget {
         onTap: (index) {
           _miscCtrl.showAppBar.value = true;
           bottomNavCtrl.currentPage.value = index;
-          bottomNavCtrl.pageCtrl.value.jumpToPage(
-            index,
-            // duration: Duration(milliseconds: 400),
-            // curve: Curves.decelerate,
-          );
+          bottomNavCtrl.pageCtrl.value.jumpToPage(index);
         },
         backgroundColor: kPrimaryColor,
         selectedItemColor: kSecondaryColor,
@@ -58,8 +53,8 @@ class CustomBottomBar extends StatelessWidget {
             label: 'Carrito',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            label: 'Notificaciones',
+            icon: Icon(Icons.credit_card),
+            label: 'Tarjetas',
           ),
         ],
       ),

@@ -26,20 +26,20 @@ class _MyCreditCardsState extends State<MyCreditCards> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(Icons.arrow_back_ios, color: kPrimaryColor),
-        ),
-        title: Text(
-          'Tarjetas guardadas',
-          style: TextStyle(color: Colors.black),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
+      // appBar: AppBar(
+      //   leading: IconButton(
+      //     onPressed: () {
+      //       Get.back();
+      //     },
+      //     icon: Icon(Icons.arrow_back_ios, color: kPrimaryColor),
+      //   ),
+      //   title: Text(
+      //     'Tarjetas guardadas',
+      //     style: TextStyle(color: Colors.black),
+      //   ),
+      //   elevation: 0,
+      //   backgroundColor: Colors.transparent,
+      // ),
       body: MyCreditCardsBody(),
     );
   }

@@ -83,15 +83,15 @@ class BodySignIn extends StatelessWidget {
               color: Color(0xff4267B2),
               icon: FaIcon(FontAwesomeIcons.facebookF),
             ),
-            SizedBox(height: size.height * .03),
-            ButtonSocial(
-              onPressed: () {
-                AuthService.auth.appleLogin();
-              },
-              text: 'Apple',
-              color: Color(0xff000000),
-              icon: FaIcon(FontAwesomeIcons.apple),
-            ),
+            // SizedBox(height: size.height * .03),
+            // ButtonSocial(
+            //   onPressed: () {
+            //     AuthService.auth.appleLogin();
+            //   },
+            //   text: 'Apple',
+            //   color: Color(0xff000000),
+            //   icon: FaIcon(FontAwesomeIcons.apple),
+            // ),
             SizedBox(height: size.height * .03),
             Text(
               'Ingresa con tus redes sociales.',

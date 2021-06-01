@@ -76,7 +76,9 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Necesitamos obtener tu ubicación para darte un mejor servicio.</string>
 	<key>UIBackgroundModes</key>
-	<array/>
+	<array>
+		<string>fetch</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -12,11 +12,12 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs.instance.initPrefs();
-
-  await FCMService.initializeApp();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   initializeDateFormatting('es_MX', null).then((_) => runApp(MyApp()));
-  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

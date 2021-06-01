@@ -43,6 +43,7 @@ class MyCreditCardDetail extends StatelessWidget {
           CreditCardWidget(
             cardBgColor: kPrimaryColor,
             width: _utils.getWidthPercent(.9),
+            height: _utils.getHeightPercent(.28),
             cardHolderName: _card.name!,
             cardNumber: '**** **** **** ${_card.last4!}',
             cvvCode: '',

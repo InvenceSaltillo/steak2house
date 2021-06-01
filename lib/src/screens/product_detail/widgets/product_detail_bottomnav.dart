@@ -95,14 +95,19 @@ class ProductDetailBottomNav extends StatelessWidget {
                       'cartList',
                       json.encode(_cartController.cartList),
                     );
-                    if (productCtrl.fromSearch.value) {
-                      Get.off(() => MainScreen());
-                      productCtrl.fromSearch.value = false;
-                      productCtrl.querySearch.value = '';
-                    } else {
-                      productCtrl.querySearch.value = '';
-                      Get.off(() => MainScreen());
-                    }
+                      Get.back();
+                    // if (productCtrl.fromSearch.value) {
+                    //   // Get.off(() => MainScreen());
+                    //   Get.back();
+                    //   productCtrl.fromSearch.value = false;
+                    //   productCtrl.querySearch.value = '';
+                    //   print('AQUIIII=====');
+                    // } else {
+                    //   productCtrl.querySearch.value = '';
+                    //   // Get.off(() => MainScreen());
+                    //   Get.back();
+                    //   Get.back();
+                    // }
                   }
                 },
                 style: TextButton.styleFrom(

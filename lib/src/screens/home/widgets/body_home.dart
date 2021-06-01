@@ -52,15 +52,6 @@ class BodyHomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              // SearchTextField(
-              //   onChanged: (value) {
-              //     Utils.instance.debounce(value);
-              //   },
-              //   onSubmitted: (value) {},
-              //   controller: _controller,
-              //   icon: Icons.search,
-              //   hintText: 'Buscar...',
-              // ),
             ),
             SizedBox(height: _utils.getWidthPercent(.03)),
             Container(
@@ -73,7 +64,7 @@ class BodyHomeScreen extends StatelessWidget {
               ),
             ),
             Container(
-              height: _utils.getHeightPercent(.16),
+              height: _utils.getHeightPercent(.19),
               child: CategoriesList(),
             ),
             SizedBox(height: _utils.getWidthPercent(.02)),
@@ -88,19 +79,6 @@ class BodyHomeScreen extends StatelessWidget {
             ),
             SizedBox(height: _utils.getWidthPercent(.01)),
             ProductsGrid(),
-            // Container(
-            //   width: 100,
-            //   height: 100,
-            //   child: TextButton(
-            //     onPressed: () {},
-            //     style: TextButton.styleFrom(
-            //         backgroundColor: kPrimaryColor,
-            //         primary: Colors.white,
-            //         shape: CircleBorder()),
-            //     child: Text('OK'),
-            //   ),
-            // ),
-            // SizedBox(height: 100),
           ],
         ),
       ),

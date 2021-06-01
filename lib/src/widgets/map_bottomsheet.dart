@@ -9,6 +9,7 @@ import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 import 'package:steak2house/src/widgets/map_view.dart';
+import 'package:steak2house/src/widgets/rounded_button.dart';
 
 class MapBottomSheet extends StatelessWidget {
   MapBottomSheet({
@@ -93,42 +94,63 @@ class MapBottomSheet extends StatelessWidget {
               ),
             ),
             SizedBox(height: _utils.getHeightPercent(.07)),
-            TextButton(
-              onPressed: () async {
-                final exist = _locationCtrl.addressesList.where((address) =>
-                    address.results![0].placeId ==
-                    _locationCtrl.currentAddress.value.results![0].placeId);
+            RoundedButton(
+                text: 'Confirmar',
+                fontSize: .025,
+                width: .45,
+                onTap: () async {
+                  final exist = _locationCtrl.addressesList.where((address) =>
+                      address.results![0].placeId ==
+                      _locationCtrl.currentAddress.value.results![0].placeId);
 
-                if (exist.isBlank == true) {
-                  _locationCtrl.addressesList
-                      .add(_locationCtrl.currentAddress.value);
-                  final listJ = json.encode(_locationCtrl.addressesList);
+                  if (exist.isBlank == true) {
+                    _locationCtrl.addressesList
+                        .add(_locationCtrl.currentAddress.value);
+                    final listJ = json.encode(_locationCtrl.addressesList);
 
-                  await SharedPrefs.instance.setKey('addresses', listJ);
-                }
-                _locationCtrl.tempAddress.value =
-                    _locationCtrl.currentAddress.value;
-                _miscCtrl.updateDeliveryPrice();
-                Get.back();
-              },
-              style: TextButton.styleFrom(
-                minimumSize: Size(_utils.getWidthPercent(.08), 10),
-                fixedSize: Size(
-                  _utils.getWidthPercent(.8),
-                  _utils.getHeightPercent(.05),
-                ),
-                backgroundColor: Colors.green,
-                padding: EdgeInsets.all(_utils.getHeightPercent(.01)),
-              ),
-              child: Text(
-                'Confirmar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: _utils.getHeightPercent(.02),
-                ),
-              ),
-            ),
+                    await SharedPrefs.instance.setKey('addresses', listJ);
+                  }
+                  _locationCtrl.tempAddress.value =
+                      _locationCtrl.currentAddress.value;
+                  _miscCtrl.updateDeliveryPrice();
+                  Get.back();
+                }),
+            // TextButton(
+            //   onPressed: () async {
+            //     final exist = _locationCtrl.addressesList.where((address) =>
+            //         address.results![0].placeId ==
+            //         _locationCtrl.currentAddress.value.results![0].placeId);
+
+            //     if (exist.isBlank == true) {
+            //       _locationCtrl.addressesList
+            //           .add(_locationCtrl.currentAddress.value);
+            //       final listJ = json.encode(_locationCtrl.addressesList);
+
+            //       await SharedPrefs.instance.setKey('addresses', listJ);
+            //     }
+            //     _locationCtrl.tempAddress.value =
+            //         _locationCtrl.currentAddress.value;
+            //     _miscCtrl.updateDeliveryPrice();
+            //     Get.back();
+            //   },
+            //   style: TextButton.styleFrom(
+            //     minimumSize: Size(_utils.getWidthPercent(.08), 10),
+            //     fixedSize: Size(
+            //       _utils.getWidthPercent(.8),
+            //       _utils.getHeightPercent(.05),
+            //     ),
+            //     backgroundColor: Colors.green,
+            //     padding: EdgeInsets.all(_utils.getHeightPercent(.01)),
+            //   ),
+            //   child: Text(
+            //     'Confirmar',
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontWeight: FontWeight.bold,
+            //       fontSize: _utils.getHeightPercent(.02),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

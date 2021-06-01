@@ -42,7 +42,7 @@ class MyCreditCardsBody extends StatelessWidget {
                       },
                       child: Container(
                         width: _utils.getWidthPercent(.9),
-                        height: _utils.getHeightPercent(.1),
+                        height: _utils.getHeightPercent(.11),
                         padding: EdgeInsets.symmetric(
                           vertical: _utils.getWidthPercent(.02),
                           horizontal: _utils.getWidthPercent(.05),
