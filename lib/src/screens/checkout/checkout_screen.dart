@@ -25,7 +25,7 @@ class CheckOutScreen extends StatelessWidget {
     final _bottomNavCtrl = Get.find<BottomNavigationBarController>();
 
     if (_miscCtrl.isOpenFlag.value) {
-      _miscCtrl.timeIsOut();
+      // _miscCtrl.timeIsOut();
       _miscCtrl.isOpenFlag.value = false;
     }
 

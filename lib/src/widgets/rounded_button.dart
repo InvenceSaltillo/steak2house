@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:steak2house/src/controllers/cart_controller.dart';
-import 'package:steak2house/src/services/payment_service.dart';
-import 'package:steak2house/src/utils/shared_prefs.dart';
+
 import 'package:steak2house/src/utils/utils.dart';
-import 'package:steak2house/src/widgets/payment_success.dart';
 
 import '../constants.dart';
 
+// ignore: must_be_immutable
 class RoundedButton extends StatelessWidget {
   RoundedButton({
     Key? key,

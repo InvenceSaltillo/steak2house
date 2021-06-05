@@ -1,7 +1,6 @@
 import 'package:conekta_flutter/conekta_flutter.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/models/conekta/payment_sources_model.dart';
-import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 
 class PaymentController extends GetxController {

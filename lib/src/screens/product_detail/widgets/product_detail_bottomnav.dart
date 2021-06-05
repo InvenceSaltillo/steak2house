@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
 import 'package:steak2house/src/models/cart_model.dart';
-import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 
@@ -95,7 +94,7 @@ class ProductDetailBottomNav extends StatelessWidget {
                       'cartList',
                       json.encode(_cartController.cartList),
                     );
-                      Get.back();
+                    Get.back();
                     // if (productCtrl.fromSearch.value) {
                     //   // Get.off(() => MainScreen());
                     //   Get.back();

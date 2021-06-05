@@ -57,6 +57,7 @@ class MyCreditCardDetail extends StatelessWidget {
       bottomNavigationBar: RoundedButton(
         text: 'Eliminar tarjeta',
         fontSize: .022,
+        width: .45,
         onTap: () async {
           // _paymentCtrl.cardsList.removeAt(4);
           // SharedPrefs.instance.setKey(
@@ -80,6 +81,15 @@ class MyCreditCardDetail extends StatelessWidget {
 
             if (delete) {
               _paymentCtrl.cardsList.removeAt(_cardIdx);
+
+              if (_paymentCtrl.cardsList.length > 0) {
+                _paymentCtrl.lastUsedCard.value = _paymentCtrl.cardsList[0];
+              } else {
+                _paymentCtrl.lastUsedCard.value.id = null;
+              }
+
+              SharedPrefs.instance.setKey(
+                  'lastUsedCard', json.encode(_paymentCtrl.lastUsedCard.value));
 
               Get.back();
             }

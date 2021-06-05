@@ -32,7 +32,7 @@ class CartProductCard extends StatelessWidget {
       ),
       child: SizedBox(
         width: double.infinity,
-        height: _utils.getHeightPercent(.12),
+        height: _utils.getHeightPercent(.13),
         child: Row(
           children: [
             Container(

@@ -10,10 +10,8 @@ import 'package:steak2house/src/controllers/cart_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
-import 'package:steak2house/src/models/cart_model.dart';
 import 'package:steak2house/src/models/conekta/client_model.dart';
 import 'package:steak2house/src/models/conekta/payment_sources_model.dart';
-import 'package:steak2house/src/models/product_model.dart';
 import 'package:steak2house/src/utils/secure_storage.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 
@@ -66,7 +64,8 @@ class PaymentService {
 
         _paymentCtrl.cardsList.value = myCardList;
 
-        if (_paymentCtrl.lastUsedCard.value.last4 == null) {
+        if (_paymentCtrl.lastUsedCard.value.last4 == null &&
+            _paymentCtrl.cardsList.length > 0) {
           _paymentCtrl.lastUsedCard.value = _paymentCtrl.cardsList[0];
         }
 
@@ -166,7 +165,7 @@ class PaymentService {
       'userId': _user.id,
       'name': _user.name,
       'email': _user.email,
-      'phone': '8448806948',
+      'phone': _user.tel,
       'type': 'card',
       'token_id': token,
       // 'token_id': token,

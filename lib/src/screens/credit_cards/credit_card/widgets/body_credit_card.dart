@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:conekta_flutter/conekta_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
@@ -7,7 +5,6 @@ import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
-import 'package:steak2house/src/controllers/payment_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/utils/utils.dart';

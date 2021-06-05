@@ -23,7 +23,7 @@ class MiscController extends GetxController {
   var priceKM = 0.obs;
 
   var totalPriceDelivery = 0.0.obs;
-  var isOpen = true.obs;
+  var isOpen = false.obs;
   var isOpenFlag = true.obs;
 
   void showWelcomeDialog() {

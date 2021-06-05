@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,6 @@ import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/user/user_model.dart';
-import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 import '../../../utils/utils.dart';
 
@@ -19,12 +19,18 @@ class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(50);
 }
 
-class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
+class _HomeAppBarState extends State<HomeAppBar>
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   final locationCtrl = Get.find<LocationController>();
+
+  late AnimationController animationController;
+  bool isPlaying = false;
 
   @override
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     Get.put(MapController());
     checkLocationAndGPS();
     super.initState();
@@ -87,9 +93,19 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
+            setState(() {
+              isPlaying = !isPlaying;
+              isPlaying
+                  ? animationController.forward()
+                  : animationController.reverse();
+            });
             ZoomDrawer.of(context)!.toggle();
           },
-          icon: Icon(Icons.menu, color: kPrimaryColor),
+          icon: AnimatedIcon(
+            icon: AnimatedIcons.menu_close,
+            progress: animationController,
+            color: kPrimaryColor,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -147,7 +163,7 @@ class _HomeAppBarState extends State<HomeAppBar> with WidgetsBindingObserver {
           // ),
           TextButton(
             onPressed: () async {
-              final time = await TrafficService.instance.getCurrentTime();
+              // FirebaseCrashlytics.instance.crash();
             },
             style: TextButton.styleFrom(
               primary: Colors.white,

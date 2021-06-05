@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/product_controller.dart';
-import 'package:steak2house/src/screens/main/main_screen.dart';
 
 import 'widgets/product_detail_bottomnav.dart';
 import 'widgets/product_list_info.dart';

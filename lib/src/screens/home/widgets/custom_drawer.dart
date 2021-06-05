@@ -9,6 +9,8 @@ import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/screens/credit_cards/my_credit_cards/my_credit_cards.dart';
 import 'package:steak2house/src/services/auth_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:package_info/package_info.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -31,9 +33,14 @@ class CustomDrawer extends StatelessWidget {
     final widthBox = SizedBox(
       width: 16.0,
     );
+    var maskFormatter = new MaskTextInputFormatter(mask: '(###) ###-##-##');
 
     final _utils = Utils.instance;
     final _userCtrl = Get.find<UserController>();
+
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      _userCtrl.version.value = packageInfo.version;
+    });
 
     final bottomNavCtrl = Get.find<BottomNavigationBarController>();
     return Obx(
@@ -109,7 +116,14 @@ class CustomDrawer extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          _userCtrl.user.value.tel!,
+                          maskFormatter.maskText(_userCtrl.user.value.tel!),
+                          style: TextStyle(
+                            fontSize: _utils.getHeightPercent(.017),
+                            color: Colors.white.withOpacity(.5),
+                          ),
+                        ),
+                        Text(
+                          'Versión ${_userCtrl.version.value}',
                           style: TextStyle(
                             fontSize: _utils.getHeightPercent(.017),
                             color: Colors.white.withOpacity(.5),
@@ -119,7 +133,6 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    // height: _utils.getHeightPercent(.5),
                     child: Padding(
                       padding: const EdgeInsets.only(
                         left: 24.0,
@@ -178,7 +191,7 @@ class CustomDrawer extends StatelessWidget {
                                 )
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

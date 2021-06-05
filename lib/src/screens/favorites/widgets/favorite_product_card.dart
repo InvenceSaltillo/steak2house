@@ -40,7 +40,8 @@ class FavoriteProductCard extends StatelessWidget {
             _producCtrl.productQty.value = 1;
             _producCtrl.fromOtherPage['otherPage'] = true;
             _producCtrl.fromOtherPage['index'] = 2;
-            Get.offNamedUntil(ProductDetailScreen.routeName, (_) => false);
+            Get.to(() => ProductDetailScreen());
+            // Get.offNamedUntil(ProductDetailScreen.routeName, (_) => false);
           },
           child: Row(
             children: [

@@ -15,6 +15,7 @@ class GeolocationService {
   static GeolocationService get instance => _instance;
 
   final dio.Dio _dio = dio.Dio();
+  // ignore: close_sinks
   final StreamController<GeocodingResponse> _searchStreamCtrl =
       StreamController<GeocodingResponse>.broadcast();
 
@@ -85,6 +86,7 @@ class GeolocationService {
       // if (!response.data) {
       //   return GeocodingResponse(results: []);
       // }
+      // ignore: unused_local_variable
       final res = json.decode(response.data);
       final searchResponse = geocodingResponseFromJson(response.data);
 

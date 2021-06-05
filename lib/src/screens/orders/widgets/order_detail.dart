@@ -6,6 +6,7 @@ import 'package:steak2house/src/utils/utils.dart';
 
 import 'order_product_card.dart';
 
+// ignore: must_be_immutable
 class OrderDetail extends StatelessWidget {
   var delivery = 0.0;
   var total = 0.0;

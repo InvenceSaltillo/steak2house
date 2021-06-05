@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
@@ -18,6 +17,8 @@ import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 import 'package:steak2house/src/services/fcm_service.dart';
+
+import 'category_service.dart';
 
 class AuthService {
   AuthService._internal();
@@ -38,13 +39,8 @@ class AuthService {
 
   final String urlEndpoint = '${Utils.instance.urlBackend}users/';
 
-  static GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-    ],
-  );
-
   void _complete() {
+    // ignore: unnecessary_null_comparison
     if (_completer != null && !_completer.isCompleted) {
       _completer.complete();
     }
@@ -84,6 +80,7 @@ class AuthService {
       final userInfo = User.fromJson(user!);
 
       print('FACEBOOK LOGGED!!! ${userInfo.id}');
+      await CategoryService.instance.getCategories();
 
       return await getUserInfo(userInfo.id!);
     } else {
@@ -124,6 +121,8 @@ class AuthService {
           _userCtrl.user.value = user;
           Dialogs.instance.dismiss();
 
+          await Dialogs.instance.showPhoneDialog();
+
           Dialogs.instance.showSnackBar(
             DialogType.success,
             'Bienvenido ${user.name}',
@@ -141,9 +140,10 @@ class AuthService {
             (route) => false,
           );
 
-          Dialogs.instance.showPhoneDialog();
+          await CategoryService.instance.getCategories();
         } else {
           print('LOGIN======== ${response.data['token']}');
+          await CategoryService.instance.getCategories();
           final user = User.fromJson(response.data['user']);
           final token = response.data['token'];
 

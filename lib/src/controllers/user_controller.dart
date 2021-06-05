@@ -6,6 +6,7 @@ class UserController extends GetxController {
   var user = User().obs;
   var loading = true.obs;
   var token = ''.obs;
+  var version = ''.obs;
 
   RxList<MyOrders> ordersList = RxList<MyOrders>();
 

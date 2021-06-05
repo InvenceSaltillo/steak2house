@@ -164,7 +164,7 @@ class UserService {
         ? '\$50'
         : '\$${(_miscCtrl.deliveryDistance.value * _miscCtrl.priceKM.value).ceil()}';
     message += '\nTotal:\n';
-    message += ' \$${_miscCtrl.totalPriceDelivery.ceil()}\n\n';
+    message += '\$${_miscCtrl.totalPriceDelivery.ceil()}\n\n';
     message += 'Ubicación\n';
     message +=
         'https://www.google.com.mx/maps/dir/25.4116308,-100.9936945/$coords/@$coords,15z\n';

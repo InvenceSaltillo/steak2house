@@ -14,6 +14,7 @@ class ProductsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final _utils = Utils.instance;
     final productCtrl = Get.find<ProductController>();
+
     return Obx(
       () => productCtrl.loading.value
           ? Center(
@@ -42,7 +43,9 @@ class ProductsGrid extends StatelessWidget {
                   ),
                 )
               : SizedBox(
-                  height: _utils.getHeightPercent(.4),
+                  height: Get.size.height > 800
+                      ? _utils.getHeightPercent(.43)
+                      : _utils.getHeightPercent(.4),
                   // height: 260,
                   child: GridView.count(
                     physics: BouncingScrollPhysics(),

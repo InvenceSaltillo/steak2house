@@ -33,10 +33,13 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
     deliveryHoursTemp = deliveryHours;
     final time = await TrafficService.instance.getCurrentTime();
 
-    print('deliveryHours ${deliveryHours[0][0]}');
+    print('time $time');
+    print('deliveryHours ${DateTime.parse(deliveryHours[1][0])}');
+    print('after ${time.isAfter(DateTime.parse(deliveryHours[1][0]))}');
 
     if (time.isAfter(DateTime.parse(deliveryHours[1][0]))) {
       print('YA NO HAY====');
+      _miscCtrl.isOpen.value = false;
       await Dialogs.instance.showLottieDialog(
         title:
             'El horario de venta terminó, recibiremos pedidos mañana a partir de las 11:00 A.M.',
@@ -50,6 +53,8 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
       );
       Get.back();
       return;
+    } else {
+      _miscCtrl.isOpen.value = true;
     }
 
     if (time.isAfter(DateTime.parse(deliveryHours[0][0]))) {
@@ -72,6 +77,7 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
 
   @override
   void initState() {
+    _miscCtrl.isOpen.value = false;
     getCurrentTime();
     super.initState();
   }

@@ -35,9 +35,12 @@ class CategoryService {
       categorieCtrl.categories.value = categoriesList;
       categorieCtrl.loading.value = false;
 
+      print('CATEGORIAS======= ${categorieCtrl.categories}');
+
       return categoriesList;
     } catch (e) {
       // Dialogs.instance.dismiss();
+      categorieCtrl.loading.value = false;
       return [];
     }
   }
@@ -58,9 +61,11 @@ class CategoryService {
       categorieCtrl.categories.value = categoriesList;
       categorieCtrl.loading.value = false;
 
+      print('CATEGORIAS BY ID======= ${categorieCtrl.categories}');
       return categoriesList;
     } catch (e) {
       // Dialogs.instance.dismiss();
+      categorieCtrl.loading.value = false;
       return [];
     }
   }

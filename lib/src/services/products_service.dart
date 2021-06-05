@@ -17,6 +17,7 @@ class ProductService {
   static ProductService get instance => _instance;
 
   final debouncer = Debouncer<String>(duration: Duration(milliseconds: 500));
+  // ignore: close_sinks
   final StreamController<List<Product>> _searchStreamController =
       StreamController<List<Product>>.broadcast();
   Stream<List<Product>> get searchStream => this._searchStreamController.stream;

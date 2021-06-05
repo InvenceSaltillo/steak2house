@@ -12,7 +12,6 @@ import 'package:steak2house/src/screens/favorites/favorites_screen.dart';
 import 'package:steak2house/src/screens/home/widgets/body_home.dart';
 import 'package:steak2house/src/screens/orders/orders_screen.dart';
 import 'package:steak2house/src/screens/orders/widgets/order_detail.dart';
-import 'package:steak2house/src/services/category_service.dart';
 import 'package:steak2house/src/services/payment_service.dart';
 import 'package:steak2house/src/services/products_service.dart';
 import 'package:steak2house/src/services/user_service.dart';
@@ -40,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
       if (_userCtrl.user.value.conektaCustomerId != null) {
         PaymentService.instance.getConektaCustomer();
       }
-      CategoryService.instance.getCategories();
 
       if (productsCtrl.products.length == 0) {
         ProductService.instance.getByCategory(
@@ -57,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
       if (_miscCtrl.isOpenFlag.value) {
-        _miscCtrl.timeIsOut();
+        // _miscCtrl.timeIsOut();
         _miscCtrl.isOpenFlag.value = false;
       }
 

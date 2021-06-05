@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class FCMService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -32,6 +33,7 @@ class FCMService {
     // Push notifications
 
     await Firebase.initializeApp();
+
     await requestPermission();
 
     token = await FirebaseMessaging.instance.getToken();

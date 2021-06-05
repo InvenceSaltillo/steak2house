@@ -18,6 +18,7 @@ class CategoriesList extends StatelessWidget {
   Widget build(BuildContext context) {
     final _utils = Utils.instance;
     final categoriesCtrl = Get.find<CategoriesController>();
+
     return Obx(
       () => SingleChildScrollView(
         controller: _scrollController,

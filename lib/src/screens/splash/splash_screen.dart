@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/cart_controller.dart';
+import 'package:steak2house/src/controllers/categories_controller.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/controllers/payment_controller.dart';
@@ -42,6 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Get.put(UserController());
     Get.put(PaymentController());
     Get.put(ProductController());
+    Get.put(CategoriesController());
 
     await Future.delayed(Duration(seconds: 1));
     final isFacebookLogged = await AuthService.auth.isLogged();
