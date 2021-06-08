@@ -39,17 +39,9 @@ class GeolocationService {
 
   bool flagTempAddress = true;
 
-  Future<void> reverseGeocoding(LatLng position) async {
-    // dio.FormData _data = dio.FormData.fromMap({
-    //   "categoryId": categoryId,
-    // });
-
-    // locationCtrl.tempAddress.value = locationCtrl.currentAddress.value;
-
+  Future<void> reverseGeocoding(LatLng position, bool flag) async {
+    print('FLAG $flagTempAddress');
     try {
-      // final response = await _dio.get(
-      //   '$_urlGeocoding/mapbox.places/${position.longitude},${position.latitude}.json?access_token=$_mapboxApiKey',
-      // );
       final response = await _dio.get(
         '$_urlGeocodingGoogleMaps?latlng=${position.latitude},${position.longitude}&key=$_googleMapsApiKey',
       );
@@ -59,9 +51,9 @@ class GeolocationService {
       locationCtrl.currentStreet.value = resp.results![0].formattedAddress!;
       locationCtrl.currentAddress.value = resp;
 
-      if (flagTempAddress) {
+      if (flag) {
         locationCtrl.tempAddress.value = locationCtrl.currentAddress.value;
-        flagTempAddress = false;
+        flag = false;
       }
     } catch (e) {
       // Dialogs.instance.dismiss();

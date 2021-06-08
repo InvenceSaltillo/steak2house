@@ -138,6 +138,68 @@ class UserService {
     }
   }
 
+  Future<bool> update() async {
+    Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
+
+    final _user = _userCtrl.user.value;
+
+    final token = await SecureStorage.instance.readItem('token');
+
+    dio.FormData _data = dio.FormData.fromMap({
+      'token': token,
+      'userId': _user.id,
+      'name': _user.name,
+      'tel': _user.tel,
+      'birthday': _user.birthday,
+      'gender': _user.gender,
+      'email': _user.email,
+      'avatar': _user.avatar,
+    });
+
+    try {
+      final response = await _dio.post(
+        '${urlEndpoint}update',
+        data: _data,
+        options: dio.Options(headers: headers),
+      );
+      print('update===== ${response.data}');
+
+      final userInfo = response.data['data'];
+
+      final user = User.fromJson(userInfo);
+
+      _userCtrl.user.value = user;
+
+      await SharedPrefs.instance.setKey('user', json.encode(user));
+      Get.back();
+
+      return true;
+    } on dio.DioError catch (e) {
+      Get.back();
+      if (e.response != null) {
+        print('DIOERROR DATA update===== ${e.response!.data}');
+        print('DIOERROR HEADERS update===== ${e.response!.headers}');
+
+        final String message = e.response!.data['data'];
+
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          message,
+          false,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print('DIOERROR MESSAGE update===== ${e.message}');
+        Dialogs.instance.showSnackBar(
+          DialogType.error,
+          e.message,
+          false,
+        );
+      }
+      return false;
+    }
+  }
+
   Future<bool> sendTelegramMessage() async {
     // Dialogs.instance.showLoadingProgress(message: 'Espere un momento');
 

@@ -44,6 +44,7 @@ class _HomeAppBarState extends State<HomeAppBar>
   }
 
   Future<void> checkLocationAndGPS() async {
+    print('checkLocationAndGPS========= ');
     await locationCtrl.requestPermission();
     await locationCtrl.checkLocationEnabled();
 
@@ -63,7 +64,8 @@ class _HomeAppBarState extends State<HomeAppBar>
     if (locationCtrl.permissionStatus.value == PermissionStatus.granted &&
         locationCtrl.isLocationEnabled.value &&
         locationCtrl.currentPosition.value.latitude == 0.0) {
-      await locationCtrl.getCurrentPosition();
+      print('checkLocationAndGPS========= ');
+      await locationCtrl.getCurrentPosition(true);
     }
   }
 
@@ -72,13 +74,19 @@ class _HomeAppBarState extends State<HomeAppBar>
     print('AppLifecycleState $state');
 
     if (state == AppLifecycleState.resumed) {
+      print('OBTENIENDO UBICACION========');
+      if (locationCtrl.permissionStatus.value == PermissionStatus.granted &&
+          locationCtrl.isLocationEnabled.value) {
+        await locationCtrl.getCurrentPosition(true);
+      }
+
       final checkLocationEnabled = await locationCtrl.checkLocationEnabled();
       print('checkLocationEnabled $checkLocationEnabled');
 
       print('permissionStatus===== ${locationCtrl.permissionStatus.value} ');
       if (locationCtrl.fromSettings.value && checkLocationEnabled) {
         print('CUMPLEEEEEEEEE===== ');
-        await locationCtrl.getCurrentPosition();
+        await locationCtrl.getCurrentPosition(true);
       }
     }
   }
@@ -93,25 +101,20 @@ class _HomeAppBarState extends State<HomeAppBar>
       () => AppBar(
         centerTitle: true,
         leading: IconButton(
-            onPressed: () {
-              setState(() {
-                isPlaying = !isPlaying;
-                isPlaying
-                    ? animationController.forward()
-                    : animationController.reverse();
-              });
-              ZoomDrawer.of(context)!.toggle();
-            },
-            icon: Icon(
-              Icons.menu,
-              color: kPrimaryColor,
-            )
-            // AnimatedIcon(
-            //   icon: AnimatedIcons.menu_close,
-            //   progress: animationController,
-            //   color: kPrimaryColor,
-            // ),
-            ),
+          onPressed: () {
+            setState(() {
+              isPlaying = !isPlaying;
+              isPlaying
+                  ? animationController.forward()
+                  : animationController.reverse();
+            });
+            ZoomDrawer.of(context)!.toggle();
+          },
+          icon: Icon(
+            Icons.menu,
+            color: kPrimaryColor,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: kPrimaryColor),
@@ -130,7 +133,7 @@ class _HomeAppBarState extends State<HomeAppBar>
               ),
               SizedBox(width: _utils.getWidthPercent(.01)),
               Container(
-                width: _utils.getWidthPercent(.25),
+                width: _utils.getWidthPercent(.38),
                 child: Text(
                   locationCtrl.tempAddress.value.results == null
                       ? 'Obteniendo ubicación'

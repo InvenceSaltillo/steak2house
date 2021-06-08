@@ -1,12 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/screens/profile/widgets/profile_image_user.dart';
+import 'package:steak2house/src/services/user_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
+import 'package:steak2house/src/widgets/rounded_button.dart';
 
 import '../../../constants.dart';
 import 'profile_email_user.dart';
@@ -26,11 +30,21 @@ class _ProfileBodyState extends State<ProfileBody> {
   final _utils = Utils.instance;
   final _userCtrl = Get.find<UserController>();
 
+  String birthDatetemp = '';
+  String telTemp = '';
+
   DateTime selectedDate = DateTime.now();
   var maskFormatter = new MaskTextInputFormatter(mask: '(###) ###-##-##');
 
   @override
   void initState() {
+    _userCtrl.changeInfo.value = false;
+
+    birthDatetemp = _userCtrl.user.value.birthday!;
+    telTemp = _userCtrl.user.value.tel!;
+
+    print('telTemp $telTemp');
+
     _textControllerName.text = '${_userCtrl.user.value.name}';
     _textControllerEmail.text = '${_userCtrl.user.value.email}';
     _textControllerBirthDate.text = _userCtrl.user.value.birthday == null
@@ -85,7 +99,10 @@ class _ProfileBodyState extends State<ProfileBody> {
             middleText: '¿Hubo cambios en tu perfil, quieres guardarlos?',
             confirmTextColor: Colors.red,
             confirm: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.back();
+                _updateUser();
+              },
               child: Text('Si'),
               style: ElevatedButton.styleFrom(
                 primary: kSecondaryColor,
@@ -236,6 +253,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                                         2021, DateTime.now().month + 1),
                                   );
                                   if (date != null) {
+                                    birthDatetemp = date.toString();
+                                    print('birthDatetemp $birthDatetemp');
                                     final dateTemp =
                                         DateFormat.yMMMMd('es_MX').format(date);
                                     final birthDayTemp = DateFormat.yMMMMd(
@@ -338,11 +357,47 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ],
                 ),
               ),
+              SizedBox(height: _utils.getHeightPercent(.1)),
+              Container(
+                child: RoundedButton(
+                  text: 'Guardar cambios',
+                  fontSize: .025,
+                  onTap: () async {
+                    _updateUser();
+                  },
+                  width: .5,
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _updateUser() async {
+    _userCtrl.user.value.name = _textControllerName.text.trim();
+    _userCtrl.user.value.email = _textControllerEmail.text;
+    _userCtrl.user.value.tel = maskFormatter.getUnmaskedText() == ''
+        ? _userCtrl.user.value.tel
+        : maskFormatter.getUnmaskedText();
+
+    _userCtrl.user.value.birthday = birthDatetemp;
+    _userCtrl.user.value.gender = _userCtrl.userGender.value;
+    print('USER ${_userCtrl.user.value.gender}');
+
+    // _userCtrl.user.value.gender = _textController.text;
+
+    final update = await UserService.instance.update();
+
+    if (update) {
+      Get.back();
+      Dialogs.instance.showSnackBar(
+        DialogType.success,
+        '¡Se actualizaron tus datos!',
+        false,
+      );
+    }
   }
 
   Widget _buildSearchList() => Container(

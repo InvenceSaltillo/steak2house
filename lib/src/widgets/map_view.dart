@@ -45,7 +45,7 @@ class MapView extends StatelessWidget {
                   _mapCtrl.centerLocation.value = _cameraPosition.target;
                   // await Future.delayed(Duration(seconds: 3));
                   final LatLng position = _cameraPosition.target;
-                  GeolocationService.instance.reverseGeocoding(position);
+                  GeolocationService.instance.reverseGeocoding(position, false);
                 },
               ),
               Center(

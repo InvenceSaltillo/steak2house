@@ -35,8 +35,6 @@ class CategoryService {
       categorieCtrl.categories.value = categoriesList;
       categorieCtrl.loading.value = false;
 
-      print('CATEGORIAS======= ${categorieCtrl.categories}');
-
       return categoriesList;
     } catch (e) {
       // Dialogs.instance.dismiss();

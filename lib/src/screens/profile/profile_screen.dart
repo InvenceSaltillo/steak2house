@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:steak2house/src/screens/profile/widgets/profile_body.dart';
-
-import '../../constants.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override

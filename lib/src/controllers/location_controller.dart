@@ -39,12 +39,12 @@ class LocationController extends GetxController {
     return isLocationEnabled.value;
   }
 
-  Future<Position> getCurrentPosition() async {
+  Future<Position> getCurrentPosition(bool flag) async {
     currentPosition.value = await Geolocator.getCurrentPosition();
     final newCurrentPosition =
         LatLng(currentPosition.value.latitude, currentPosition.value.longitude);
-    GeolocationService.instance.reverseGeocoding(newCurrentPosition);
-    // GeolocationService.instance.getResultsByQuery('Saltillo', currentPosition.value);
+    GeolocationService.instance.reverseGeocoding(newCurrentPosition, flag);
+
     return currentPosition.value;
   }
 

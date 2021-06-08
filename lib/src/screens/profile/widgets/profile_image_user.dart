@@ -82,28 +82,28 @@ class ProfileImageUser extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 10,
-                          right: 4,
-                          child: Container(
-                            width: _utils.getWidthPercent(.08),
-                            height: _utils.getWidthPercent(.08),
-                            decoration: BoxDecoration(
-                              color: kSecondaryColor,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.camera_alt_outlined,
-                                  color: Colors.white,
-                                  size: _utils.getWidthPercent(.04),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
+                        // Positioned(
+                        //   bottom: 10,
+                        //   right: 4,
+                        //   child: Container(
+                        //     width: _utils.getWidthPercent(.08),
+                        //     height: _utils.getWidthPercent(.08),
+                        //     decoration: BoxDecoration(
+                        //       color: kSecondaryColor,
+                        //       shape: BoxShape.circle,
+                        //     ),
+                        //     child: Center(
+                        //       child: IconButton(
+                        //         onPressed: () {},
+                        //         icon: Icon(
+                        //           Icons.camera_alt_outlined,
+                        //           color: Colors.white,
+                        //           size: _utils.getWidthPercent(.04),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -113,6 +113,7 @@ class ProfileImageUser extends StatelessWidget {
                       controller: _textControllerName,
                       onChanged: (value) {
                         if (value != _userCtrl.user.value.name) {
+                          // _userCtrl.user.value.name = _textControllerName.text;
                           _userCtrl.changeInfo.value = true;
                         } else {
                           _userCtrl.changeInfo.value = false;
