@@ -7,10 +7,13 @@ import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/bottom_navigation_bar_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/screens/credit_cards/my_credit_cards/my_credit_cards.dart';
+import 'package:steak2house/src/screens/home/widgets/menu_item.dart';
 import 'package:steak2house/src/services/auth_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:package_info/package_info.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+import 'drawer_user_avatar.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -62,35 +65,7 @@ class CustomDrawer extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: _utils.getHeightPercent(.05),
-                      bottom: _utils.getWidthPercent(.02),
-                      left: _utils.getWidthPercent(.04),
-                      right: _utils.getWidthPercent(.03),
-                    ),
-                    child: Container(
-                      width: _utils.getWidthPercent(.25),
-                      height: _utils.getWidthPercent(.25),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: ClipOval(
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/animations/loading.gif',
-                          fit: BoxFit.cover,
-                          image: _userCtrl.user.value.avatar!,
-                          imageErrorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                            'assets/img/noAvatar.png',
-                            height: _utils.getHeightPercent(.1),
-                            width: _utils.getHeightPercent(.1),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  DraweUserAvatar(),
                   Padding(
                     padding: const EdgeInsets.only(
                       bottom: 36.0,
@@ -204,60 +179,4 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
-}
-
-class MenuItemWidget extends StatelessWidget {
-  final MenuItem? item;
-  final Widget? widthBox;
-  final TextStyle? style;
-  final Function()? callback;
-  final bool? selected;
-
-  final white = Colors.white;
-
-  const MenuItemWidget({
-    Key? key,
-    this.item,
-    this.widthBox,
-    this.style,
-    this.callback,
-    this.selected,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: callback,
-      style: TextButton.styleFrom(
-        primary: selected! ? Color(0x44000000) : null,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            item!.icon,
-            color: kSecondaryColor,
-            size: 24,
-          ),
-          widthBox!,
-          Expanded(
-            child: Text(
-              item!.title,
-              style: style,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class MenuItem {
-  final String title;
-  final IconData icon;
-  final int? index;
-
-  const MenuItem(this.title, this.icon, this.index);
 }

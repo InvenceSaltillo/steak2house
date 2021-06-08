@@ -16,6 +16,8 @@ class User {
     this.tel,
     this.status,
     this.avatar,
+    this.birthday,
+    this.gender,
     this.lastLogin,
     this.lat,
     this.lng,
@@ -31,6 +33,8 @@ class User {
   String? tel;
   String? status;
   String? avatar;
+  String? birthday;
+  String? gender;
   DateTime? lastLogin;
   dynamic? lat;
   dynamic? lng;
@@ -46,6 +50,8 @@ class User {
         tel: json["tel"],
         status: json["status"],
         avatar: json["avatar"],
+        birthday: json["birthday"],
+        gender: json["gender"],
         lastLogin: DateTime.now(),
         // lastLogin: DateTime.parse(json["last_login"]),
         lat: json["lat"],
@@ -63,6 +69,8 @@ class User {
         "tel": tel,
         "status": status,
         "avatar": avatar,
+        "birthday": birthday,
+        "gender": gender,
         "last_login": lastLogin!.toIso8601String(),
         "lat": lat,
         "lng": lng,

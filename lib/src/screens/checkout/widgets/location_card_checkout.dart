@@ -37,11 +37,16 @@ class ChekOutLocationCard extends StatelessWidget {
                       color: Colors.black54,
                     ),
                   ),
-                  Text(
-                    '${_locationCtrl.tempAddress.value.results![0].formattedAddress!.split(',')[0]}',
-                    style: TextStyle(
-                      fontSize: _utils.getHeightPercent(.02),
-                      color: Colors.black,
+                  Container(
+                    width: _utils.getWidthPercent(.6),
+                    child: Text(
+                      // '${_locationCtrl.tempAddress.value.results![0].formattedAddress!.split(',')[0]},${_locationCtrl.tempAddress.value.results![0].formattedAddress!.split(',')[0]},${_locationCtrl.tempAddress.value.results![0].formattedAddress!.split(',')[0]}',
+                      '${_locationCtrl.tempAddress.value.results![0].formattedAddress!.split(',')[0]}',
+                      style: TextStyle(
+                        fontSize: _utils.getHeightPercent(.02),
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],

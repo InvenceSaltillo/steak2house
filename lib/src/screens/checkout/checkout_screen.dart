@@ -77,13 +77,13 @@ class CheckOutScreen extends StatelessWidget {
                       await PaymentService.instance.createCharge();
 
                   if (createCharge) {
-                    await UserService.instance.sendTelegramMessage();
-                    await SharedPrefs.instance.deleteKey('cartList');
-                    _cartCtrl.cartList.value = [];
                     Get.to(
                       () => PaymentSuccess(),
                       fullscreenDialog: true,
                     );
+                    await UserService.instance.sendTelegramMessage();
+                    await SharedPrefs.instance.deleteKey('cartList');
+                    _cartCtrl.cartList.value = [];
                   }
                 },
               ),

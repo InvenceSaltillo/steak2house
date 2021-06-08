@@ -18,11 +18,18 @@ PODS:
     - FBSDKCoreKit (~> 9.1.0)
   - Firebase/CoreOnly (8.0.0):
     - FirebaseCore (= 8.0.0)
+  - Firebase/Crashlytics (8.0.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 8.0.0)
   - Firebase/Messaging (8.0.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 8.0.0)
-  - firebase_core (1.2.0):
+  - firebase_core (1.2.1):
     - Firebase/CoreOnly (= 8.0.0)
+    - Flutter
+  - firebase_crashlytics (2.0.5):
+    - Firebase/Crashlytics (= 8.0.0)
+    - firebase_core
     - Flutter
   - firebase_messaging (10.0.0):
     - Firebase/Messaging (= 8.0.0)
@@ -37,6 +44,12 @@ PODS:
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
     - nanopb (~> 2.30908.0)
+  - FirebaseCrashlytics (8.0.0):
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleDataTransport (~> 9.0)
+    - nanopb (~> 2.30908.0)
+    - PromisesObjC (~> 1.2)
   - FirebaseInstallations (8.0.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
@@ -118,6 +131,7 @@ PODS:
 DEPENDENCIES:
   - conekta_flutter (from `.symlinks/plugins/conekta_flutter/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
@@ -139,6 +153,7 @@ SPEC REPOS:
     - Firebase
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FirebaseCrashlytics
     - FirebaseInstallations
     - FirebaseMessaging
     - GoogleDataTransport
@@ -155,6 +170,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/conekta_flutter/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_crashlytics:
+    :path: ".symlinks/plugins/firebase_crashlytics/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
@@ -186,10 +203,12 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: a00fe2efd780c195a5e09201bf51c56106245b40
   FBSDKLoginKit: d98498c598ec09de657385a9349a1f21119b7f86
   Firebase: 73c3e3b216ec1ecbc54d2ffdd4670c65c749edb1
-  firebase_core: e4d3efb030a2b2021819f8faa538bb23deb46695
+  firebase_core: a9b69f8583dc992f1b15f376b4918537c1804bb4
+  firebase_crashlytics: 5ecd67c6e882cc0483bc7cb403e57307d43a630b
   firebase_messaging: 3b6e0657b21261a57a1cd041fafa713f2aa6923f
   FirebaseCore: 3f09591d51292843e2a46f18358d60bf4e996255
   FirebaseCoreDiagnostics: a31d987ba0fe16d59886a5dbadc2f1de871f88c8
+  FirebaseCrashlytics: 69cddb6bfa7656c5346e603bc85b029392252ee6
   FirebaseInstallations: c4aab1005d6547b00a7529777fe52f5d4d45165b
   FirebaseMessaging: 1a33b4af3c8042ed6ddacb6c031894af2064bfab
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c

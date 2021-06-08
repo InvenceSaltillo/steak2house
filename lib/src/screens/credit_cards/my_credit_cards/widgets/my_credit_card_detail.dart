@@ -32,7 +32,7 @@ class MyCreditCardDetail extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios, color: kPrimaryColor),
         ),
         title: Text(
-          'Tarjetas guardadas',
+          'Eliminar tarjeta',
           style: TextStyle(color: Colors.black),
         ),
         elevation: 0,

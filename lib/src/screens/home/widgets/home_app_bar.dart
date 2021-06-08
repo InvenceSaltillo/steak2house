@@ -8,6 +8,7 @@ import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/models/user/user_model.dart';
+import 'package:steak2house/src/screens/profile/profile_screen.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
 import '../../../utils/utils.dart';
 
@@ -92,21 +93,25 @@ class _HomeAppBarState extends State<HomeAppBar>
       () => AppBar(
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {
-            setState(() {
-              isPlaying = !isPlaying;
-              isPlaying
-                  ? animationController.forward()
-                  : animationController.reverse();
-            });
-            ZoomDrawer.of(context)!.toggle();
-          },
-          icon: AnimatedIcon(
-            icon: AnimatedIcons.menu_close,
-            progress: animationController,
-            color: kPrimaryColor,
-          ),
-        ),
+            onPressed: () {
+              setState(() {
+                isPlaying = !isPlaying;
+                isPlaying
+                    ? animationController.forward()
+                    : animationController.reverse();
+              });
+              ZoomDrawer.of(context)!.toggle();
+            },
+            icon: Icon(
+              Icons.menu,
+              color: kPrimaryColor,
+            )
+            // AnimatedIcon(
+            //   icon: AnimatedIcons.menu_close,
+            //   progress: animationController,
+            //   color: kPrimaryColor,
+            // ),
+            ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: kPrimaryColor),
@@ -163,21 +168,12 @@ class _HomeAppBarState extends State<HomeAppBar>
           // ),
           TextButton(
             onPressed: () async {
-              // FirebaseCrashlytics.instance.crash();
+              Get.to(() => ProfileScreen());
             },
             style: TextButton.styleFrom(
               primary: Colors.white,
             ),
-            child:
-                // Container(
-                //   width: _utils.getWidthPercent(.09),
-                //   height: _utils.getWidthPercent(.09),
-                //   decoration: BoxDecoration(
-                //     color: Colors.red,
-                //     borderRadius: BorderRadius.circular(50),
-                //   ),
-                // ),
-                CircleAvatar(
+            child: CircleAvatar(
               backgroundColor: Colors.transparent,
               child: ClipOval(
                 child: Container(

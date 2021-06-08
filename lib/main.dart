@@ -7,6 +7,7 @@ import 'package:steak2house/src/routes.dart';
 import 'package:steak2house/src/screens/splash/splash_screen.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +16,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
-  initializeDateFormatting('es_MX', null).then((_) => runApp(MyApp()));
+  runApp(MyApp());
+  // initializeDateFormatting('es_MX', null).then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -30,6 +31,15 @@ class MyApp extends StatelessWidget {
     );
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        // GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''), // English, no country code
+        const Locale('es', ''), // Spanish, no country code
+      ],
       title: 'Material App',
       theme: ThemeData(fontFamily: 'PTSansNarrow'),
       // initialRoute: MainScreen.routeName,
