@@ -5,9 +5,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/map_controller.dart';
 import 'package:steak2house/src/services/geolocation_service.dart';
+import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
 import '../constants.dart';
+import 'dialogs.dart';
 
 class MapView extends StatelessWidget {
   @override
@@ -17,12 +19,24 @@ class MapView extends StatelessWidget {
     final initialCameraPosition = CameraPosition(
       target: LatLng(_locationCtrl.currentPosition.value.latitude,
           _locationCtrl.currentPosition.value.longitude),
-      zoom: 17,
+      zoom: 13,
     );
 
     final _utils = Utils.instance;
 
     CameraPosition _cameraPosition = CameraPosition(target: LatLng(0.0, 0.0));
+    Set<Circle> circles = Set.from(
+      [
+        Circle(
+          circleId: CircleId('id'),
+          center: LatLng(25.429947, -100.956762),
+          radius: _locationCtrl.deliveryRange.value,
+          fillColor: kPrimaryColor.withOpacity(0.3),
+          strokeColor: Colors.transparent,
+        )
+      ],
+    );
+
     return Stack(
       children: [
         Container(
@@ -46,7 +60,11 @@ class MapView extends StatelessWidget {
                   // await Future.delayed(Duration(seconds: 3));
                   final LatLng position = _cameraPosition.target;
                   GeolocationService.instance.reverseGeocoding(position, false);
+
+                  _locationCtrl.newLat = position.latitude;
+                  _locationCtrl.newLng = position.longitude;
                 },
+                circles: circles,
               ),
               Center(
                 child: Transform.translate(

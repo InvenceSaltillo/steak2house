@@ -267,7 +267,9 @@ class PaymentService {
         options: dio.Options(headers: headers),
       );
 
-      print('createCharge ${response.data}');
+      print('createCharge ${response.data['data']['orderId']}');
+
+      _userCtrl.orderId = response.data['data']['orderId'];
 
       // final items =
       Get.back();

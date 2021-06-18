@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:steak2house/src/controllers/user_controller.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
-import '../../../constants.dart';
-
 class ProfileImageUser extends StatelessWidget {
   const ProfileImageUser({
     Key? key,

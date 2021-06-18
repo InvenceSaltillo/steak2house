@@ -6,7 +6,6 @@ import 'package:get/route_manager.dart';
 import 'package:steak2house/src/routes.dart';
 import 'package:steak2house/src/screens/splash/splash_screen.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
         const Locale('en', ''), // English, no country code
         const Locale('es', ''), // Spanish, no country code
       ],
-      title: 'Material App',
+      title: 'Steak2House',
       theme: ThemeData(fontFamily: 'PTSansNarrow'),
       // initialRoute: MainScreen.routeName,
       routes: routes,

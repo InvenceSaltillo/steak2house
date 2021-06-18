@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
@@ -32,6 +33,7 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
 
     deliveryHoursTemp = deliveryHours;
     final time = await TrafficService.instance.getCurrentTime();
+    final _locationCtrl = Get.find<LocationController>();
 
     print('time $time');
     print('deliveryHours ${DateTime.parse(deliveryHours[1][0])}');
@@ -73,6 +75,29 @@ class _DeliveryTimeCardState extends State<DeliveryTimeCard> {
         'Entre ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][1]))} y ${DateFormat('hh:mm a').format(DateTime.parse(deliveryTimes[_miscCtrl.isRadioSelected.value][2]))}';
 
     setState(() {});
+
+    isRange() async {
+      final range = await TrafficService.instance.getDeliveryDistance2Range(
+          _locationCtrl.newLat, _locationCtrl.newLng);
+
+      print('Range $range');
+
+      if (!range) {
+        Dialogs.instance.showLottieDialog(
+          title:
+              'Estimado cliente, la ubicación señalada está fuera del rango de entrega.',
+          lottieSrc: 'assets/animations/info.json',
+          firstButtonText: 'Ok',
+          secondButtonText: '',
+          firstButtonBgColor: kPrimaryColor,
+          firstButtonTextColor: kSecondaryColor,
+          secondButtonBgColor: kPrimaryColor,
+          secondButtonTextColor: kSecondaryColor,
+        );
+      }
+    }
+
+    isRange();
   }
 
   @override

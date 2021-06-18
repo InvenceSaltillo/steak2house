@@ -22,103 +22,136 @@ class ProductCard extends StatelessWidget {
     final Utils _utils = Utils.instance;
     return GestureDetector(
       onTap: () {
+        if (product.existence == '0') return null;
         productCtrl.currentProduct.value = product;
         productCtrl.productQty.value = 1;
-        // Get.offNamedUntil(ProductDetailScreen.routeName, (_) => false);
         Get.to(() => ProductDetailScreen());
+
+        print('currentProduct ${productCtrl.currentProduct.value.toJson()}');
       },
-      child: Container(
-        margin: EdgeInsets.all(_utils.getWidthPercent(.01)),
-        width: double.infinity,
-        // height: 200,
-        decoration: BoxDecoration(
-          color: kPrimaryColor,
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: Column(
-          children: [
-            ClipRRect(
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.all(_utils.getWidthPercent(.01)),
+            width: double.infinity,
+            // height: 200,
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
               borderRadius: BorderRadius.circular(7),
-              child: Hero(
-                tag: '${product.id}',
-                child: Image.network(
-                  product.picture!,
-                  height: _utils.getHeightPercent(.125),
-                  width: 200,
-                  fit: BoxFit.contain,
-                  loadingBuilder: (ctx, child, _) {
-                    if (_ == null) return child;
-                    return Center(
-                      child: Lottie.asset(
-                        'assets/animations/loading.json',
-                        width: _utils.getWidthPercent(.3),
-                        height: _utils.getWidthPercent(.25),
-                      ),
-                    );
-                  },
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return Image.asset(
-                      'assets/img/noImage.png',
+            ),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(7),
+                  child: Hero(
+                    tag: '${product.id}',
+                    child: Image.network(
+                      product.picture!,
                       height: _utils.getHeightPercent(.125),
-                      width: _utils.getHeightPercent(.125),
-                      fit: BoxFit.fitWidth,
-                    );
-                  },
+                      width: 200,
+                      fit: BoxFit.contain,
+                      loadingBuilder: (ctx, child, _) {
+                        if (_ == null) return child;
+                        return Center(
+                          child: Lottie.asset(
+                            'assets/animations/loading.json',
+                            width: _utils.getWidthPercent(.3),
+                            height: _utils.getWidthPercent(.25),
+                          ),
+                        );
+                      },
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Image.asset(
+                          'assets/img/noImage.png',
+                          height: _utils.getHeightPercent(.125),
+                          width: _utils.getHeightPercent(.125),
+                          fit: BoxFit.fitWidth,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: _utils.getWidthPercent(.02),
+                    vertical: _utils.getWidthPercent(.02),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        // 'Rib-Eye Premium Alv',
+                        product.name!,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: _utils.getWidthPercent(.02),
+                    vertical: _utils.getWidthPercent(.02),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: _utils.getWidthPercent(.31),
+                        child: Text(
+                          '${product.description}',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Colors.white38,
+                              fontSize: _utils.getWidthPercent(.03)
+                              // fontWeight: FontWeight.w100,
+                              ),
+                        ),
+                      ),
+                      Text(
+                        '\$${product.price}',
+                        style: TextStyle(
+                          color: kSecondaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (product.existence == '0')
+            Positioned.fill(
+              child: Container(
+                margin: EdgeInsets.all(_utils.getWidthPercent(.01)),
+                width: double.infinity,
+                // height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(.3),
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                child: Center(
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.black,
+                    child: Text(
+                      '¡Agotado!',
+                      style: TextStyle(
+                        color: kSecondaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: _utils.getWidthPercent(.02),
-                vertical: _utils.getWidthPercent(.02),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    // 'Rib-Eye Premium Alv',
-                    product.name!,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: _utils.getWidthPercent(.02),
-                vertical: _utils.getWidthPercent(.02),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: _utils.getWidthPercent(.31),
-                    child: Text(
-                      '${product.description}',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: Colors.white38,
-                          fontSize: _utils.getWidthPercent(.03)
-                          // fontWeight: FontWeight.w100,
-                          ),
-                    ),
-                  ),
-                  Text(
-                    '\$${product.price}',
-                    style: TextStyle(
-                      color: kSecondaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

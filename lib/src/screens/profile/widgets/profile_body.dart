@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -40,10 +39,10 @@ class _ProfileBodyState extends State<ProfileBody> {
   void initState() {
     _userCtrl.changeInfo.value = false;
 
-    birthDatetemp = _userCtrl.user.value.birthday!;
-    telTemp = _userCtrl.user.value.tel!;
+    birthDatetemp = _userCtrl.user.value.birthday ?? '';
+    telTemp = _userCtrl.user.value.tel ?? '';
 
-    print('telTemp $telTemp');
+    print('telTemp ${_userCtrl.user.value.toJson()}');
 
     _textControllerName.text = '${_userCtrl.user.value.name}';
     _textControllerEmail.text = '${_userCtrl.user.value.email}';
@@ -257,10 +256,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                                     print('birthDatetemp $birthDatetemp');
                                     final dateTemp =
                                         DateFormat.yMMMMd('es_MX').format(date);
-                                    final birthDayTemp = DateFormat.yMMMMd(
-                                            'es_MX')
-                                        .format(DateTime.parse(
-                                            _userCtrl.user.value.birthday!));
+                                    final birthDayTemp =
+                                        DateFormat.yMMMMd('es_MX').format(
+                                            DateTime.parse(
+                                                _userCtrl.user.value.birthday ??
+                                                    birthDatetemp));
 
                                     if (dateTemp != birthDayTemp) {
                                       _userCtrl.changeInfo.value = true;

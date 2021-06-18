@@ -8,6 +8,8 @@ import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/screens/main/main_screen.dart';
 import 'package:steak2house/src/utils/utils.dart';
 
+import 'dialogs.dart';
+
 class PaymentSuccess extends StatefulWidget {
   @override
   _PaymentSuccessState createState() => _PaymentSuccessState();
@@ -19,6 +21,8 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   final _bottomNavCtrl = Get.find<BottomNavigationBarController>();
 
   final _utils = Utils.instance;
+
+  bool hasAlcohol = false;
 
   Future<void> goBack() async {
     await Future.delayed(Duration(milliseconds: 2500));
@@ -37,12 +41,26 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
       ),
       (route) => false,
     );
-    // Get.back();
+
+    if (hasAlcohol) {
+      Dialogs.instance.showLottieDialog(
+        title:
+            'Deberás presentar identificación oficial (INE) al recibir tu pedido de alcohol.',
+        lottieSrc: 'assets/animations/info.json',
+        firstButtonText: 'Ok',
+        secondButtonText: '',
+        firstButtonBgColor: kPrimaryColor,
+        firstButtonTextColor: kSecondaryColor,
+        secondButtonBgColor: kPrimaryColor,
+        secondButtonTextColor: kSecondaryColor,
+      );
+    }
   }
 
   @override
   void initState() {
     goBack();
+    hasAlcohol = Get.arguments['hasAlcohol'];
     super.initState();
   }
 

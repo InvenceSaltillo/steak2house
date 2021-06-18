@@ -12,20 +12,26 @@ class LocationController extends GetxController {
   var fromSettings = false.obs;
   var isLocationEnabled = false.obs;
   var currentStreet = ''.obs;
-  var currentPosition = new Position(
-          longitude: 0.0,
-          latitude: 0.0,
-          timestamp: null,
-          accuracy: 0.0,
-          altitude: 0.0,
-          heading: 0.0,
-          speed: 0.0,
-          speedAccuracy: 0.0)
-      .obs;
+  var currentPosition = Position(
+    longitude: 0.0,
+    latitude: 0.0,
+    timestamp: null,
+    accuracy: 0.0,
+    altitude: 0.0,
+    heading: 0.0,
+    speed: 0.0,
+    speedAccuracy: 0.0,
+  ).obs;
   var searchResult = GeocodingResponse().obs;
 
   var currentAddress = GeocodingResponse().obs;
   var tempAddress = GeocodingResponse().obs;
+
+  var newLat = 0.0;
+  var newLng = 0.0;
+
+  var deliveryRange = 4000.0.obs;
+  var outOfRange = false.obs;
 
   RxList<GeocodingResponse> addressesList = RxList<GeocodingResponse>();
 
@@ -44,6 +50,11 @@ class LocationController extends GetxController {
     final newCurrentPosition =
         LatLng(currentPosition.value.latitude, currentPosition.value.longitude);
     GeolocationService.instance.reverseGeocoding(newCurrentPosition, flag);
+
+    print('getCurrentPosition ${currentPosition.value.latitude}');
+
+    newLat = currentPosition.value.latitude;
+    newLng = currentPosition.value.longitude;
 
     return currentPosition.value;
   }

@@ -5,8 +5,9 @@ import 'package:steak2house/src/controllers/misc_controller.dart';
 import 'package:steak2house/src/screens/checkout/checkout_screen.dart';
 import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
+import 'package:steak2house/src/widgets/dialogs.dart';
+import 'package:steak2house/src/widgets/rounded_button.dart';
 
-import '../../../constants.dart';
 import 'cart_product_card.dart';
 
 class CartList extends StatelessWidget {
@@ -53,32 +54,20 @@ class CartList extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.center,
-          child: TextButton(
-            onPressed: () async {
+          child: RoundedButton(
+            text: 'Ir a Pagar \$${_cartCtrl.totalCart.value}',
+            fontSize: .025,
+            width: .7,
+            onTap: () async {
+              Dialogs.instance
+                  .showLoadingProgress(message: 'Espere un momento...');
               final distance =
                   await TrafficService.instance.getDeliveryDistance();
               _miscCtrl.deliveryDistance.value = distance;
-              // _miscCtrl.showAppBar.value = false;
-              // _bottomNavCtrl.pageCtrl.value.jumpToPage(5);
-              // Get.back();
-              Get.to(() => CheckOutScreen());
+
+              Get.back();
+              if (distance != -1.0) Get.to(() => CheckOutScreen());
             },
-            style: TextButton.styleFrom(
-              shape: StadiumBorder(),
-              minimumSize: Size(_utils.getWidthPercent(.7), 20),
-              backgroundColor: kPrimaryColor,
-              padding: EdgeInsets.all(
-                _utils.getHeightPercent(.01),
-              ),
-            ),
-            child: Text(
-              'Ir a Pagar \$${_cartCtrl.totalCart.value}',
-              style: TextStyle(
-                color: kSecondaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: _utils.getHeightPercent(.02),
-              ),
-            ),
           ),
         ),
       ],

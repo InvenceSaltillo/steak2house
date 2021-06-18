@@ -11,6 +11,8 @@ class UserController extends GetxController {
   var userGender = ''.obs;
   var changeInfo = false.obs;
 
+  var orderId = '';
+
   RxList<MyOrders> ordersList = RxList<MyOrders>();
 
   // Future<void> getOrdersList() async {

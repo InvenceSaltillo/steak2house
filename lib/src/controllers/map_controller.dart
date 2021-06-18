@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:steak2house/themes/map_theme.dart';
 
 class MapController extends GetxController {
@@ -9,11 +10,11 @@ class MapController extends GetxController {
   late GoogleMapController mapController;
   var centerLocation = LatLng(0.0, 0.0).obs;
 
-  void initMap(GoogleMapController controller) {
+  void initMap(GoogleMapController controller) async {
     if (mapReady.value) {
       mapController = controller;
       mapReady.value = true;
-      mapController.setMapStyle(json.encode(mapTheme));
+      await mapController.setMapStyle(json.encode(mapTheme));
     }
   }
 

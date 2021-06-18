@@ -170,6 +170,8 @@ class ProductService {
         options: dio.Options(headers: headers),
       );
 
+      print('getKMPrice ${response.data['data']}');
+
       return response.data['data'];
     } on dio.DioError catch (e) {
       if (e.response != null) {

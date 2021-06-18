@@ -214,6 +214,7 @@ class UserService {
 
     var message = 'Pedido a nombre de:\n';
     message += '${_userCtrl.user.value.name}\n\n';
+    message += 'Id: ${_userCtrl.orderId}\n\n';
     message += 'Dirección:\n$address\n';
     message += '\nTeléfono:\n${_userCtrl.user.value.tel}\n\n';
     message += 'Hora de entrega:\n${_miscCtrl.deliveryHour}\n\n';
@@ -243,7 +244,7 @@ class UserService {
         options: dio.Options(headers: headers),
       );
 
-      print('RESPONSE ${response.data}');
+      // print('RESPONSE ${response.data}');
 
       return true;
     } on dio.DioError catch (e) {

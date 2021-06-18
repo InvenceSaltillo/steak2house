@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
 import 'package:steak2house/src/controllers/location_controller.dart';
 import 'package:steak2house/src/controllers/misc_controller.dart';
+import 'package:steak2house/src/services/traffic_service.dart';
 import 'package:steak2house/src/utils/shared_prefs.dart';
 import 'package:steak2house/src/utils/utils.dart';
 import 'package:steak2house/src/widgets/dialogs.dart';
@@ -84,7 +86,11 @@ class MapBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${_locationCtrl.currentAddress.value.results![0].addressComponents![3].longName}, ',
+                    _locationCtrl.currentAddress.value.results![0]
+                                .addressComponents!.length >
+                            3
+                        ? '${_locationCtrl.currentAddress.value.results![0].addressComponents![3].longName}'
+                        : '${_locationCtrl.currentAddress.value.results![0].addressComponents![0].longName}',
                     style: TextStyle(
                       fontSize: _utils.getHeightPercent(.02),
                       color: Colors.black38,
@@ -95,62 +101,54 @@ class MapBottomSheet extends StatelessWidget {
             ),
             SizedBox(height: _utils.getHeightPercent(.07)),
             RoundedButton(
-                text: 'Confirmar',
-                fontSize: .025,
-                width: .45,
-                onTap: () async {
-                  final exist = _locationCtrl.addressesList.where((address) =>
-                      address.results![0].placeId ==
-                      _locationCtrl.currentAddress.value.results![0].placeId);
+              text: 'Confirmar',
+              fontSize: .025,
+              width: .45,
+              onTap: () async {
+                final outOfRange =
+                    await TrafficService.instance.getDeliveryDistance2Range(
+                  _locationCtrl.newLat,
+                  _locationCtrl.newLng,
+                );
 
-                  if (exist.isBlank == true) {
-                    _locationCtrl.addressesList
-                        .add(_locationCtrl.currentAddress.value);
-                    final listJ = json.encode(_locationCtrl.addressesList);
+                if (!outOfRange) {
+                  Dialogs.instance.showLottieDialog(
+                    title:
+                        'Estimado cliente, la ubicación señalada está fuera del rango de entrega.',
+                    lottieSrc: 'assets/animations/info.json',
+                    firstButtonText: 'Ok',
+                    secondButtonText: '',
+                    firstButtonBgColor: kPrimaryColor,
+                    firstButtonTextColor: kSecondaryColor,
+                    secondButtonBgColor: kPrimaryColor,
+                    secondButtonTextColor: kSecondaryColor,
+                  );
+                }
+                print(
+                    'CURRENT ${_locationCtrl.currentAddress.value.results![0].geometry!.location!.lat}');
+                if (_locationCtrl.outOfRange.value) {
+                  return null;
+                }
 
-                    await SharedPrefs.instance.setKey('addresses', listJ);
-                  }
-                  _locationCtrl.tempAddress.value =
-                      _locationCtrl.currentAddress.value;
-                  _miscCtrl.updateDeliveryPrice();
-                  Get.back();
-                }),
-            // TextButton(
-            //   onPressed: () async {
-            //     final exist = _locationCtrl.addressesList.where((address) =>
-            //         address.results![0].placeId ==
-            //         _locationCtrl.currentAddress.value.results![0].placeId);
+                // _locationCtrl.currentPosition.value.latitude = _locationCtrl
+                //     .currentAddress.value.results![0].geometry!.location!.lat;
+                final exist = _locationCtrl.addressesList.where((address) =>
+                    address.results![0].placeId ==
+                    _locationCtrl.currentAddress.value.results![0].placeId);
 
-            //     if (exist.isBlank == true) {
-            //       _locationCtrl.addressesList
-            //           .add(_locationCtrl.currentAddress.value);
-            //       final listJ = json.encode(_locationCtrl.addressesList);
+                if (exist.isBlank == true) {
+                  _locationCtrl.addressesList
+                      .add(_locationCtrl.currentAddress.value);
+                  final listJ = json.encode(_locationCtrl.addressesList);
 
-            //       await SharedPrefs.instance.setKey('addresses', listJ);
-            //     }
-            //     _locationCtrl.tempAddress.value =
-            //         _locationCtrl.currentAddress.value;
-            //     _miscCtrl.updateDeliveryPrice();
-            //     Get.back();
-            //   },
-            //   style: TextButton.styleFrom(
-            //     minimumSize: Size(_utils.getWidthPercent(.08), 10),
-            //     fixedSize: Size(
-            //       _utils.getWidthPercent(.8),
-            //       _utils.getHeightPercent(.05),
-            //     ),
-            //     backgroundColor: Colors.green,
-            //     padding: EdgeInsets.all(_utils.getHeightPercent(.01)),
-            //   ),
-            //   child: Text(
-            //     'Confirmar',
-            //     style: TextStyle(
-            //       color: Colors.white,
-            //       fontWeight: FontWeight.bold,
-            //       fontSize: _utils.getHeightPercent(.02),
-            //     ),
-            //   ),
-            // ),
+                  await SharedPrefs.instance.setKey('addresses', listJ);
+                }
+                _locationCtrl.tempAddress.value =
+                    _locationCtrl.currentAddress.value;
+                _miscCtrl.updateDeliveryPrice();
+                Get.back();
+              },
+            ),
           ],
         ),
       ),
