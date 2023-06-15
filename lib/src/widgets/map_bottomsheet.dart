@@ -69,7 +69,8 @@ class MapBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${_locationCtrl.currentAddress.value.results![0].formattedAddress!.split(',')[0]}, ${_locationCtrl.currentAddress.value.results![0].formattedAddress!.split(',')[1]}.',
+                    // '${_locationCtrl.currentAddress.value.results![0].formattedAddress!.split(',')[0]}, ${_locationCtrl.currentAddress.value.results![0].formattedAddress!.split(',')[1]}.',
+                    '${_locationCtrl.currentAddress.value}.',
                     style: TextStyle(
                       fontSize: _utils.getHeightPercent(.02),
                       color: Colors.black38,

@@ -102,6 +102,7 @@ class _BodyCreditCardListState extends State<BodyCreditCardList> {
                             showBackView: false,
                             cardType: _getCardType(_card.brand!),
                             obscureCardNumber: false,
+                            onCreditCardWidgetChange: (CreditCardBrand) {},
                           ),
                         );
                       },

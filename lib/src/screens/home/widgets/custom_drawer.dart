@@ -10,7 +10,6 @@ import 'package:steak2house/src/screens/credit_cards/my_credit_cards/my_credit_c
 import 'package:steak2house/src/screens/home/widgets/menu_item.dart';
 import 'package:steak2house/src/services/auth_service.dart';
 import 'package:steak2house/src/utils/utils.dart';
-import 'package:package_info/package_info.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'drawer_user_avatar.dart';
@@ -40,10 +39,6 @@ class CustomDrawer extends StatelessWidget {
 
     final _utils = Utils.instance;
     final _userCtrl = Get.find<UserController>();
-
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      _userCtrl.version.value = packageInfo.version;
-    });
 
     final bottomNavCtrl = Get.find<BottomNavigationBarController>();
     return Obx(

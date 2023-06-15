@@ -64,7 +64,7 @@ class TrafficService {
         print('DIOERROR MESSAGE getDeliveryDistance===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -124,7 +124,7 @@ class TrafficService {
         print('DIOERROR MESSAGE getDeliveryTimes===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -154,7 +154,7 @@ class TrafficService {
         print('DIOERROR MESSAGE getCurrentTime===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }

@@ -130,7 +130,7 @@ class _HomeAppBarState extends State<HomeAppBar>
                 Icons.location_on_outlined,
                 color: kPrimaryColor,
               ),
-              SizedBox(width: _utils.getWidthPercent(.01)),
+              // SizedBox(width: _utils.getWidthPercent(.02)),
               Container(
                 width: _utils.getWidthPercent(.38),
                 child: Text(
@@ -147,15 +147,15 @@ class _HomeAppBarState extends State<HomeAppBar>
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: null,
-                icon: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: kPrimaryColor,
-                ),
-                padding: EdgeInsets.all(5),
-                splashRadius: 12,
-              ),
+              // IconButton(
+              //   onPressed: null,
+              //   icon: Icon(
+              //     Icons.keyboard_arrow_down,
+              //     color: kPrimaryColor,
+              //   ),
+              //   padding: EdgeInsets.all(5),
+              //   splashRadius: 12,
+              // ),
             ],
           ),
         ),

@@ -158,7 +158,7 @@ class Dialogs {
     );
   }
 
-  Future<void> showSnackBar(
+  Future<dynamic> showSnackBar(
       DialogType type, String text, bool? dissmiss) async {
     final iconRotationAngle = 32;
     final backgroundColor = type == DialogType.success

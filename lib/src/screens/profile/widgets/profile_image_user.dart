@@ -10,7 +10,7 @@ class ProfileImageUser extends StatelessWidget {
     required Utils utils,
     required UserController userCtrl,
     required TextEditingController textControllerName,
-  })   : _utils = utils,
+  })  : _utils = utils,
         _userCtrl = userCtrl,
         _textControllerName = textControllerName,
         super(key: key);
@@ -29,13 +29,13 @@ class ProfileImageUser extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              _userCtrl.user.value.avatar!,
+            // image: DecorationImage(
+            //   image: NetworkImage(
+            //     _userCtrl.user.value.avatar!,
+            //   ),
+            //   fit: BoxFit.cover,
+            // ),
             ),
-            fit: BoxFit.cover,
-          ),
-        ),
         child: Stack(
           children: [
             Positioned.fill(

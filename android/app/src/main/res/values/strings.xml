@@ -2,5 +2,6 @@
 <resources>
   <string name="app_name">steak2house</string>
   <string name="facebook_app_id">450703749565065</string>
+    <string name="facebook_client_token">a2d14a0db234cec849c6f30ea3242840</string>
   <string name="fb_login_protocol_scheme">fb1365719610250300</string>
 </resources>

@@ -43,6 +43,7 @@ class BodyCreditCardState extends State<BodyCreditCard> {
             labelCardHolder: 'Nombre',
             labelExpiredDate: 'MM/AA',
             cardBgColor: kPrimaryColor,
+            onCreditCardWidgetChange: (CreditCardBrand) {},
           ),
           Expanded(
             child: SingleChildScrollView(

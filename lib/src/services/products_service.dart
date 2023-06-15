@@ -155,7 +155,7 @@ class ProductService {
         print('DIOERROR MESSAGE===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }

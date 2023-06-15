@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:steak2house/src/constants.dart';
@@ -47,15 +48,14 @@ class MainScreen extends StatelessWidget {
         },
         child: ZoomDrawer(
           controller: _drawerController,
-          style: DrawerStyle.Style1,
+          style: DrawerStyle.style1,
           menuScreen: CustomDrawer(),
           mainScreen: HomeScreen(),
           borderRadius: 24.0,
           // showShadow: true,
           angle: 0.0,
 
-          slideWidth: MediaQuery.of(context).size.width *
-              (ZoomDrawer.isRTL() ? .45 : 0.65),
+          slideWidth: MediaQuery.of(context).size.width * .5,
           // openCurve: Curves.fastOutSlowIn,
           // closeCurve: Curves.bounceIn,
         ),

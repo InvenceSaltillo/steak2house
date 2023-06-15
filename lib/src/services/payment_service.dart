@@ -93,7 +93,7 @@ class PaymentService {
         print('DIOERROR getConektaCustomer MESSAGE===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -148,7 +148,7 @@ class PaymentService {
         print('DIOERROR deletePaymentSource MESSAGE===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -229,7 +229,7 @@ class PaymentService {
         print('DIOERROR MESSAGE===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -309,7 +309,7 @@ class PaymentService {
         print('DIOERROR MESSAGE===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -376,7 +376,7 @@ class PaymentService {
         print('DIOERROR MESSAGE===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }

@@ -76,7 +76,7 @@ class UserService {
         print('DIOERROR MESSAGE===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -130,7 +130,7 @@ class UserService {
         print('DIOERROR MESSAGE updateField===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -192,7 +192,7 @@ class UserService {
         print('DIOERROR MESSAGE update===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
@@ -266,7 +266,7 @@ class UserService {
         print('DIOERROR MESSAGE sendTelegramMessage===== ${e.message}');
         Dialogs.instance.showSnackBar(
           DialogType.error,
-          e.message,
+          e.message ?? '',
           false,
         );
       }
